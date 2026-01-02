@@ -28,6 +28,9 @@
     "url": "https://fredlackey.com"
   },
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/FredLackey/devutils-cli/issues"
