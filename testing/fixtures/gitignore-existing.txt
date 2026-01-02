@@ -1,0 +1,13 @@
+# Existing .gitignore content
+# This file simulates a pre-existing .gitignore before dev ignore is run
+
+# IDE
+.idea/
+*.iml
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log

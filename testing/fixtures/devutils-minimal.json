@@ -1,0 +1,8 @@
+{
+  "user": {
+    "name": "Test User",
+    "email": "test@example.com"
+  },
+  "created": "2024-01-01T00:00:00.000Z",
+  "updated": "2024-01-01T00:00:00.000Z"
+}

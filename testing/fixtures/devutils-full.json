@@ -1,0 +1,30 @@
+{
+  "user": {
+    "name": "Jane Developer",
+    "email": "jane@example.com",
+    "url": "https://janedev.io"
+  },
+  "identities": {
+    "work": {
+      "name": "Jane Smith",
+      "email": "jane.smith@company.com",
+      "url": "https://company.com",
+      "ssh": {
+        "privateKey": "~/.ssh/id_ed25519_work",
+        "publicKey": "~/.ssh/id_ed25519_work.pub"
+      },
+      "created": "2024-01-15T10:30:00.000Z"
+    },
+    "personal": {
+      "name": "Jane Developer",
+      "email": "jane@personal.dev",
+      "ssh": {
+        "privateKey": "~/.ssh/id_ed25519_personal",
+        "publicKey": "~/.ssh/id_ed25519_personal.pub"
+      },
+      "created": "2024-01-15T10:35:00.000Z"
+    }
+  },
+  "created": "2024-01-15T10:30:00.000Z",
+  "updated": "2024-02-01T14:00:00.000Z"
+}

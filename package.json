@@ -1,0 +1,36 @@
+{
+  "name": "devutils-cli",
+  "version": "0.0.1",
+  "description": "A globally-installable Node.js CLI toolkit for bootstrapping and configuring development environments across any machine.",
+  "main": "src/index.js",
+  "bin": {
+    "dev": "./bin/dev.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "files/"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "commander": "^12.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FredLackey/devutils-cli.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Fred Lackey",
+    "email": "fred.lackey@gmail.com",
+    "url": "https://fredlackey.com"
+  },
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/FredLackey/devutils-cli/issues"
+  },
+  "homepage": "https://github.com/FredLackey/devutils-cli#readme"
+}
