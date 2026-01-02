@@ -9,7 +9,7 @@ DevUtils CLI is a globally-installable Node.js CLI toolkit for bootstrapping and
 ## Commands
 
 ```bash
-npm install -g devutils-cli    # Install globally
+npm install -g @fredlackey/devutils    # Install globally
 npm test                       # No tests configured yet
 ```
 

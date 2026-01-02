@@ -249,7 +249,7 @@ dev ignore macos
 dev ignore vscode
 
 # Verify section markers
-grep "=== devutils-cli: node ===" .gitignore || exit 1
+grep "=== @fredlackey/devutils: node ===" .gitignore || exit 1
 grep "=== end: node ===" .gitignore || exit 1
 ```
 

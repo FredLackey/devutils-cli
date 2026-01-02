@@ -81,7 +81,7 @@ The `package.json` `bin` field maps command names to executable files. When inst
 **package.json:**
 ```json
 {
-  "name": "devutils-cli",
+  "name": "@fredlackey/devutils",
   "version": "1.0.0",
   "bin": {
     "dev": "./bin/dev.js"
@@ -503,7 +503,7 @@ devutils-cli/
 
 ```json
 {
-  "name": "devutils-cli",
+  "name": "@fredlackey/devutils",
   "version": "1.0.0",
   "bin": {
     "dev": "./bin/dev.js"

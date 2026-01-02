@@ -156,7 +156,7 @@ async function installCompletion() {
   if (shell.includes('zsh')) {
     rcFile = path.join(home, '.zshrc');
     completionScript = `
-# devutils-cli completion
+# @fredlackey/devutils completion
 _dev_completions() {
   local IFS=$'\\n'
   COMPREPLY=($(COMP_LINE="$COMP_LINE" COMP_POINT="$COMP_POINT" dev))
@@ -166,7 +166,7 @@ complete -F _dev_completions dev
   } else if (shell.includes('bash')) {
     rcFile = path.join(home, '.bashrc');
     completionScript = `
-# devutils-cli completion
+# @fredlackey/devutils completion
 _dev_completions() {
   local IFS=$'\\n'
   COMPREPLY=($(COMP_LINE="$COMP_LINE" COMP_POINT="$COMP_POINT" dev))
@@ -176,7 +176,7 @@ complete -F _dev_completions dev
   } else if (shell.includes('fish')) {
     rcFile = path.join(home, '.config', 'fish', 'config.fish');
     completionScript = `
-# devutils-cli completion
+# @fredlackey/devutils completion
 complete -c dev -f -a "(COMP_LINE=(commandline) COMP_POINT=(commandline -C) dev)"
 `;
   } else {
@@ -188,7 +188,7 @@ complete -c dev -f -a "(COMP_LINE=(commandline) COMP_POINT=(commandline -C) dev)
     // Check if completion is already installed
     if (fs.existsSync(rcFile)) {
       const content = fs.readFileSync(rcFile, 'utf8');
-      if (content.includes('devutils-cli completion')) {
+      if (content.includes('@fredlackey/devutils completion')) {
         console.log('Tab completion is already installed.');
         return;
       }
@@ -234,7 +234,7 @@ async function uninstallCompletion() {
     let content = fs.readFileSync(rcFile, 'utf8');
 
     // Remove completion block
-    const startMarker = '# devutils-cli completion';
+    const startMarker = '# @fredlackey/devutils completion';
     if (!content.includes(startMarker)) {
       console.log('Tab completion is not installed.');
       return;

@@ -237,7 +237,7 @@ yarn-error.log
 When `dev ignore node` is run, the following is appended to `.gitignore`:
 
 ```gitignore
-# === devutils-cli: node ===
+# === @fredlackey/devutils: node ===
 # Node.js
 node_modules/
 npm-debug.log*
@@ -248,7 +248,7 @@ yarn-error.log
 # === end: node ===
 ```
 
-The section markers (`# === devutils-cli: node ===` and `# === end: node ===`) allow the command to detect if patterns were already added, preventing duplicates.
+The section markers (`# === @fredlackey/devutils: node ===` and `# === end: node ===`) allow the command to detect if patterns were already added, preventing duplicates.
 
 **Behavior Details:**
 

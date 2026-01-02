@@ -56,7 +56,7 @@ function findGitRoot(startDir) {
  */
 function getSectionMarkers(technology) {
   return {
-    start: `# === devutils-cli: ${technology} ===`,
+    start: `# === @fredlackey/devutils: ${technology} ===`,
     end: `# === end: ${technology} ===`
   };
 }

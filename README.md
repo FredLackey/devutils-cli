@@ -19,7 +19,7 @@ Every developer knows the pain:
 ## The Solution
 
 ```bash
-npm install -g devutils-cli
+npm install -g @fredlackey/devutils
 dev setup
 ```
 
@@ -28,7 +28,7 @@ That's it. DevUtils CLI detects your operating system and installs everything yo
 ## Installation
 
 ```bash
-npm install -g devutils-cli
+npm install -g @fredlackey/devutils
 ```
 
 **Requirements:** Node.js 18+
