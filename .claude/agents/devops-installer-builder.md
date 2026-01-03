@@ -93,7 +93,8 @@ async function install() {
 
   const installer = installers[platform.type];
   if (!installer) {
-    throw new Error(`Unsupported platform: ${platform.type}`);
+    console.log(`{Technology} is not available for ${platform.type}.`);
+    return;
   }
 
   await installer();
@@ -176,13 +177,52 @@ async function install_macos() {
 | Amazon Linux/RHEL | `install_amazon_linux()` | YUM/DNF | Check which is available |
 | Windows | `install_windows()` | Chocolatey/winget | Prefer winget if available |
 
+## Critical Rule: No Errors, No Alternatives
+
+**This rule is non-negotiable and takes precedence over all other guidelines.**
+
+When a technology is **not available** on a specific platform:
+
+1. **NEVER throw errors** - Do not use `throw new Error()` for unsupported platforms
+2. **NEVER suggest alternatives** - Do not recommend other tools, VMs, Wine, or workarounds
+3. **Return gracefully** - Simply log a polite message and return without error
+
+Example of the CORRECT pattern for unsupported platforms:
+```javascript
+async function install_raspbian() {
+  console.log('Adobe Creative Cloud is not available for Raspberry Pi OS.');
+  return;
+}
+```
+
+Example of the WRONG pattern (DO NOT DO THIS):
+```javascript
+async function install_raspbian() {
+  // WRONG: Throwing an error
+  throw new Error('Adobe Creative Cloud is not supported on Raspberry Pi OS');
+}
+
+async function install_ubuntu() {
+  // WRONG: Suggesting alternatives
+  console.log('Adobe CC is not available for Linux. Consider using GIMP or running a VM.');
+  throw new Error('Unsupported platform');
+}
+```
+
+The user experience should be:
+- Run installer on unsupported platform
+- See a simple, friendly message: `"{Technology} is not available for {Platform}."`
+- Script exits cleanly with success (exit code 0)
+
 ## Absolute Prohibitions
 
+- **DO NOT** throw errors for unsupported platforms - return gracefully with a message
+- **DO NOT** suggest alternatives, workarounds, VMs, or other tools
 - **DO NOT** test the script locally or execute installation commands during development
 - **DO NOT** make assumptions about what's installed - always check
 - **DO NOT** use synchronous file/shell operations
 - **DO NOT** hardcode paths - use utilities or environment variables
-- **DO NOT** ignore error handling
+- **DO NOT** ignore error handling for actual failures (network, permissions, etc.)
 
 ## Deliverable
 

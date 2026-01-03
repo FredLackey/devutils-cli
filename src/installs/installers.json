@@ -1,5 +1,5 @@
 [
-  { "filename": "adobe-creative-cloud.js", "name": "Adobe Creative Cloud", "status": "pending" },
+  { "filename": "adobe-creative-cloud.js", "name": "Adobe Creative Cloud", "status": "test-pending" },
   { "filename": "appcleaner.js", "name": "AppCleaner", "status": "pending" },
   { "filename": "atomicparsley.js", "name": "AtomicParsley", "status": "pending" },
   { "filename": "aws-cli.js", "name": "AWS CLI", "status": "pending" },
