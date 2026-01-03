@@ -8,7 +8,7 @@ Since `devutils-cli` installs software and modifies system configuration, testin
 
 - **Isolation**: No changes to your host system
 - **Reproducibility**: Consistent test environments
-- **Multi-platform testing**: Test on Ubuntu, Amazon Linux, Debian, etc.
+- **Multi-platform testing**: Test on Ubuntu, Raspberry Pi OS, Amazon Linux, etc.
 - **Fast reset**: Destroy and recreate containers instantly
 
 ## Directory Structure
@@ -20,9 +20,8 @@ devutils-cli/
 │   ├── test.sh                    # Main test runner (host script)
 │   ├── docker-compose.yml         # Orchestration for all containers
 │   ├── Dockerfile.ubuntu          # Ubuntu 22.04 LTS test image
-│   ├── Dockerfile.debian          # Debian 12 test image
+│   ├── Dockerfile.raspbian        # Raspberry Pi OS test image
 │   ├── Dockerfile.amazonlinux     # Amazon Linux 2023 test image
-│   ├── Dockerfile.fedora          # Fedora (RHEL-like) test image
 │   ├── scripts/
 │   │   ├── run-tests.sh           # Main test runner (container script)
 │   │   ├── test-cli.sh            # CLI command tests
@@ -44,11 +43,9 @@ devutils-cli/
 
 | Platform | Container Image | Package Manager | Test Priority |
 |----------|-----------------|-----------------|---------------|
-| Ubuntu 22.04 | `ubuntu:22.04` | APT | High |
-| Debian 12 | `debian:12` | APT | High |
+| Ubuntu 22.04 | `ubuntu:22.04` | APT / Snap | High |
+| Raspberry Pi OS | `balenalib/raspberrypi3-debian` | APT / Snap | Medium |
 | Amazon Linux 2023 | `amazonlinux:2023` | DNF | Medium |
-| Fedora 39 | `fedora:39` | DNF | Medium |
-| Alpine | `alpine:3.19` | APK | Low |
 
 ### Platform Limitations
 
@@ -56,7 +53,8 @@ devutils-cli/
 |----------|----------------|-------|
 | **macOS** | Not possible | macOS cannot run in Docker; test on actual Mac hardware |
 | **Windows** | Limited | Windows containers require Windows host with Hyper-V |
-| **WSL** | Partial | Can simulate WSL-like environment but not true WSL |
+| **Git Bash** | Via Windows | Test Git Bash commands on Windows host or VM |
+| **WSL** | Via Ubuntu | Ubuntu container simulates WSL environment; test WSL-specific code paths on actual WSL |
 
 ## Container Setup
 
@@ -123,15 +121,15 @@ services:
       - TEST_PLATFORM=ubuntu
     command: ["./testing/scripts/run-tests.sh"]
 
-  debian:
+  raspbian:
     build:
       context: ..
-      dockerfile: testing/Dockerfile.debian
+      dockerfile: testing/Dockerfile.raspbian
     volumes:
       - ..:/app:ro
       - test-results:/results
     environment:
-      - TEST_PLATFORM=debian
+      - TEST_PLATFORM=raspbian
     command: ["./testing/scripts/run-tests.sh"]
 
   amazonlinux:
@@ -142,18 +140,7 @@ services:
       - ..:/app:ro
       - test-results:/results
     environment:
-      - TEST_PLATFORM=amazonlinux
-    command: ["./testing/scripts/run-tests.sh"]
-
-  fedora:
-    build:
-      context: ..
-      dockerfile: testing/Dockerfile.fedora
-    volumes:
-      - ..:/app:ro
-      - test-results:/results
-    environment:
-      - TEST_PLATFORM=fedora
+      - TEST_PLATFORM=amazon_linux
     command: ["./testing/scripts/run-tests.sh"]
 
 volumes:
@@ -377,7 +364,7 @@ dev --help
 #!/bin/bash
 # testing/scripts/run-all-platforms.sh
 
-PLATFORMS=(ubuntu debian amazonlinux fedora)
+PLATFORMS=(ubuntu raspbian amazonlinux)
 RESULTS=()
 
 for platform in "${PLATFORMS[@]}"; do
@@ -549,23 +536,26 @@ USER testuser
 
 ## Appendix: Platform-Specific Notes
 
-### Ubuntu/Debian
+### Ubuntu
 
 - Use `apt-get` for package installation
 - Node.js via NodeSource repository
 - Most straightforward testing environment
+- Can simulate WSL environment for testing `isWSL()` detection
 
-### Amazon Linux / Fedora
+### Raspberry Pi OS
 
-- Use `dnf` for package installation
+- Use `apt-get` for package installation (same as Ubuntu)
+- ARM architecture — use `balenalib/raspberrypi3-debian` or similar ARM images
+- Some packages may not be available for ARM
+- Test on actual Raspberry Pi hardware for complete coverage
+
+### Amazon Linux
+
+- Use `dnf` for package installation (AL2023) or `yum` (AL2)
 - Node.js via `dnf module install nodejs:20`
 - SELinux may affect some operations
-
-### Alpine
-
-- Minimal image, good for size testing
-- Uses `apk` package manager
-- May have musl libc compatibility issues
+- Primarily server-focused — no GUI testing needed
 
 ### macOS Testing
 
@@ -575,11 +565,11 @@ Since macOS cannot run in Docker:
 2. **Physical hardware**: Test on actual Mac when available
 3. **Remote access**: Use a Mac mini or cloud Mac service for testing
 
-### Windows Testing
+### Windows / Git Bash Testing
 
 Windows containers have limitations:
 
 1. **Windows Docker**: Requires Windows host with Hyper-V enabled
 2. **Local VM**: Use VirtualBox, VMware, or Hyper-V with Windows VM
-3. **WSL**: Can test Linux behavior on Windows via WSL2
+3. **Git Bash**: Test Git Bash scripts on Windows host with Git for Windows installed
 4. **Physical hardware**: Test on actual Windows machine when available

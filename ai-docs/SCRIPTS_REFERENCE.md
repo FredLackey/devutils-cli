@@ -2,21 +2,22 @@
 
 This document catalogs **Scripts** — standalone global utilities that replace shell aliases and functions from dotfiles.
 
-> **Terminology:** Scripts are single-command utilities implemented in `src/scripts/`. For the `dev <action>` CLI structure, see [Commands](../docs/COMMANDS.md).
+> **Terminology:** Scripts are single-command utilities implemented in `src/scripts/`. For the `dev <action>` CLI structure, see [COMMAND_STRUCTURE.md](./COMMAND_STRUCTURE.md).
 
-**Source:** Aliases and functions from `~/projects/dotfiles/`.
+**Source:** `src/scripts/`
 
 ## Target Systems
 
 This analysis covers the following platforms:
 
-| Platform | Base | Notes |
-|----------|------|-------|
-| **Ubuntu Linux** | Debian | Desktop and server variants |
-| **Raspberry Pi OS** | Debian | ARM-based, similar to Ubuntu |
-| **Amazon Linux** | RHEL/CentOS | EC2 instances, AL2 and AL2023 |
-| **macOS** | BSD/Darwin | Includes BSD utilities |
-| **Git Bash** | MinGW | Windows; minimal Unix utilities |
+| Platform | Package Manager | Notes |
+|----------|-----------------|-------|
+| **macOS** | Homebrew | BSD/Darwin base, includes BSD utilities |
+| **Ubuntu** | APT / Snap | Desktop and server variants |
+| **Raspberry Pi OS** | APT / Snap | ARM-based Debian derivative |
+| **Amazon Linux** | DNF / YUM | EC2 instances, AL2 and AL2023 |
+| **Windows** | Chocolatey / winget | Native Windows environment |
+| **Git Bash** | Manual / Portable | MinGW on Windows; minimal Unix utilities |
 
 ## npm Global Command Feasibility
 

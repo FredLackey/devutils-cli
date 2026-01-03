@@ -60,7 +60,7 @@ dev install node
 dev install vscode
 ```
 
-DevUtils CLI figures out the right command for macOS, Ubuntu, Debian, Amazon Linux, Fedora, or Windows.
+DevUtils CLI figures out the right command for macOS, Ubuntu, Raspberry Pi OS, Amazon Linux, Windows, or Git Bash.
 
 ### Git Identity Management
 
@@ -112,11 +112,11 @@ Copy this file to a new machine and run `dev identity sync` to regenerate all yo
 | Platform | Package Manager |
 |----------|-----------------|
 | macOS | Homebrew |
-| Ubuntu / Debian | APT |
-| Raspberry Pi OS | APT |
-| Amazon Linux / RHEL / Fedora | DNF / YUM |
+| Ubuntu | APT / Snap |
+| Raspberry Pi OS | APT / Snap |
+| Amazon Linux | DNF / YUM |
 | Windows | Chocolatey / winget |
-| WSL | APT (with Windows integration) |
+| Git Bash | Manual / Portable |
 
 ## Available Commands
 

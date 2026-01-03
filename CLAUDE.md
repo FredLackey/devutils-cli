@@ -28,18 +28,18 @@ npm test                       # No tests configured yet
 
 ```
 src/
-├── commands/       # dev configure, dev status, dev identity, dev install
+├── commands/       # dev setup, dev configure, dev status, dev identity, dev install, dev ignore
 ├── scripts/        # afk, clone, git-push, ll (~80 scripts)
 ├── installs/       # One file per tool (vscode.js, docker.js, node.js, etc.)
 │                   # Each file contains install_<platform>() functions
 └── utils/          # Shared utilities with OS-specific subfolders
-    ├── os.js, shell.js, config.js, logger.js, etc.
+    ├── common/     # Shared cross-platform utilities
     ├── macos/
     ├── ubuntu/
-    ├── amazon_linux/
     ├── raspbian/
-    ├── gitbash/
-    └── windows/
+    ├── amazon_linux/
+    ├── windows/
+    └── gitbash/
 files/              # Template files
 ```
 
@@ -49,6 +49,18 @@ User preferences stored in `~/.devutils` (JSON):
 - `user`: name, email, URL
 - `defaults`: license, package_manager
 - `identities`, `containers`, `sourceFolders`
+
+### Ignore Command
+
+`dev ignore` appends technology-specific patterns to `.gitignore`. Pattern files are stored in `src/ignore/*.txt` and wrapped with section markers to prevent duplicates and enable idempotent updates.
+
+```bash
+dev ignore node          # Add Node.js patterns
+dev ignore macos         # Add .DS_Store and friends
+dev ignore --list        # Show available technologies
+```
+
+For detailed CLI structure and tab completion, see `ai-docs/COMMAND_STRUCTURE.md`.
 
 ## Code Patterns
 
@@ -73,19 +85,25 @@ const os = require('../utils/os');
 
 async function install_macos() { /* ... */ }
 async function install_ubuntu() { /* ... */ }
+async function install_raspbian() { /* ... */ }
+async function install_amazon_linux() { /* ... */ }
 async function install_windows() { /* ... */ }
+async function install_gitbash() { /* ... */ }
 
 async function install() {
   const platform = os.detect();
   const installers = {
     'macos': install_macos,
     'ubuntu': install_ubuntu,
-    // ...
+    'raspbian': install_raspbian,
+    'amazon_linux': install_amazon_linux,
+    'windows': install_windows,
+    'gitbash': install_gitbash
   };
   await installers[platform.type]();
 }
 
-module.exports = { install, install_macos, install_ubuntu, install_windows };
+module.exports = { install, install_macos, install_ubuntu, install_raspbian, install_amazon_linux, install_windows, install_gitbash };
 if (require.main === module) { install(); }
 ```
 
@@ -94,7 +112,7 @@ if (require.main === module) { install(); }
 ```javascript
 const os = require('../utils/os');
 const platform = os.detect();
-// Returns: { type: 'macos'|'debian'|'rhel'|'windows'|'windows-wsl', packageManager: 'brew'|'apt'|'dnf'|'choco' }
+// Returns: { type: 'macos'|'ubuntu'|'raspbian'|'amazon_linux'|'windows'|'gitbash', packageManager: 'brew'|'apt'|'snap'|'dnf'|'yum'|'choco'|'winget' }
 ```
 
 ## Code Style
@@ -108,4 +126,4 @@ const platform = os.detect();
 
 ## Supported Platforms
 
-macOS (Homebrew), Ubuntu/Debian (APT), Raspberry Pi OS (APT), Amazon Linux/RHEL (YUM/DNF), Windows (Chocolatey/winget), WSL
+macOS (Homebrew), Ubuntu (APT/Snap), Raspberry Pi OS (APT/Snap), Amazon Linux (DNF/YUM), Windows (Chocolatey/winget), Git Bash (Manual/Portable)

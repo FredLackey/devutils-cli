@@ -535,7 +535,7 @@ All arguments are optional. If not provided, the command will interactively prom
 
 ### Prerequisites
 
-An identity must already exist in `~/.devutils`. Identities are created via `dev identity create` and contain:
+An identity must already exist in `~/.devutils`. Identities are created via `dev identity add` and contain:
 - `name` - Display name for commits
 - `email` - Email address for commits
 - `sshKey` - Path to SSH private key (e.g., `~/.ssh/id_ed25519_work`)
@@ -741,7 +741,7 @@ Git automatically routes the connection through `github.com-work`, which uses th
 
 | Command | Description |
 |---------|-------------|
-| `dev identity create` | Create a new identity with SSH/GPG keys |
+| `dev identity add` | Create a new identity with SSH/GPG keys |
 | `dev identity list` | List all configured identities and their links |
 | `dev identity link` | Link an identity to a folder path and/or remote |
 | `dev identity unlink` | Remove a folder/remote link from an identity |

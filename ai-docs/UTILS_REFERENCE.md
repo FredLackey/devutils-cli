@@ -59,7 +59,7 @@ These utilities work cross-platform and provide foundational functionality.
 | `isLinux()` | Returns true if running on any Linux distribution |
 | `isWSL()` | Returns true if running inside Windows Subsystem for Linux |
 | `getArch()` | Returns CPU architecture (x64, arm64, etc.) |
-| `getDistro()` | For Linux, returns specific distribution name (ubuntu, debian, fedora, etc.) |
+| `getDistro()` | For Linux, returns specific distribution name (ubuntu, raspbian, amazon_linux) |
 
 ### `shell.js` — Shell Command Execution
 
@@ -196,6 +196,50 @@ Note: For basic "is a GUI available" checks, use `common/display.js` instead.
 
 ---
 
+## Raspberry Pi OS Utilities (`src/utils/raspbian/`)
+
+Raspberry Pi OS shares most utilities with Ubuntu (APT, Snap) but has ARM-specific considerations.
+
+### `apt.js` — APT Package Manager
+
+Same interface as `ubuntu/apt.js`. See Ubuntu Utilities section.
+
+### `snap.js` — Snap Package Manager
+
+Same interface as `ubuntu/snap.js`. See Ubuntu Utilities section.
+
+### ARM-Specific Considerations
+
+| Concern | Notes |
+|---------|-------|
+| **Architecture** | ARM (armhf or arm64) — some packages may not be available |
+| **Performance** | Lower CPU/RAM — avoid heavy build processes when possible |
+| **GUI** | Desktop available but optional; many Pis run headless |
+| **Docker** | Supported but images must be ARM-compatible |
+
+---
+
+## Amazon Linux Utilities (`src/utils/amazon_linux/`)
+
+### `dnf.js` — DNF Package Manager (AL2023+)
+
+| Function | Description |
+|----------|-------------|
+| `isInstalled()` | Returns true if dnf is available |
+| `install(package)` | Installs a package via dnf |
+| `remove(package)` | Removes an installed package |
+| `update()` | Runs dnf check-update to refresh package lists |
+| `upgrade(package)` | Upgrades a specific package or all packages |
+| `isPackageInstalled(package)` | Checks if package is installed |
+| `getPackageVersion(package)` | Returns installed version of a package |
+| `search(query)` | Searches for packages |
+
+### `yum.js` — YUM Package Manager (AL2)
+
+Same interface as `dnf.js` but uses YUM commands. Used on Amazon Linux 2.
+
+---
+
 ## Windows Utilities (`src/utils/windows/`)
 
 ### `choco.js` — Chocolatey Package Manager
@@ -269,7 +313,7 @@ When multiple package managers are available, install scripts should follow thes
 
 **Homebrew is the only option.** Use `brew install` for CLI tools (formulas) and `brew install --cask` for GUI applications (casks).
 
-### Ubuntu/Debian
+### Ubuntu / Raspberry Pi OS
 
 APT and Snap serve different purposes:
 
@@ -277,7 +321,7 @@ APT and Snap serve different purposes:
 |--------|-----|------|
 | Package size | Smaller (shared libraries) | Larger (self-contained) |
 | Startup time | Faster | Slower (especially first launch) |
-| Package freshness | Tied to Ubuntu release cycle | Usually latest stable |
+| Package freshness | Tied to release cycle | Usually latest stable |
 | Updates | Manual via apt upgrade | Automatic in background |
 | Sandboxing | None (full system access) | Sandboxed (may cause permission issues) |
 | System integration | Native | Isolated |
@@ -304,6 +348,16 @@ APT and Snap serve different purposes:
    - CLI tools: APT preferred (faster, simpler)
    - GUI apps: Either works, but Snap sandboxing may cause file access issues
 
+### Amazon Linux
+
+**DNF is the primary package manager** (YUM on older AL2). Amazon Linux 2023 uses DNF by default.
+
+**Selection guidelines:**
+
+1. **Prefer DNF for system packages**
+2. **Use version managers for language runtimes** (nvm, rustup, pyenv)
+3. **Many GUI applications are not available** — Amazon Linux is primarily server-focused
+
 ### Windows
 
 Winget and Chocolatey have different strengths:
@@ -327,6 +381,16 @@ Winget and Chocolatey have different strengths:
    - Node.js → Use nvm-windows
    - Rust → Use rustup
    - Python → Use pyenv-win
+
+### Git Bash
+
+**Manual/portable installations** are typically required. Git Bash provides a minimal Unix-like environment on Windows but lacks a native package manager.
+
+**Selection guidelines:**
+
+1. **Use portable/standalone versions** of tools when available
+2. **Leverage Windows package managers** (winget/choco) for underlying Windows installs
+3. **Some tools may not be available** in Git Bash environment
 
 ### Version Managers vs Package Managers
 
@@ -359,17 +423,23 @@ Install scripts should detect if a version manager is already in use and respect
 ### Package Manager Utilities
 | Platform | Primary | Secondary |
 |----------|---------|-----------|
-| macOS | `brew.js` | — |
-| Ubuntu | `apt.js` | `snap.js` |
-| Windows | `winget.js` | `choco.js` |
+| macOS | `macos/brew.js` | — |
+| Ubuntu | `ubuntu/apt.js` | `ubuntu/snap.js` |
+| Raspberry Pi OS | `raspbian/apt.js` | `raspbian/snap.js` |
+| Amazon Linux | `amazon_linux/dnf.js` | `amazon_linux/yum.js` |
+| Windows | `windows/winget.js` | `windows/choco.js` |
+| Git Bash | — | — (manual installs) |
 
 ### Application Detection Utilities
 | Platform | Utility | Method |
 |----------|---------|--------|
-| Common | `apps.js` | Delegates to OS-specific |
-| macOS | `apps.js` | Checks /Applications folder |
-| Ubuntu | `apt.js`, `snap.js` | Queries dpkg/snap |
-| Windows | `registry.js` | Queries uninstall registry keys |
+| Common | `common/apps.js` | Delegates to OS-specific |
+| macOS | `macos/apps.js` | Checks /Applications folder |
+| Ubuntu | `ubuntu/apt.js`, `ubuntu/snap.js` | Queries dpkg/snap |
+| Raspberry Pi OS | `raspbian/apt.js`, `raspbian/snap.js` | Queries dpkg/snap |
+| Amazon Linux | `amazon_linux/dnf.js` | Queries rpm |
+| Windows | `windows/registry.js` | Queries uninstall registry keys |
+| Git Bash | `windows/registry.js` | Uses Windows registry |
 
 ---
 
