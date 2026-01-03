@@ -25,17 +25,17 @@ Use the **install-research-docs** agent to create comprehensive installation doc
 
 - The agent will research official installation methods for all supported platforms:
   - macOS (Homebrew)
-  - Ubuntu/Debian (APT)
-  - Raspberry Pi OS (APT with ARM considerations)
-  - Amazon Linux/RHEL (YUM/DNF)
-  - Windows (Chocolatey/winget)
-  - WSL (Windows Subsystem for Linux)
+  - Ubuntu (APT / Snap)
+  - Raspberry Pi OS (APT / Snap)
+  - Amazon Linux (DNF / YUM)
+  - Windows (Chocolatey / winget)
+  - Git Bash (Manual / Portable)
 - The documentation will be saved as `src/installs/{technology}.md`
 - Wait for the agent to complete before proceeding
 
 **Agent Prompt Template:**
 ```
-Research and document the installation procedures for {technology_name} across all supported platforms (macOS, Ubuntu/Debian, Raspberry Pi OS, Amazon Linux/RHEL, Windows, WSL). Create a comprehensive markdown file at src/installs/{filename_without_extension}.md following the standard documentation template.
+Research and document the installation procedures for {technology} across all supported platforms.
 ```
 
 ### Step 3: Build the Installer Script
@@ -49,7 +49,7 @@ Use the **devops-installer-builder** agent to implement the installer:
 
 **Agent Prompt Template:**
 ```
-Build the installer script for {technology_name}. Read the installation instructions from src/installs/{filename_without_extension}.md and implement the cross-platform installer at src/installs/{filename}.
+Build the installer script for {technology}.
 ```
 
 ### Step 4: Update Status
@@ -99,9 +99,11 @@ Provide a brief summary:
 
 From the project README, these platforms must be supported:
 
-- macOS (Homebrew)
-- Ubuntu/Debian (APT)
-- Raspberry Pi OS (APT)
-- Amazon Linux/RHEL (YUM/DNF)
-- Windows (Chocolatey/winget)
-- WSL
+| Platform | Package Manager |
+|----------|-----------------|
+| macOS | Homebrew |
+| Ubuntu | APT / Snap |
+| Raspberry Pi OS | APT / Snap |
+| Amazon Linux | DNF / YUM |
+| Windows | Chocolatey / winget |
+| Git Bash | Manual / Portable |
