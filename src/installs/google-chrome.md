@@ -6,6 +6,51 @@ Google Chrome is a fast, secure, and free web browser built by Google. It is the
 
 **Important**: Google Chrome is a proprietary browser. If you need an open-source alternative, consider Chromium (the open-source project Chrome is built upon). However, Chromium lacks some features like automatic updates, proprietary media codecs (for services like Netflix), and certain Google integrations.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew cask handles Chrome installation directly)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt-get install -y wget`
+  - `sudo` privileges - Required for package installation
+- **Optional:** None
+- **Auto-installed:**
+  - Chrome dependencies (libraries for graphics, fonts, audio) - Automatically resolved by `apt-get install -f` during .deb package installation
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** Installation not supported on this platform. Google Chrome does not support ARM architecture. Use Chromium instead via `sudo apt-get install -y chromium-browser` or `sudo apt-get install -y chromium`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `dnf` or `yum` - Pre-installed on Amazon Linux 2023 (dnf) or Amazon Linux 2 (yum)
+  - `sudo` privileges - Required for package installation
+- **Optional:**
+  - `xorg-x11-server-Xvfb` - Install via `sudo dnf install -y xorg-x11-server-Xvfb` (required only for headless operation with virtual framebuffer)
+- **Auto-installed:**
+  - Graphics and GUI libraries (`libXcomposite`, `libXdamage`, `libXrandr`, `libgbm`, `libxkbcommon`, `pango`, `alsa-lib`, `atk`, `at-spi2-atk`, `cups-libs`, `libdrm`, `mesa-libgbm`) - Automatically resolved by DNF/YUM during RPM installation
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Either `winget` (included in Windows 10 version 2004+ and Windows 11) or `Chocolatey` - Install Chocolatey via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges - Required for system-wide installation
+- **Optional:** None
+- **Auto-installed:** None (Chrome installer handles all dependencies)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `PowerShell` - Pre-installed on Windows, used to invoke package managers
+  - Either `winget` or `Chocolatey` on Windows host - See Windows section above for installation instructions
+  - Administrator privileges - Required for installation via PowerShell
+- **Optional:** None
+- **Auto-installed:** None (Chrome installer on Windows host handles all dependencies)
+
 ## Prerequisites
 
 Before installing Google Chrome on any platform, ensure:

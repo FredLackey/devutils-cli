@@ -6,6 +6,62 @@ Gemini CLI is an open-source AI agent developed by Google that brings the power 
 
 Gemini CLI is distinct from Google's web-based Gemini interface. It is a command-line tool designed for developers who prefer terminal-based workflows, offering system integration capabilities that allow it to read/edit files, run commands, and interact with your local development environment.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:**
+  - Node.js 20+ (Homebrew formula dependency, automatically installed during `brew install gemini-cli`)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl` (typically pre-installed)
+  - sudo privileges (required for NodeSource repository setup and apt package installation)
+- **Optional:** None
+- **Auto-installed:**
+  - Node.js 22 LTS (installed via NodeSource repository during the installation process)
+  - npm (included with Node.js)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - 64-bit Raspberry Pi OS (aarch64 architecture) - Verify with `uname -m` (must output `aarch64`, not `armv7l`)
+  - `curl` - Install via `sudo apt-get install -y curl` (typically pre-installed)
+  - sudo privileges (required for NodeSource repository setup and apt package installation)
+  - Raspberry Pi 4 or later with 4GB+ RAM recommended for acceptable performance
+- **Optional:** None
+- **Auto-installed:**
+  - Node.js 22 LTS (installed via NodeSource repository during the installation process)
+  - npm (included with Node.js)
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install -y curl` (AL2023/RHEL8+) or `sudo yum install -y curl` (AL2)
+  - sudo privileges (required for NodeSource repository setup and package installation)
+- **Optional:** None
+- **Auto-installed:**
+  - Node.js 22 LTS (installed via NodeSource repository during the installation process)
+  - npm (included with Node.js)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - winget (pre-installed on Windows 10 version 1809+ and Windows 11) OR Chocolatey - Install Chocolatey via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges (required for package installation)
+- **Optional:** None
+- **Auto-installed:**
+  - Node.js LTS (installed via `winget install OpenJS.NodeJS.LTS` or `choco install nodejs-lts`)
+  - npm (included with Node.js)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git for Windows (provides Git Bash environment) - Download from https://git-scm.com/downloads/win
+  - Node.js 20+ installed on Windows - Install via `winget install OpenJS.NodeJS.LTS` from PowerShell
+  - PowerShell (for running winget commands)
+  - Windows PATH configured to include npm global directory (`$APPDATA/npm`)
+- **Optional:** None
+- **Auto-installed:** None (Git Bash delegates to Windows npm installation; Node.js must be pre-installed)
+
 ## Prerequisites
 
 Before installing Gemini CLI on any platform, ensure the following:

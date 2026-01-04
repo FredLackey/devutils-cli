@@ -1,5 +1,49 @@
 # Installing Microsoft Teams
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt-get install -y wget`
+  - `ca-certificates` - Install via `sudo apt-get install -y ca-certificates`
+- **Optional:**
+  - `snapd` - Install via `sudo apt-get install -y snapd` (if using Snap instead of APT repository)
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `snapd` - Install via `sudo apt-get install -y snapd` (required for ARM architecture support)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install -y curl` (Amazon Linux 2023/RHEL 8+) or `sudo yum install -y curl` (Amazon Linux 2)
+  - Either `dnf` or `yum` package manager (pre-installed on supported distributions)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `Chocolatey` - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:**
+  - `winget` - Pre-installed on Windows 11 and Windows 10 (version 1809+), can be used as alternative to Chocolatey
+- **Auto-installed:**
+  - `App Installer (MSIX)` - Required by Teams bootstrapper, typically pre-installed on Windows 10/11
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `Chocolatey` (on Windows host) - Install via Administrator PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - `PowerShell` - Pre-installed on Windows
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Overview
 
 Microsoft Teams is a collaboration and communication platform developed by Microsoft. It provides chat, video meetings, file storage, and application integration for teams and organizations. Teams is widely used for remote work, virtual meetings, and team collaboration in business, education, and personal contexts.

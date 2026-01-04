@@ -27,6 +27,61 @@ Before installing Node.js on any platform, ensure:
 
 **Version Selection**: This guide installs Node.js LTS (currently v24.x) for production stability. The LTS version receives security updates and bug fixes for 30 months. For development with bleeding-edge features, the Current release (v25.x) is available but not documented here due to its shorter support window.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew manages all Node.js dependencies internally)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl` (required to download NodeSource setup script)
+  - `ca-certificates` - Install via `sudo apt-get install -y ca-certificates` (required for HTTPS verification)
+  - `gnupg` - Install via `sudo apt-get install -y gnupg` (required for GPG key verification)
+- **Optional:**
+  - `build-essential` - Install via `sudo apt-get install -y build-essential` (required for compiling native npm modules)
+- **Auto-installed:** All nodejs runtime dependencies are handled automatically by APT
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl` (required to download NodeSource setup script)
+  - `ca-certificates` - Install via `sudo apt-get install -y ca-certificates` (required for HTTPS verification)
+  - `gnupg` - Install via `sudo apt-get install -y gnupg` (required for GPG key verification)
+- **Optional:**
+  - `build-essential` - Install via `sudo apt-get install -y build-essential` (required for compiling native npm modules)
+  - `python3` - Install via `sudo apt-get install -y python3` (required for some native module build scripts)
+- **Auto-installed:** All nodejs runtime dependencies are handled automatically by APT
+
+### Amazon Linux (DNF/YUM)
+
+**For Amazon Linux 2023 (DNF):**
+- **Required:** None (dnf is pre-installed on Amazon Linux 2023)
+- **Optional:** None
+- **Auto-installed:** `nodejs22-npm` is installed alongside `nodejs22` automatically
+
+**For Amazon Linux 2 (YUM):**
+- **Required:**
+  - `curl` - Install via `sudo yum install -y curl` (required to download NodeSource setup script)
+- **Optional:**
+  - `gcc-c++` - Install via `sudo yum install -y gcc-c++` (required for compiling native npm modules)
+  - `make` - Install via `sudo yum install -y make` (required for compiling native npm modules)
+- **Auto-installed:** All nodejs runtime dependencies are handled automatically by YUM
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** `npm` is bundled with the `nodejs-lts` Chocolatey package
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Chocolatey package manager on Windows host - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - PowerShell - Pre-installed on Windows 10/11
+- **Optional:** None
+- **Auto-installed:** `npm` is bundled with the `nodejs-lts` Chocolatey package installed on the Windows host
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

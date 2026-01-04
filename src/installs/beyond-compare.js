@@ -374,6 +374,139 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Beyond Compare is installed on macOS.
+ *
+ * Beyond Compare can be installed via Homebrew Cask or manually. This function
+ * checks for the application bundle in /Applications first, then falls back
+ * to checking if it's listed in Homebrew casks.
+ *
+ * @returns {Promise<boolean>}
+ */
+async function isInstalled_macos() {
+  // Option 1: Check for the application bundle (works for any installation method)
+  const isAppPresent = macosApps.isAppInstalled('Beyond Compare');
+  if (isAppPresent) {
+    return true;
+  }
+
+  // Option 2: Check if installed via Homebrew cask
+  const isCaskPresent = await brew.isCaskInstalled('beyond-compare');
+  if (isCaskPresent) {
+    return true;
+  }
+
+  // Option 3: Check if bcompare command exists (if CLI tools installed)
+  return shell.commandExists('bcompare');
+}
+
+/**
+ * Check if Beyond Compare is installed on Ubuntu/Debian.
+ *
+ * Beyond Compare installs the bcompare command to /usr/bin/bcompare.
+ * This is the most reliable way to verify installation.
+ *
+ * @returns {Promise<boolean>}
+ */
+async function isInstalled_ubuntu() {
+  // Check if the bcompare command is available
+  return shell.commandExists('bcompare');
+}
+
+/**
+ * Check if Beyond Compare is installed on Raspberry Pi OS.
+ *
+ * Beyond Compare does NOT support ARM architecture, so this always returns false.
+ * Raspberry Pi devices use ARM processors which Beyond Compare does not support.
+ *
+ * @returns {Promise<boolean>}
+ */
+async function isInstalled_raspbian() {
+  // Beyond Compare does not support ARM architecture
+  // Always return false as it cannot be installed on Raspberry Pi
+  return false;
+}
+
+/**
+ * Check if Beyond Compare is installed on Amazon Linux/RHEL.
+ *
+ * Beyond Compare installs the bcompare command to /usr/bin/bcompare.
+ * This is the most reliable way to verify installation across RHEL-based systems.
+ *
+ * @returns {Promise<boolean>}
+ */
+async function isInstalled_amazon_linux() {
+  // Check if the bcompare command is available
+  return shell.commandExists('bcompare');
+}
+
+/**
+ * Check if Beyond Compare is installed on Windows.
+ *
+ * Beyond Compare can be installed via Chocolatey or the official installer.
+ * This function checks both Chocolatey package status and the bcompare command.
+ *
+ * @returns {Promise<boolean>}
+ */
+async function isInstalled_windows() {
+  // Option 1: Check if installed via Chocolatey
+  const isChocoInstalled = await choco.isPackageInstalled('beyondcompare');
+  if (isChocoInstalled) {
+    return true;
+  }
+
+  // Option 2: Check if bcompare command exists (works for manual installations)
+  return shell.commandExists('bcompare');
+}
+
+/**
+ * Check if Beyond Compare is installed on Git Bash (Windows).
+ *
+ * Git Bash inherits the Windows PATH, so we check if the bcompare command
+ * is available. This works whether Beyond Compare was installed via Chocolatey
+ * or the official installer.
+ *
+ * @returns {Promise<boolean>}
+ */
+async function isInstalled_gitbash() {
+  // Git Bash inherits Windows PATH, so check for bcompare command
+  return shell.commandExists('bcompare');
+}
+
+/**
+ * Check if Beyond Compare is installed on the current platform.
+ *
+ * This function detects the current operating system and delegates to the
+ * appropriate platform-specific installation checker.
+ *
+ * @returns {Promise<boolean>}
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  const checkers = {
+    'macos': isInstalled_macos,
+    'ubuntu': isInstalled_ubuntu,
+    'debian': isInstalled_ubuntu,
+    'wsl': isInstalled_ubuntu,
+    'raspbian': isInstalled_raspbian,
+    'amazon_linux': isInstalled_amazon_linux,
+    'rhel': isInstalled_amazon_linux,
+    'fedora': isInstalled_amazon_linux,
+    'windows': isInstalled_windows,
+    'gitbash': isInstalled_gitbash
+  };
+
+  const checker = checkers[platform.type];
+
+  if (!checker) {
+    // Unsupported platform
+    return false;
+  }
+
+  return await checker();
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer.
  *
  * This function detects the current operating system and delegates to the
@@ -417,7 +550,14 @@ module.exports = {
   install_raspbian,
   install_amazon_linux,
   install_windows,
-  install_gitbash
+  install_gitbash,
+  isInstalled,
+  isInstalled_macos,
+  isInstalled_ubuntu,
+  isInstalled_raspbian,
+  isInstalled_amazon_linux,
+  isInstalled_windows,
+  isInstalled_gitbash
 };
 
 if (require.main === module) {

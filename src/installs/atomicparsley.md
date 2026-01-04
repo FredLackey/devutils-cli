@@ -11,6 +11,62 @@ AtomicParsley is a lightweight command-line program for reading, parsing, and se
 - Support for 3GPP metadata in 3GP files
 - Lightweight and fast with minimal dependencies
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - APT package manager (pre-installed on Ubuntu/Debian)
+  - sudo privileges
+- **Optional:**
+  - Build tools for latest version - Install via `sudo apt-get install -y cmake make g++ zlib1g-dev git`
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - APT package manager (pre-installed on Raspberry Pi OS)
+  - sudo privileges
+- **Optional:**
+  - Build tools for latest version - Install via `sudo apt-get install -y cmake make g++ zlib1g-dev git`
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - DNF or YUM package manager (pre-installed on Amazon Linux/RHEL)
+  - sudo privileges
+- **Optional:**
+  - EPEL repository for Amazon Linux 2/RHEL 7/8 - Install via `sudo yum install -y epel-release`
+- **Auto-installed:**
+  - When building from source (Amazon Linux 2023/RHEL 9): cmake, make, gcc-c++, zlib-devel, git - Installed via `sudo dnf install -y cmake make gcc-c++ zlib-devel git`
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - OR winget (pre-installed on Windows 10 1809+)
+  - Administrator privileges
+- **Optional:** None
+- **Auto-installed:**
+  - Microsoft Visual C++ Redistributable (installed automatically if needed)
+
+### Git Bash (Manual/Portable)
+- **Required (Option A - via PowerShell):**
+  - Chocolatey or winget on Windows host (see Windows dependencies above)
+  - PowerShell access from Git Bash (available by default)
+  - Administrator privileges
+- **Required (Option B - Manual installation):**
+  - curl - Pre-installed with Git Bash
+  - OR wget - Install via `pacman -S wget` in Git Bash (if using Git for Windows with pacman)
+- **Optional:**
+  - unzip utility - Pre-installed with Git Bash, or use PowerShell's `Expand-Archive`
+- **Auto-installed:** None
+
+---
+
 ## Prerequisites
 
 Before installing AtomicParsley, ensure you have:

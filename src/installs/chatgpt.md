@@ -9,6 +9,54 @@ ChatGPT is OpenAI's AI assistant available as a desktop application for macOS an
 - **Linux, Raspberry Pi OS, and Amazon Linux** do not have official OpenAI desktop applications
 - For unsupported platforms, third-party desktop wrappers or the web interface (https://chat.openai.com) are available alternatives
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `brew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+  - Apple Silicon (ARM64) processor - The official ChatGPT app requires M1/M2/M3 or later (Intel Macs not supported)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `snapd` - Install via `sudo apt-get update && sudo apt-get install -y snapd` (pre-installed on Ubuntu 16.04+)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (Installation not supported on this platform)
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** ChatGPT desktop app is not available for Raspberry Pi OS. Third-party Snap packages do not support ARM64 architecture. Use the web interface at https://chat.openai.com instead.
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (Installation not supported on this platform)
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** ChatGPT desktop app is not available for Amazon Linux. This is typically a server OS without a desktop environment. Use the ChatGPT API via the OpenAI Python library or access the web interface.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `winget` - Install via Microsoft Store: `start ms-windows-store://pdp/?productid=9NBLGGH4NNS1` (pre-installed on Windows 10 1809+ and Windows 11)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `winget.exe` - Install via Microsoft Store: `start ms-windows-store://pdp/?productid=9NBLGGH4NNS1` (pre-installed on Windows 10 1809+ and Windows 11)
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Git Bash delegates to the Windows installation process using winget.exe
+
+### WSL (Ubuntu)
+- **Required:**
+  - `wslu` - Install via `sudo apt-get update && sudo apt-get install -y wslu` (provides wslview command for opening Windows browser)
+- **Optional:**
+  - `winget.exe` - Accessible from WSL if available on Windows host (for installing Windows ChatGPT app)
+  - `snapd` - Install via `sudo apt-get install -y snapd` (for running Linux GUI apps in WSL 2 + WSLg on Windows 11)
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing ChatGPT desktop on any platform, ensure:

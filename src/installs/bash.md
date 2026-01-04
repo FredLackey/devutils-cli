@@ -6,6 +6,64 @@ Bash (Bourne-Again SHell) is a Unix shell and command language written by Brian 
 
 Modern Bash (version 5.x) includes significant improvements over older versions, including associative arrays, better regular expression support, the `coproc` keyword for coprocesses, improved `case` statement features, and numerous bug fixes. macOS ships with Bash 3.2 due to GPL licensing restrictions, making an upgrade essential for developers who need modern shell features.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `dev install homebrew` or directly from https://brew.sh
+  - Administrative privileges (sudo access) - Required for modifying `/etc/shells` and changing default shell
+  - Internet connectivity - Required to download packages from Homebrew repositories
+- **Optional:** None
+- **Auto-installed:**
+  - Xcode Command Line Tools - Homebrew automatically installs if missing
+  - Bash dependencies (ncurses, readline) - Homebrew handles these transparently
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - APT package manager - Pre-installed on Ubuntu/Debian systems
+  - sudo privileges - Required for package installation and system modifications
+  - Internet connectivity - Required to download packages from APT repositories
+- **Optional:** None
+- **Auto-installed:**
+  - Bash dependencies (libc6, libtinfo6, readline libraries) - APT handles these transparently
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - APT package manager - Pre-installed on Raspberry Pi OS
+  - sudo privileges - Required for package installation and system modifications
+  - Internet connectivity - Required to download packages from APT repositories
+- **Optional:** None
+- **Auto-installed:**
+  - Bash dependencies (libc6, libtinfo6, readline libraries) - APT handles these for ARM architecture transparently
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - DNF (Amazon Linux 2023, RHEL 8/9) or YUM (Amazon Linux 2) package manager - Pre-installed on these systems
+  - sudo privileges - Required for package installation and system modifications
+  - Internet connectivity - Required to download packages from distribution repositories
+- **Optional:** None
+- **Auto-installed:**
+  - Bash dependencies (glibc, ncurses-libs, readline) - DNF/YUM handles these transparently
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey package manager - Install via `dev install chocolatey` or from https://chocolatey.org/install
+  - Administrator privileges - Required for installing software system-wide
+  - Internet connectivity - Required to download Git for Windows package
+- **Optional:** None
+- **Auto-installed:**
+  - Git for Windows - Contains Git Bash (installed as the `git` package)
+  - MSYS2 runtime environment - Bundled with Git for Windows
+  - Common Unix utilities (grep, sed, awk, find, etc.) - Included with Git for Windows
+  - Bash 5.2.x - Bundled with Git for Windows
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git for Windows already installed - Bash is bundled with this package
+- **Optional:**
+  - Chocolatey package manager - Only needed for automated updates via `choco upgrade git -y`
+- **Auto-installed:** None (Bash is already present if Git for Windows is installed)
+
 ## Prerequisites
 
 Before installing Bash on any platform, ensure:

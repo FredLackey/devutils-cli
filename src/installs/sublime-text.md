@@ -14,6 +14,62 @@ Sublime Text is a sophisticated text editor for code, markup, and prose. Known f
 
 Sublime Text is a paid application with an unlimited evaluation period. A license is required for continued use but the editor remains fully functional during evaluation.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew automatically handles all Sublime Text dependencies)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `sudo` - Pre-installed on Ubuntu
+  - `wget` - Install via `sudo apt-get install -y wget` (used for downloading GPG key)
+- **Optional:** None
+- **Auto-installed:**
+  - `apt-transport-https` - Installed automatically by the installer script
+  - `ca-certificates` - Installed automatically by the installer script
+  - `curl` - Installed automatically by the installer script
+  - `gnupg` - Installed automatically by the installer script
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - 64-bit operating system (`aarch64` architecture) - Sublime Text 4 does not support 32-bit systems
+  - `sudo` - Pre-installed on Raspberry Pi OS
+  - `wget` - Install via `sudo apt-get install -y wget` (used for downloading GPG key)
+- **Optional:** None
+- **Auto-installed:**
+  - `apt-transport-https` - Installed automatically by the installer script
+  - `ca-certificates` - Installed automatically by the installer script
+  - `curl` - Installed automatically by the installer script
+  - `gnupg` - Installed automatically by the installer script
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `dnf` or `yum` package manager - Pre-installed on Amazon Linux, RHEL, CentOS, and Fedora
+  - x86_64 architecture - Sublime Text does not provide ARM64 RPM packages
+  - `sudo` - Pre-installed on Amazon Linux
+- **Optional:**
+  - `yum-utils` - Required for `yum-config-manager` on YUM-based systems (Amazon Linux 2); installed automatically by the script if missing
+  - `dnf-plugins-core` - Required for `dnf config-manager` on some DNF systems; may need manual installation via `sudo dnf install -y dnf-plugins-core`
+- **Auto-installed:**
+  - `yum-utils` - Installed automatically by the installer script when using YUM if `yum-config-manager` is not available
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via Administrator PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** None (Chocolatey automatically handles all Sublime Text dependencies)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Chocolatey installed on Windows host - See Windows section above for installation
+  - PowerShell access - Pre-installed on Windows
+  - Administrator privileges - Required to run Chocolatey commands
+- **Optional:** None
+- **Auto-installed:** None (installation occurs on Windows host via PowerShell/Chocolatey)
+
 ## Prerequisites
 
 Before installing Sublime Text on any platform, ensure:

@@ -15,6 +15,51 @@ Key features that distinguish LFTP from basic FTP clients:
 
 LFTP is commonly used for automated backups, website deployments, large file transfers, and any scenario requiring reliable file synchronization over various protocols.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `brew` (Homebrew package manager) - Install via `dev install homebrew` or follow instructions at https://brew.sh
+- **Optional:** None
+- **Auto-installed:**
+  - `libidn2` (international domain name library)
+  - `openssl@3` (cryptography and SSL/TLS toolkit)
+  - `readline` (command-line editing library)
+  - `gettext` (internationalization library)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `sudo` privileges (typically available by default for primary user)
+- **Optional:** None
+- **Auto-installed:**
+  - All LFTP dependencies (SSL libraries, internationalization libraries, etc.) are handled automatically by APT
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `sudo` privileges (typically available by default for primary user)
+- **Optional:** None
+- **Auto-installed:**
+  - All LFTP dependencies (SSL libraries, internationalization libraries, etc.) are handled automatically by APT
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `sudo` privileges (typically available by default for ec2-user)
+- **Optional:** None
+- **Auto-installed:**
+  - All LFTP dependencies are handled automatically by DNF/YUM
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `choco` (Chocolatey package manager) - Install via `dev install chocolatey` or follow instructions at https://chocolatey.org/install
+- **Optional:** None
+- **Auto-installed:**
+  - Cygwin runtime libraries (cygwin1.dll and related dependencies)
+  - LFTP4WIN portable distribution components
+
+### Git Bash (Manual/Portable)
+- **Status:** Installation not supported via this installer
+- **Alternative:** See the "Git Bash (Cygwin/LFTP4WIN)" section below for manual installation instructions using LFTP4WIN
+
 ## Prerequisites
 
 Before installing LFTP on any platform, ensure:

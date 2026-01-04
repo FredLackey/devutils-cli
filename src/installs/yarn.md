@@ -33,6 +33,67 @@ corepack enable
 yarn init -2
 ```
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:**
+  - Node.js - Homebrew automatically installs Node.js as a dependency if not present
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl`
+  - `gnupg` - Install via `sudo apt-get install -y gnupg`
+  - `ca-certificates` - Install via `sudo apt-get install -y ca-certificates`
+- **Optional:**
+  - Node.js - Install via `dev install node` or NodeSource repository (recommended but not enforced by installer)
+- **Auto-installed:**
+  - None (all dependencies must be explicitly installed)
+- **Note:** The conflicting `cmdtest` package is automatically removed if present
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl`
+  - `gnupg` - Install via `sudo apt-get install -y gnupg`
+  - `ca-certificates` - Install via `sudo apt-get install -y ca-certificates`
+- **Optional:**
+  - Node.js - Install via `dev install node` or NodeSource repository (recommended but not enforced by installer)
+- **Auto-installed:**
+  - None (all dependencies must be explicitly installed)
+- **Note:** The conflicting `cmdtest` package is automatically removed if present
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install -y curl` (AL2023) or `sudo yum install -y curl` (AL2)
+  - DNF or YUM package manager - Pre-installed on Amazon Linux, RHEL, Fedora, CentOS
+- **Optional:**
+  - Node.js - Install via `dev install node` (recommended but not enforced by installer)
+- **Auto-installed:**
+  - None (all dependencies must be explicitly installed)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges - Required for Chocolatey package installation
+- **Optional:**
+  - Node.js - Install via `choco install nodejs-lts -y` (recommended but Chocolatey can install it automatically as a dependency)
+- **Auto-installed:**
+  - Node.js - Chocolatey can automatically install Node.js as a dependency if missing
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git Bash (Git for Windows) - Download from https://git-scm.com/download/win
+  - Chocolatey on Windows host - Install via PowerShell (see Windows section above)
+  - Administrator privileges - Required for Chocolatey operations via PowerShell interop
+- **Optional:**
+  - `winpty` - Install via `pacman -S winpty` in Git Bash (for interactive Yarn commands, usually pre-installed with Git for Windows)
+  - Node.js - Install via `choco install nodejs-lts -y` (recommended)
+- **Auto-installed:**
+  - Node.js - Chocolatey can automatically install Node.js as a dependency if missing
+- **Note:** Yarn is installed on the Windows host and becomes available in Git Bash through PATH inheritance
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

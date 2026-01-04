@@ -14,6 +14,73 @@ Key capabilities include:
 
 **Important Platform Note**: ImageOptim is a macOS-only GUI application. For Linux, Windows, WSL, and Git Bash environments, this guide documents equivalent command-line tools (optipng, jpegoptim) and alternative applications (Trimage, FileOptimizer) that provide similar functionality using many of the same underlying optimization engines.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `brew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+  - Xcode Command Line Tools - Install via `xcode-select --install` (required for Homebrew to function)
+- **Optional:** None
+- **Auto-installed:** None (ImageOptim.app is self-contained once installed via Homebrew)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `sudo` privileges - Built-in for non-root users
+  - APT package manager - Pre-installed on Ubuntu/Debian systems
+- **Optional:**
+  - `trimage` - Install via `sudo apt-get install -y trimage` (GUI alternative to command-line tools)
+  - `pngquant` - Install via `sudo apt-get install -y pngquant` (lossy PNG compression for additional file size reduction)
+- **Auto-installed:**
+  - `zlib` - PNG compression library (installed automatically as dependency of optipng)
+  - `libjpeg` - JPEG library (installed automatically as dependency of jpegoptim)
+  - `libgif` - GIF library (installed automatically as dependency of gifsicle)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `sudo` privileges - Built-in for non-root users
+  - APT package manager - Pre-installed on Raspberry Pi OS
+- **Optional:**
+  - `trimage` - Install via `sudo apt-get install -y trimage` (GUI alternative, requires desktop environment - not available on Raspberry Pi OS Lite)
+  - `pngquant` - Install via `sudo apt-get install -y pngquant` (lossy PNG compression)
+- **Auto-installed:**
+  - `zlib` - PNG compression library (installed automatically as dependency of optipng)
+  - `libjpeg` - JPEG library (installed automatically as dependency of jpegoptim)
+  - `libgif` - GIF library (installed automatically as dependency of gifsicle)
+
+### Amazon Linux (DNF/YUM)
+- **Required (Amazon Linux 2):**
+  - `sudo` privileges - Required for system package installation
+  - `amazon-linux-extras` - Pre-installed, used to enable EPEL repository via `sudo amazon-linux-extras install epel -y`
+  - EPEL repository - Enabled via amazon-linux-extras command above
+- **Required (Amazon Linux 2023):**
+  - `sudo` privileges - Required for system package installation
+  - Development Tools group - Install via `sudo dnf groupinstall -y "Development Tools"` (includes gcc, make, autoconf, automake)
+  - `zlib-devel` - Install via `sudo dnf install -y zlib-devel` (required to compile optipng)
+  - `libjpeg-turbo-devel` - Install via `sudo dnf install -y libjpeg-turbo-devel` (required to compile jpegoptim)
+  - `curl` - Install via `sudo dnf install -y curl` (usually pre-installed, required to download source archives)
+  - `tar` - Install via `sudo dnf install -y tar` (usually pre-installed, required to extract source archives)
+- **Optional:** None
+- **Auto-installed (Amazon Linux 2 with EPEL):**
+  - Dependencies handled automatically by YUM when installing from EPEL repository
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `choco` (Chocolatey) - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges - Required to run Chocolatey package installations
+- **Optional:**
+  - `fileoptimizer` - Install via `choco install fileoptimizer -y` (comprehensive GUI alternative supporting images, PDFs, and other formats)
+- **Auto-installed:**
+  - Runtime dependencies for optipng and jpegoptim (handled automatically by Chocolatey packages)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git Bash (MinGW environment) - Install via Git for Windows: https://git-scm.com/download/win
+  - `curl` - Pre-included with Git Bash (used to download portable binaries)
+  - `unzip` - Pre-included with Git Bash (used to extract downloaded archives)
+  - Internet access - Required to download portable binaries from SourceForge and GitHub
+- **Optional:** None
+- **Auto-installed:** None (portable .exe binaries are self-contained and run directly in Git Bash)
+
 ## Prerequisites
 
 Before installing image optimization tools on any platform, ensure:

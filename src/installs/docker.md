@@ -1,5 +1,59 @@
 # Installing Docker
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Docker Desktop includes all components)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `ca-certificates` - Install via `sudo apt install ca-certificates`
+  - `curl` - Install via `sudo apt install curl`
+- **Optional:** None
+- **Auto-installed:**
+  - `docker-ce` (Docker Engine)
+  - `docker-ce-cli` (Docker CLI)
+  - `containerd.io` (Container runtime)
+  - `docker-buildx-plugin` (BuildKit plugin)
+  - `docker-compose-plugin` (Compose v2)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `ca-certificates` - Install via `sudo apt install ca-certificates`
+  - `curl` - Install via `sudo apt install curl`
+- **Optional:** None
+- **Auto-installed:**
+  - `docker-ce` (Docker Engine)
+  - `docker-ce-cli` (Docker CLI)
+  - `containerd.io` (Container runtime)
+  - `docker-buildx-plugin` (BuildKit plugin)
+  - `docker-compose-plugin` (Compose v2)
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (DNF/YUM are pre-installed on Amazon Linux)
+- **Optional:**
+  - `docker-compose-plugin` - Install via `sudo dnf install docker-compose-plugin` (AL2023 only, for AL2 manual installation required)
+- **Auto-installed:**
+  - `docker` (main package includes Docker Engine)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - WSL 2 - Install via `wsl --install` (recommended) or Hyper-V enabled via PowerShell
+- **Optional:** None
+- **Auto-installed:** None (Docker Desktop is a complete package)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Docker Desktop on Windows host - Install via `choco install docker-desktop -y` from Administrator PowerShell
+  - Chocolatey on Windows host - Install via PowerShell (see Windows section above)
+- **Optional:**
+  - `winpty` - Typically pre-installed with Git Bash, used for interactive containers with `winpty docker run -it <image>`
+- **Auto-installed:** None (Git Bash uses the Windows host's Docker installation)
+
 ## Overview
 
 Docker is a containerization platform that enables developers to package applications and their dependencies into standardized units called containers. These containers run consistently across different environments, solving the "it works on my machine" problem. Docker provides two main products:

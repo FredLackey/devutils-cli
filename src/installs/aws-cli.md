@@ -14,6 +14,72 @@ Before installing AWS CLI on any platform, ensure:
 
 **Important**: AWS CLI v1 and v2 use the same `aws` command. If you have v1 installed, uninstall it before installing v2 to avoid conflicts.
 
+## Dependencies
+
+### macOS (Homebrew)
+
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:**
+  - Python runtime (bundled with AWS CLI v2, no separate installation needed)
+
+### Ubuntu (APT/Snap)
+
+- **Required:**
+  - `snapd` - Install via `sudo apt install snapd` (installer auto-installs if missing)
+- **Optional:** None
+- **Auto-installed:**
+  - Python runtime (bundled with AWS CLI v2, no separate installation needed)
+
+### Raspberry Pi OS (APT/Snap)
+
+- **Required:**
+  - 64-bit operating system (aarch64 architecture) - Verify with `uname -m` (must output `aarch64`, not `armv7l`)
+  - `snapd` - Install via `sudo apt install snapd` (installer auto-installs if missing)
+- **Optional:** None
+- **Auto-installed:**
+  - Python runtime (bundled with AWS CLI v2, no separate installation needed)
+
+**Important**: 32-bit Raspberry Pi OS is not supported. Download the 64-bit version from https://www.raspberrypi.com/software/operating-systems/
+
+### Amazon Linux (DNF/YUM)
+
+**Amazon Linux 2023:**
+- **Required:** None (AWS CLI v2 is pre-installed)
+- **Optional:** None
+- **Auto-installed:**
+  - Python runtime (bundled with AWS CLI v2, no separate installation needed)
+
+**Amazon Linux 2:**
+- **Required:**
+  - `unzip` - Install via `sudo yum install unzip` (installer auto-installs if missing)
+  - `curl` - Install via `sudo yum install curl` (installer auto-installs if missing)
+- **Optional:** None
+- **Auto-installed:**
+  - Python runtime (bundled with AWS CLI v2, no separate installation needed)
+
+**Note**: Amazon Linux 2 ships with AWS CLI v1 pre-installed. The installer automatically removes v1 before installing v2.
+
+### Windows (Chocolatey/winget)
+
+- **Required:**
+  - Chocolatey package manager - Install via Administrator PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:**
+  - Python runtime (bundled with AWS CLI v2, no separate installation needed)
+
+### Git Bash (Manual/Portable)
+
+- **Required:**
+  - Windows installation of AWS CLI (see Windows section above)
+  - Chocolatey on Windows (for automated installation via the installer script)
+- **Optional:**
+  - Manual MSI installer as alternative to Chocolatey - Download from https://awscli.amazonaws.com/AWSCLIV2.msi
+- **Auto-installed:** None (inherits AWS CLI from Windows PATH)
+
+**Note**: Git Bash does not require a separate AWS CLI installation. Once installed on Windows, the `aws` command is automatically available in Git Bash through inherited PATH.
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

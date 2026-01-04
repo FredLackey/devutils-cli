@@ -15,6 +15,58 @@ tmux enables you to:
 
 The current stable version is tmux 3.6a. This guide documents tmux installation procedures for all platforms supported by DevUtils CLI.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed by Homebrew:**
+  - libevent - Event notification library (installed automatically as tmux dependency)
+  - ncurses - Terminal handling library (installed automatically as tmux dependency)
+  - utf8proc - Unicode processing library (installed automatically as tmux dependency)
+
+### Ubuntu (APT/Snap)
+- **Required:** None (tmux is available in default repositories)
+- **Optional:** None
+- **Auto-installed by APT:**
+  - libevent-2.1-7 - Event notification library (installed automatically as tmux dependency)
+  - libtinfo6 - Terminal handling library (installed automatically as tmux dependency)
+  - libc6 - Standard C library (installed automatically as tmux dependency)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (tmux is available in default repositories)
+- **Optional:** None
+- **Auto-installed by APT:**
+  - libevent-2.1-7 - Event notification library (installed automatically as tmux dependency)
+  - libtinfo6 - Terminal handling library (installed automatically as tmux dependency)
+  - libc6 - Standard C library (installed automatically as tmux dependency)
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (tmux is available in default repositories)
+- **Optional:** None
+- **Auto-installed by DNF/YUM:**
+  - libevent - Event notification library (installed automatically as tmux dependency)
+  - ncurses-libs - Terminal handling library (installed automatically as tmux dependency)
+
+### Windows (Chocolatey/winget)
+- **Required:** WSL 2 with Ubuntu distribution is required, as tmux does not run natively on Windows
+  - Install WSL via PowerShell (as Administrator): `wsl --install`
+  - After WSL is installed, follow Ubuntu installation instructions within WSL environment
+- **Optional:** None
+- **Auto-installed:** None (installation not supported on native Windows)
+
+### Git Bash (Manual/Portable)
+- **Required (for manual MSYS2 method):**
+  - Git for Windows - Download from https://git-scm.com/download/win
+  - MSYS2 - Download and install from https://www.msys2.org/
+  - tmux binaries from MSYS2 - Install via `pacman -Sy --noconfirm tmux` in MSYS2 terminal
+  - msys-event DLLs - Copy from MSYS2 `/usr/bin/msys-event*.dll` to Git Bash `/usr/bin/` directory
+- **Optional:** None
+- **Auto-installed:** None (installation not supported via automated script; requires manual copying of binaries)
+
+**Note:** The automated installer script does not support Windows or Git Bash. For these platforms, manual installation via WSL (Windows) or MSYS2 binary copying (Git Bash) is required. See platform-specific sections below for detailed instructions.
+
 ## Prerequisites
 
 Before installing tmux on any platform, ensure:

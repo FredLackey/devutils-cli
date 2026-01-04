@@ -16,6 +16,59 @@ GnuPG is an essential tool for secure software development workflows, particular
 
 This guide documents GPG installation procedures for all platforms supported by DevUtils CLI.
 
+## Dependencies
+
+### macOS (Homebrew)
+
+- **Required:**
+  - `homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:**
+  - `pinentry-mac` - Installed automatically by the script for GUI passphrase dialogs (required for signing Git commits in GUI applications)
+
+### Ubuntu (APT/Snap)
+
+- **Required:** None
+- **Optional:**
+  - `pinentry-gnome3` - For GUI passphrase dialogs in desktop environments. Install via `sudo apt install pinentry-gnome3`
+  - `pinentry-curses` - For terminal-based passphrase entry (included with `gnupg` package by default)
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+
+- **Required:** None
+- **Optional:**
+  - `pinentry-curses` - For terminal-based passphrase entry on headless systems (included with `gnupg` package by default). Install via `sudo apt install pinentry-curses`
+  - `haveged` - For improving entropy generation during key creation on headless systems. Install via `sudo apt install haveged`
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+
+- **Required:** None
+- **Optional:** None
+- **Auto-installed:** None
+- **Notes:**
+  - Amazon Linux 2023 ships with `gnupg2-minimal` by default, which the script replaces with `gnupg2-full` using `dnf swap`
+  - Amazon Linux 2 installs `gnupg2` directly
+
+### Windows (Chocolatey/winget)
+
+- **Required:**
+  - Either `winget` (built into Windows 10 1809+ and Windows 11) or `chocolatey` - Install Chocolatey via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))` or run `dev install chocolatey`
+- **Optional:** None
+- **Auto-installed:**
+  - Graphical pinentry for Windows - Included with GnuPG for Windows installation
+
+### Git Bash (Manual/Portable)
+
+- **Required:**
+  - Windows GPG installation - Must install GPG on Windows first using winget or Chocolatey (see Windows section above)
+  - `git` - Install via Git for Windows installer from https://git-scm.com/download/win
+- **Optional:** None
+- **Auto-installed:** None
+- **Notes:**
+  - Git Bash does not have a separate GPG installation; it configures Git to use the Windows GPG binary at `/c/Program Files (x86)/GnuPG/bin/gpg.exe`
+
 ## Prerequisites
 
 Before installing GPG on any platform, ensure:

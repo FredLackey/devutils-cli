@@ -1,5 +1,54 @@
 # Installing sfnt2woff
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+  - Xcode Command Line Tools - Install via `xcode-select --install` (required by Homebrew for building native packages)
+- **Optional:** None
+- **Auto-installed:**
+  - woff2sfnt (reverse conversion tool, included in the sfnt2woff Homebrew formula)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - sudo privileges (for package installation)
+- **Optional:** None
+- **Auto-installed:**
+  - woff2sfnt (reverse conversion tool, included in the woff-tools APT package)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - sudo privileges (for package installation)
+- **Optional:** None
+- **Auto-installed:**
+  - woff2sfnt (reverse conversion tool, included in the woff-tools APT package)
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - gcc - Install via `sudo dnf install -y gcc` (AL2023) or `sudo yum install -y gcc` (AL2)
+  - make - Install via `sudo dnf install -y make` (AL2023) or `sudo yum install -y make` (AL2)
+  - zlib-devel - Install via `sudo dnf install -y zlib-devel` (AL2023) or `sudo yum install -y zlib-devel` (AL2)
+  - git - Install via `sudo dnf install -y git` (AL2023) or `sudo yum install -y git` (AL2)
+  - sudo privileges (for installing build dependencies)
+- **Optional:** None
+- **Auto-installed:**
+  - woff2sfnt (compiled alongside sfnt2woff from the same source repository)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Node.js - Install via `choco install nodejs-lts -y` or `dev install node`
+  - npm - Installed automatically with Node.js
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Node.js - Download from https://nodejs.org/ or install via `dev install node`
+  - npm - Installed automatically with Node.js
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Overview
 
 sfnt2woff is a command-line utility that converts TrueType and OpenType font files (TTF/OTF) to Web Open Font Format (WOFF). Originally developed by Jonathan Kew at Mozilla, this tool enables web developers to compress fonts for faster web page loading while maintaining visual fidelity. The tool works in conjunction with woff2sfnt, which performs the reverse conversion.

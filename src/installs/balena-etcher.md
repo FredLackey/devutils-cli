@@ -22,6 +22,58 @@ Before installing Balena Etcher on any platform, ensure:
 
 **Important**: Balena Etcher is a GUI application. It cannot be run headlessly or via SSH without X11 forwarding.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew cask handles all application dependencies automatically)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt-get install -y wget` (auto-installed by script if missing)
+  - `sudo` privileges - Required for package installation
+- **Optional:** None
+- **Auto-installed:** Package dependencies are automatically resolved by APT when installing the .deb file
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - 64-bit Raspberry Pi OS (aarch64 architecture) - Verify with `uname -m`
+  - `wget` - Usually pre-installed, or install via `sudo apt-get install -y wget`
+  - Pi-Apps - Auto-installed by the script from https://github.com/Botspot/pi-apps
+- **Optional:** None
+- **Auto-installed:**
+  - Pi-Apps and its dependencies: `yad`, `curl`, `wget` (installed during Pi-Apps setup if missing)
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `wget` - Install via `sudo dnf install -y wget` or `sudo yum install -y wget` (auto-installed by script if missing)
+  - `sudo` privileges - Required for package installation
+- **Optional:**
+  - Desktop environment (GNOME, KDE, etc.) - Install via `sudo dnf groupinstall -y "Server with GUI"`
+- **Auto-installed:**
+  - Runtime dependencies (may include): `libXScrnSaver`, `gtk3`, `nss`, `alsa-lib` - installed automatically by DNF/YUM when installing the .rpm package
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey OR winget package manager
+    - Chocolatey - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+    - winget - Pre-installed on Windows 11 and recent Windows 10 builds
+  - Administrator privileges - Required for installation
+- **Optional:** None
+- **Auto-installed:** All runtime dependencies are handled automatically by the package manager
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git Bash - Install via https://git-scm.com/download/win
+  - Windows 10 or Windows 11 (64-bit)
+  - Chocolatey (for package manager install) OR ability to download portable version
+- **Optional:**
+  - `unzip` - Usually included with Git Bash, needed for portable version extraction
+  - PowerShell - Alternative method for extracting zip files
+- **Auto-installed:** None (delegates to Windows Chocolatey installation, or uses manually extracted portable version)
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

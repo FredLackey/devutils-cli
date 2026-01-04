@@ -6,6 +6,60 @@ Go (also known as Golang) is an open-source programming language developed by Go
 
 Go was created by Robert Griesemer, Rob Pike, and Ken Thompson at Google and publicly announced in 2009. The language emphasizes simplicity, readability, and fast compilation times.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew handles all package dependencies automatically)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt install wget` (installed automatically by this installer)
+  - `curl` - Install via `sudo apt install curl` (installed automatically by this installer)
+  - `tar` - Install via `sudo apt install tar` (typically pre-installed on Ubuntu)
+  - `sudo` access - Required for system-wide installation to `/usr/local/go`
+- **Optional:** None
+- **Auto-installed:** None (downloads official tarball from go.dev)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt install wget` (installed automatically by this installer)
+  - `curl` - Install via `sudo apt install curl` (installed automatically by this installer)
+  - `tar` - Install via `sudo apt install tar` (typically pre-installed on Raspberry Pi OS)
+  - `sudo` access - Required for system-wide installation to `/usr/local/go`
+  - `uname` - Pre-installed (used for architecture detection: aarch64, armv7l, armv6l)
+- **Optional:** None
+- **Auto-installed:** None (downloads official ARM tarball from go.dev)
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `wget` - Install via `sudo dnf install wget` or `sudo yum install wget` (installed automatically by this installer)
+  - `curl` - Install via `sudo dnf install curl` or `sudo yum install curl` (installed automatically by this installer)
+  - `tar` - Install via `sudo dnf install tar` or `sudo yum install tar` (installed automatically by this installer)
+  - `sudo` access - Required for system-wide installation to `/usr/local/go`
+  - Either `dnf` (Amazon Linux 2023) or `yum` (Amazon Linux 2) package manager
+- **Optional:** None
+- **Auto-installed:** None (downloads official tarball from go.dev)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - PowerShell - Pre-installed on Windows 10/11
+  - Administrator privileges - Required to run Chocolatey commands
+- **Optional:** None
+- **Auto-installed:** All Go runtime dependencies are handled automatically by the Chocolatey golang package
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Chocolatey on Windows host - Install via PowerShell (see Windows section above)
+  - PowerShell - Pre-installed on Windows 10/11
+  - Administrator privileges - Required to run Chocolatey commands via PowerShell from Git Bash
+  - Git Bash - Install via `choco install git` or download from https://git-scm.com/download/win
+- **Optional:** None
+- **Auto-installed:** All Go runtime dependencies are handled automatically by the Chocolatey golang package on the Windows host
+
 ## Prerequisites
 
 Before installing Go on any platform, ensure:

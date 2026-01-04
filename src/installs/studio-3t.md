@@ -31,6 +31,70 @@ Before installing Studio 3T on any platform, ensure:
 
 **Important**: Studio 3T is built for x86-64 (Intel/AMD 64-bit) architecture. It does not natively support ARM processors on Linux. macOS Apple Silicon is supported via a dedicated build.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Studio 3T is a self-contained .app bundle)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt install wget` (usually pre-installed)
+  - `tar` - Install via `sudo apt install tar` (usually pre-installed)
+  - `gzip` - Install via `sudo apt install gzip` (usually pre-installed)
+  - `sudo` privileges - Required for installation
+- **Optional:**
+  - GTK3 and GUI libraries (recommended if GUI errors occur after installation):
+    - `libgtk-3-0` - Install via `sudo apt install libgtk-3-0`
+    - `libnotify4` - Install via `sudo apt install libnotify4`
+    - `libnss3` - Install via `sudo apt install libnss3`
+    - `libxss1` - Install via `sudo apt install libxss1`
+    - `libxtst6` - Install via `sudo apt install libxtst6`
+    - `libatspi2.0-0` - Install via `sudo apt install libatspi2.0-0`
+    - `libsecret-1-0` - Install via `sudo apt install libsecret-1-0`
+  - X11 or Wayland display server - For GUI support (usually pre-installed on desktop systems)
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Installation not supported:** Studio 3T requires x86-64 architecture and does not support ARM processors used by Raspberry Pi
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - Package manager (`dnf` for Amazon Linux 2023, `yum` for Amazon Linux 2) - Pre-installed
+  - `wget` - Auto-installed during script execution via `sudo dnf install wget` or `sudo yum install wget`
+  - `tar` - Auto-installed during script execution via `sudo dnf install tar` or `sudo yum install tar`
+  - `gzip` - Auto-installed during script execution via `sudo dnf install gzip` or `sudo yum install gzip`
+  - `sudo` privileges - Required for installation
+- **Optional:**
+  - X11 display server or X11 forwarding - Required for GUI on headless servers (connect via `ssh -X`)
+- **Auto-installed:**
+  - `gtk3` - GTK 3 library (installed via `sudo dnf install gtk3` or `sudo yum install gtk3`)
+  - `libnotify` - Desktop notification library (installed via package manager)
+  - `nss` - Network Security Services (installed via package manager)
+  - `libXScrnSaver` - X11 screensaver extension library (installed via package manager)
+  - `libXtst` - X11 testing library (installed via package manager)
+  - `at-spi2-core` - Assistive Technology Service Provider Interface (installed via package manager)
+  - `libsecret` - Secret storage library (installed via package manager)
+
+### Windows (Chocolatey)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges - Required to run Chocolatey
+- **Optional:** None
+- **Auto-installed:** None (Chocolatey handles all Studio 3T installation requirements)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Windows 10 or Windows 11 (64-bit) - Host operating system
+  - Git Bash - Comes with Git for Windows (download from https://git-scm.com/download/win)
+  - Chocolatey package manager on Windows - Install via PowerShell (Administrator)
+  - PowerShell - Pre-installed on Windows
+  - Administrator privileges - Required for Chocolatey operations
+- **Optional:** None
+- **Auto-installed:** None (Studio 3T is installed on Windows host via Chocolatey)
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

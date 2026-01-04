@@ -11,6 +11,52 @@ Key capabilities include:
 - **Dependency resolution**: Automatically determine the order of resource creation and destruction
 - **Module ecosystem**: Reuse infrastructure patterns through the Terraform Registry
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew handles its own dependencies)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `gnupg` - Install via `sudo apt-get install -y gnupg`
+  - `software-properties-common` - Install via `sudo apt-get install -y software-properties-common`
+  - `wget` - Install via `sudo apt-get install -y wget`
+- **Optional:**
+  - `lsb-release` - Install via `sudo apt-get install -y lsb-release` (fallback for distribution codename detection)
+- **Auto-installed:** Dependencies of the `terraform` APT package
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt-get install -y wget` (usually pre-installed)
+  - `unzip` - Install via `sudo apt-get install -y unzip`
+- **Optional:**
+  - `ca-certificates` - Install via `sudo apt-get install -y ca-certificates` (for SSL certificate validation, usually pre-installed)
+- **Auto-installed:** None (manual binary installation)
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `yum-utils` - Install via `sudo yum install -y yum-utils`
+- **Optional:** None
+- **Auto-installed:** Dependencies of the `terraform` YUM package
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** None (Chocolatey handles its own dependencies)
+
+### Git Bash (Manual/Portable)
+- **Required (for Chocolatey method):**
+  - Chocolatey on Windows - See Windows section above for installation
+- **Required (for manual installation):**
+  - `curl` or `wget` - Usually available in Git Bash
+  - `unzip` - Usually available in Git Bash, or install via `choco install unzip -y` from PowerShell
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Terraform on any platform, ensure:

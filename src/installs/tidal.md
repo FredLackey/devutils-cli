@@ -6,6 +6,67 @@ Tidal is a high-fidelity music streaming service that provides access to over 10
 
 **Important Platform Note**: Tidal does not provide an official desktop application for Linux. Linux users must use a third-party open-source client called tidal-hifi, which wraps the Tidal web player in an Electron shell with added features like media key support, Discord integration, and MPRIS support.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `flatpak` - Automatically installed via `sudo apt-get install -y flatpak` if not present
+  - `flathub repository` - Automatically added via `flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo`
+  - `x86_64 architecture` - ARM systems are not supported; installer performs architecture check
+- **Optional:** None
+- **Auto-installed:**
+  - `flatpak` - Installed automatically if missing using `sudo apt-get install -y flatpak`
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** Installation not supported on this platform (ARM architecture not compatible with Tidal or tidal-hifi)
+- **Optional:**
+  - `Docker` - Install via `curl -fsSL https://get.docker.com | sudo sh` (for Tidal Connect alternative)
+  - `docker-compose` - Typically included with modern Docker installations
+- **Auto-installed:** None
+- **Note:** Tidal Connect via Docker is the recommended alternative for ARM-based Raspberry Pi devices
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `dnf` or `yum` package manager - Pre-installed on Amazon Linux systems (dnf for AL2023/RHEL8+, yum for AL2)
+  - `flatpak` - Automatically installed via `sudo dnf install -y flatpak` or `sudo yum install -y flatpak` if not present
+  - `flathub repository` - Automatically added via `flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo`
+  - `x86_64 architecture` - ARM systems are not supported; installer performs architecture check
+  - `Graphical desktop environment` - Required for tidal-hifi GUI (headless servers should use web player)
+- **Optional:** None
+- **Auto-installed:**
+  - `flatpak` - Installed automatically if missing using `sudo dnf install -y flatpak` or `sudo yum install -y flatpak`
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `Chocolatey` - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `Chocolatey` (on Windows host) - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - `PowerShell` - Pre-installed on Windows 10/11
+  - `Windows interoperability` - Inherent to Git Bash environment
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Tidal is installed on the Windows host and accessed from Git Bash using Windows interop commands
+
+### WSL (Ubuntu on Windows)
+- **Required:**
+  - `Chocolatey` (on Windows host) - Install via PowerShell (Administrator) on Windows
+  - `PowerShell` - Pre-installed on Windows 10/11
+  - `Windows interoperability` - WSL2 feature for executing Windows commands from Linux
+  - `WSL 2` - Windows Subsystem for Linux version 2
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Tidal is installed on the Windows host and accessed from WSL using Windows interop (`cmd.exe /c start "tidal:"`)
+
 ## Prerequisites
 
 Before installing Tidal on any platform, ensure:

@@ -10,6 +10,126 @@ The exact package name and contents vary by platform:
 - **macOS**: Xcode Command Line Tools
 - **Windows**: Visual Studio Build Tools with C++ workload
 
+## Dependencies
+
+### macOS (Homebrew)
+
+- **Required:**
+  - `softwareupdate` - Pre-installed system utility for managing macOS software updates
+  - `xcode-select` - Pre-installed utility for managing Xcode developer tools
+  - `touch` - Pre-installed Unix utility (part of coreutils)
+  - `grep` - Pre-installed text search utility
+  - `tail` - Pre-installed text processing utility
+  - `sed` - Pre-installed stream editor utility
+  - `rm` - Pre-installed file deletion utility
+- **Optional:** None
+- **Auto-installed:** None (this installer installs Xcode Command Line Tools itself)
+
+**Note**: All required dependencies are pre-installed on macOS. No additional packages need to be installed before running this installer.
+
+### Ubuntu (APT/Snap)
+
+- **Required:**
+  - `sudo` - Pre-installed on Ubuntu for privilege escalation
+  - `apt-get` - Pre-installed APT package manager (part of `apt` package)
+  - `dpkg` - Pre-installed Debian package manager
+- **Optional:** None
+- **Auto-installed:** The `build-essential` package automatically installs:
+  - `gcc` (GNU C Compiler)
+  - `g++` (GNU C++ Compiler)
+  - `make` (GNU Make build automation)
+  - `libc6-dev` (C library development headers)
+  - `dpkg-dev` (Debian package development tools)
+
+**Note**: All required dependencies are pre-installed on Ubuntu. No additional packages need to be installed before running this installer.
+
+### Raspberry Pi OS (APT/Snap)
+
+- **Required:**
+  - `sudo` - Pre-installed on Raspberry Pi OS for privilege escalation
+  - `apt-get` - Pre-installed APT package manager (part of `apt` package)
+  - `dpkg` - Pre-installed Debian package manager
+- **Optional:** None
+- **Auto-installed:** The `build-essential` package automatically installs:
+  - `gcc` (GNU C Compiler, ARM-compatible)
+  - `g++` (GNU C++ Compiler, ARM-compatible)
+  - `make` (GNU Make build automation)
+  - `libc6-dev` (C library development headers)
+  - `dpkg-dev` (Debian package development tools)
+
+**Note**: All required dependencies are pre-installed on Raspberry Pi OS (Debian-based). No additional packages need to be installed before running this installer. Installation may take 5-10 minutes on older Raspberry Pi models.
+
+### Amazon Linux (DNF/YUM)
+
+- **Required:**
+  - `sudo` - Pre-installed on Amazon Linux for privilege escalation
+  - `dnf` (Amazon Linux 2023) OR `yum` (Amazon Linux 2) - Pre-installed package manager
+- **Optional:** None
+- **Auto-installed:** The "Development Tools" group automatically installs:
+  - `gcc` (GNU C Compiler)
+  - `gcc-c++` / `g++` (GNU C++ Compiler)
+  - `make` (GNU Make build automation)
+  - `autoconf` (Configure script generator)
+  - `automake` (Makefile generator)
+  - `patch` (File patching utility)
+  - `rpm-build` (RPM package building tools)
+  - And many other development utilities
+
+**Note**: All required dependencies are pre-installed on Amazon Linux. The installer automatically detects whether to use `dnf` (AL2023) or `yum` (AL2). In Docker containers, you may see a `grub2-common` warning which can be safely ignored.
+
+### Windows (Chocolatey/winget)
+
+- **Required:**
+  - Chocolatey package manager - Install from https://chocolatey.org/install
+  - Administrator privileges - Required to run Chocolatey commands
+- **Optional:** None
+- **Auto-installed:** The Visual Studio Build Tools packages automatically install:
+  - MSVC compiler (`cl.exe`)
+  - Microsoft Linker (`link.exe`)
+  - Windows SDK headers and libraries
+  - `nmake` (Microsoft Program Maintenance Utility)
+  - Visual C++ build tools and runtime libraries
+  - CMake (build system generator)
+  - And many other build utilities
+
+**Installation requirements:**
+- At least 5-8 GB of free disk space
+- Installation takes 10-20 minutes
+- May require system reboot after installation
+- Use "Developer Command Prompt for VS 2022" or "Developer PowerShell for VS 2022" to access build tools
+
+**Note**: Chocolatey is the only dependency that must be installed manually before running this installer. The installer will throw an error if Chocolatey is not available.
+
+### Git Bash (Manual/Portable)
+
+- **Required:**
+  - Git Bash (comes with Git for Windows) - Install from https://git-scm.com/download/win
+  - **Option 1**: Visual Studio Build Tools (see Windows section above)
+  - **Option 2**: MSYS2/MinGW toolchain - Install from https://www.msys2.org/
+- **Optional:** None
+- **Auto-installed:** None
+
+**Note**: This installer does not support automated installation on Git Bash. The installer provides guidance for two options:
+
+**Option 1 - Visual Studio Build Tools (Recommended for Windows development):**
+Run the Windows installer from an Administrator PowerShell or Command Prompt (not Git Bash):
+```powershell
+choco install visualstudio2022buildtools -y
+choco install visualstudio2022-workload-vctools -y --package-parameters "--includeRecommended"
+```
+
+**Option 2 - MSYS2/MinGW Toolchain:**
+1. Download MSYS2 installer from https://www.msys2.org/
+2. Open MSYS2 MINGW64 terminal and run:
+   ```bash
+   pacman -Syu --noconfirm
+   pacman -S --noconfirm --needed mingw-w64-x86_64-toolchain
+   ```
+3. Add to `~/.bashrc`:
+   ```bash
+   export PATH="/c/msys64/mingw64/bin:$PATH"
+   ```
+
 ## Prerequisites
 
 Before installing build essential tools on any platform, ensure:

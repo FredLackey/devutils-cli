@@ -15,6 +15,64 @@ Before installing Bambu Studio on any platform, ensure:
 
 **Important**: Bambu Studio is a GUI application. Headless server environments without display capabilities cannot run this software.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew cask handles internal dependencies automatically)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `flatpak` - Install via `sudo apt-get install -y flatpak`
+  - Flathub repository - Add via `flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo`
+  - `sudo` privileges
+  - X11 or Wayland display server (typically pre-installed on desktop Ubuntu)
+- **Optional:** None
+- **Auto-installed:**
+  - Flatpak runtime dependencies (automatically handled by APT during flatpak installation)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - 64-bit Raspberry Pi OS (aarch64 architecture) - Download from https://www.raspberrypi.com/software/operating-systems/
+  - Pi-Apps - Install via `wget -qO- https://raw.githubusercontent.com/Botspot/pi-apps/master/install | bash`
+  - `wget` - Install via `sudo apt-get install -y wget` (usually pre-installed)
+  - `curl` - Install via `sudo apt-get install -y curl` (usually pre-installed)
+  - `yad` - Install via `sudo apt-get install -y yad` (required for Pi-Apps GUI)
+  - Desktop environment (GUI required, typically pre-installed)
+- **Optional:** None
+- **Auto-installed:**
+  - Build dependencies and ARM-specific compilation tools (handled automatically by Pi-Apps installation script)
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `flatpak` - Install via `sudo dnf install -y flatpak` or `sudo yum install -y flatpak`
+  - Flathub repository - Add via `flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo`
+  - Desktop environment - Install via `sudo dnf groupinstall -y "GNOME Desktop Environment"` (Amazon Linux is server-only by default)
+  - Graphics drivers - Install via `sudo dnf install -y mesa-libGL mesa-libGLU mesa-dri-drivers`
+  - `sudo` privileges
+- **Optional:** None
+- **Auto-installed:**
+  - Flatpak runtime dependencies (automatically handled by DNF/YUM during flatpak installation)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell (Admin): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges (required to run Chocolatey)
+- **Optional:** None
+- **Auto-installed:**
+  - `vcredist140` (Visual C++ Redistributable 2015-2022) - Automatically installed by Chocolatey as a dependency
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Chocolatey (on Windows host) - Install via PowerShell (Admin): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges (Git Bash must be run as Administrator)
+  - Git for Windows (provides Git Bash environment) - Install from https://git-scm.com/download/win
+- **Optional:** None
+- **Auto-installed:**
+  - `vcredist140` (Visual C++ Redistributable 2015-2022) - Automatically installed by Chocolatey as a dependency
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

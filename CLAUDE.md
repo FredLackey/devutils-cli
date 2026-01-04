@@ -2,6 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Critical Rules
+
+1. **Every script and command must be idempotent.** Running the same operation multiple times must produce the same result as running it once, with no errors or duplicated work. Always check current state before making changes.
+
+2. **Syntax and documentation must be written for a junior developer to understand.** Use clear variable names, simple logic flow, plain language, and concrete examples. Explain "why" not just "what."
+
 ## Project Overview
 
 DevUtils CLI is a globally-installable Node.js CLI toolkit for bootstrapping and configuring development environments. It replaces fragmented dotfiles and setup scripts with a unified `dev` command that works across macOS, Linux, and Windows.

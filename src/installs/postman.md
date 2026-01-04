@@ -13,6 +13,56 @@ Postman is a collaboration platform for API development that simplifies each ste
 
 Postman is available as a desktop application for macOS, Windows, and Linux, as well as a web application at go.postman.co. The desktop application provides the full feature set including local file access and the ability to work with localhost APIs without CORS restrictions.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `homebrew` - Package manager for macOS (Install via: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`)
+- **Optional:** None
+- **Auto-installed:** None (Homebrew manages all Postman dependencies internally via the cask)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `snapd` - Snap package manager (Usually pre-installed on Ubuntu 16.04+, or install via: `sudo apt-get install -y snapd`)
+- **Optional:** None
+- **Auto-installed:**
+  - All required libraries are bundled within the Snap package itself
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `wget` - Download tool for fetching the ARM64 tarball (Usually pre-installed, or install via: `sudo apt-get install -y wget`)
+  - `tar` - Archive extraction tool (Usually pre-installed, or install via: `sudo apt-get install -y tar`)
+- **Optional:**
+  - `libgtk-3-0` - GTK+ 3 GUI library (Install via: `sudo apt-get install -y libgtk-3-0`)
+  - `libnotify4` - Desktop notification library (Install via: `sudo apt-get install -y libnotify4`)
+  - `libnss3` - Network Security Services library (Install via: `sudo apt-get install -y libnss3`)
+  - `libxss1` - X11 Screen Saver extension library (Install via: `sudo apt-get install -y libxss1`)
+  - `libxtst6` - X11 Testing library (Install via: `sudo apt-get install -y libxtst6`)
+  - `xdg-utils` - Desktop integration utilities (Install via: `sudo apt-get install -y xdg-utils`)
+  - `libatspi2.0-0` - Assistive Technology Service Provider Interface (Install via: `sudo apt-get install -y libatspi2.0-0`)
+  - `libsecret-1-0` - Secret storage library (Install via: `sudo apt-get install -y libsecret-1-0`)
+- **Auto-installed:** None
+- **Note:** Optional dependencies may be required at runtime if shared library errors occur (installer will display these in troubleshooting output)
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Installation not supported - Postman is a GUI application and Amazon Linux typically runs headless without a display server
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `chocolatey` - Package manager for Windows (Install via Administrator PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`)
+- **Optional:** None
+- **Auto-installed:** All Postman dependencies are handled by Chocolatey during installation
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `chocolatey` - Package manager installed on Windows host (Install on Windows via Administrator PowerShell)
+  - `powershell.exe` - PowerShell for executing Chocolatey commands (Pre-installed on Windows)
+- **Optional:** None
+- **Auto-installed:** All Postman dependencies are handled by Chocolatey on the Windows host
+
 ## Prerequisites
 
 Before installing Postman on any platform, ensure:

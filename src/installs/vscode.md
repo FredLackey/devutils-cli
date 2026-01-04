@@ -15,6 +15,56 @@ Before installing Visual Studio Code on any platform, ensure:
 3. **Sufficient disk space** - Approximately 500 MB for installation
 4. **64-bit operating system** - Required for all platforms (32-bit is deprecated)
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew handles all cask dependencies internally)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt-get install -y wget`
+  - `gpg` - Install via `sudo apt-get install -y gpg`
+  - `apt-transport-https` - Install via `sudo apt-get install -y apt-transport-https`
+- **Optional:** None
+- **Auto-installed:** All VS Code package dependencies are automatically installed by APT (including required libraries for GUI rendering, fonts, etc.)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - When using default Raspberry Pi OS repository: None
+  - When using Microsoft repository: `wget`, `gpg`, `apt-transport-https` - Install via `sudo apt-get install -y wget gpg apt-transport-https`
+- **Optional:** None
+- **Auto-installed:** All VS Code package dependencies are automatically installed by APT
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `rpm` - Pre-installed on Amazon Linux, RHEL, and CentOS
+  - `dnf` (Amazon Linux 2023, RHEL 8+) or `yum` (Amazon Linux 2) - Pre-installed on respective platforms
+- **Optional:** None
+- **Auto-installed:**
+  - `libX11`, `libxcb`, `libXcomposite`, `libXcursor`, `libXdamage`, `libXext`, `libXfixes`, `libXi`, `libXrender`, `libXtst` - X11 GUI libraries
+  - `alsa-lib` - Audio library
+  - Note: These may need manual installation on minimal/headless systems via `sudo dnf install -y libX11 libxcb libXcomposite libXcursor libXdamage libXext libXfixes libXi libXrender libXtst alsa-lib`
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - OR winget (Windows Package Manager) - Pre-installed on Windows 11 and recent Windows 10 versions
+- **Optional:** None
+- **Auto-installed:**
+  - .NET Framework (if required by Chocolatey and not already present)
+  - Visual C++ Redistributables (if required by VS Code and not already present)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Visual Studio Code installed on Windows host (see Windows installation above)
+  - Chocolatey package manager (for automated installation via PowerShell interop)
+- **Optional:**
+  - `winpty` - Enables TTY compatibility for interactive VS Code features in Git Bash - Pre-installed with Git for Windows
+- **Auto-installed:** None (Git Bash inherits the Windows PATH and accesses the Windows VS Code installation directly)
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

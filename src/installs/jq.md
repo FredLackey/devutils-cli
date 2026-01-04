@@ -14,6 +14,53 @@ jq is essential for developers and DevOps engineers who work with JSON-based API
 
 jq has zero runtime dependencies and is written in portable C, making it extremely fast and easy to deploy across platforms.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:**
+  - `oniguruma` (regular expressions library) - Automatically installed by Homebrew as a jq dependency
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `sudo` privileges - Pre-installed on Ubuntu
+  - `apt-get` - Pre-installed on Ubuntu
+- **Optional:** None
+- **Auto-installed:**
+  - Standard C libraries and jq dependencies are handled by APT package manager
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `sudo` privileges - Pre-installed on Raspberry Pi OS
+  - `apt-get` - Pre-installed on Raspberry Pi OS
+- **Optional:** None
+- **Auto-installed:**
+  - Standard C libraries and jq dependencies are handled by APT package manager
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `sudo` privileges - Pre-installed on Amazon Linux
+  - `dnf` (Amazon Linux 2023) or `yum` (Amazon Linux 2) - Pre-installed based on distribution version
+- **Optional:** None
+- **Auto-installed:**
+  - Standard C libraries and jq dependencies are handled by DNF/YUM package manager
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `Chocolatey` - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))` or `dev install chocolatey`
+- **Optional:** None
+- **Auto-installed:**
+  - PATH updates and system integration handled by Chocolatey
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `curl` - Pre-installed with Git for Windows
+  - `/usr/local/bin` directory access - Created by the installer if needed
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing jq on any platform, ensure:

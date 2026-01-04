@@ -12,6 +12,40 @@ cURL supports features such as:
 - Cookie management
 - HTTP/2 and HTTP/3 (QUIC) protocol support
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:** Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (macOS includes cURL pre-installed; Homebrew version provides latest features)
+
+### Ubuntu (APT/Snap)
+- **Required:** None (APT is built into Ubuntu/Debian)
+- **Optional:** None
+- **Auto-installed:** OpenSSL, zlib, brotli, zstd, libidn2, libpsl, libssh2, nghttp2, librtmp, OpenLDAP (installed automatically by APT as cURL dependencies)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (APT is built into Raspberry Pi OS)
+- **Optional:** None
+- **Auto-installed:** OpenSSL, zlib, brotli, zstd, libidn2, libpsl, libssh2, nghttp2 (installed automatically by APT as cURL dependencies)
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (DNF/YUM is built into Amazon Linux)
+- **Optional:** None
+- **Auto-installed:** OpenSSL, zlib, brotli, zstd, libidn2, libssh2, nghttp2 (installed automatically by DNF/YUM as cURL dependencies)
+- **Note:** Amazon Linux 2023 provides `curl-minimal` by default. For full protocol support, install `curl-full` via `sudo dnf install -y --allowerasing curl-full libcurl-full`
+
+### Windows (Chocolatey/winget)
+- **Required:** Chocolatey - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))` or run `dev install chocolatey`
+- **Optional:** None
+- **Auto-installed:** Schannel, zlib, brotli, zstd, WinIDN, libssh2, nghttp2, ngtcp2, nghttp3 (installed automatically by Chocolatey as cURL dependencies)
+- **Note:** Windows 10 version 1803+ includes cURL pre-installed at `C:\Windows\System32\curl.exe`
+
+### Git Bash (Manual/Portable)
+- **Required:** Git for Windows - Download from https://git-scm.com/download/win or install via `choco install git -y`
+- **Optional:** None
+- **Auto-installed:** None (cURL is bundled with Git for Windows; no separate installation needed)
+
 ## Prerequisites
 
 Before installing cURL on any platform, ensure:

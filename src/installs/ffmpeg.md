@@ -20,6 +20,57 @@ Before installing FFmpeg on any platform, ensure:
 2. **Administrative privileges** - Required for system-wide installation
 3. **Sufficient disk space** - At least 500 MB for full installation with dependencies
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+  - Xcode Command Line Tools - Install via `xcode-select --install`
+- **Optional:** None
+- **Auto-installed:** FFmpeg dependencies including libavcodec, libavformat, libavutil, codec libraries (x264, x265, VP8/VP9, AV1, AAC, Opus, etc.), and 40+ supporting libraries
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - APT package manager (pre-installed on Ubuntu)
+  - sudo privileges (user must be in sudoers group)
+- **Optional:**
+  - `libavcodec-extra` - Install via `sudo apt-get install libavcodec-extra` for additional codec support
+- **Auto-installed:** FFmpeg dependencies including libavcodec, libavformat, libavutil, codec libraries, and supporting libraries
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - APT package manager (pre-installed on Raspberry Pi OS)
+  - sudo privileges (user must be in sudoers group)
+- **Optional:**
+  - Hardware acceleration libraries for V4L2 (usually pre-installed on Raspberry Pi OS)
+- **Auto-installed:** FFmpeg dependencies including libavcodec, libavformat, libavutil, codec libraries compiled for ARM architecture, and supporting libraries
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install curl` or `sudo yum install curl` (usually pre-installed)
+  - `tar` - Install via `sudo dnf install tar` or `sudo yum install tar` (usually pre-installed)
+  - `sudo` privileges
+  - `/usr/local/bin` in PATH (add via `echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc` if missing)
+- **Optional:** None
+- **Auto-installed:** None (static build is self-contained with all codecs and libraries embedded)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell as Administrator: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges (PowerShell or Command Prompt must be run as Administrator)
+- **Optional:**
+  - `ffmpeg-full` package - Install via `choco install ffmpeg-full -y` for additional codecs beyond the essentials build
+- **Auto-installed:** FFmpeg essentials build dependencies including codec libraries (x264, x265, VP8/VP9, Opus, AAC)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git for Windows (provides Git Bash environment) - Download from https://git-scm.com/download/win
+  - `curl` - Pre-installed with Git for Windows
+  - `unzip` - Pre-installed with Git for Windows
+  - `~/bin` in PATH (automatically added by installer script if missing)
+- **Optional:** None
+- **Auto-installed:** None (static build is self-contained with all codecs and libraries embedded)
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

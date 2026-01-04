@@ -17,13 +17,57 @@ Key capabilities include:
 
 **Warning**: PNG compression with pngquant is a lossy process involving color reduction. It is impossible to restore the original image after compression. Always backup important files before compressing.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:**
+  - `rosetta2` - Install via `softwareupdate --install-rosetta --agree-to-license` (only needed on Apple Silicon Macs for Pngyu GUI on macOS 14 and earlier)
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:** None (APT package manager is built into Ubuntu)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (APT package manager is built into Raspberry Pi OS)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required (for Amazon Linux 2 via EPEL):**
+  - `epel` repository - Install via `sudo amazon-linux-extras install epel -y`
+- **Required (for source compilation on Amazon Linux 2023 or when EPEL fails):**
+  - `Development Tools` group - Install via `sudo dnf groupinstall -y "Development Tools"` or `sudo yum groupinstall -y "Development Tools"`
+  - `libpng-devel` - Install via `sudo dnf install -y libpng-devel` or `sudo yum install -y libpng-devel`
+  - `cmake` - Install via `sudo dnf install -y cmake` or `sudo yum install -y cmake`
+  - `git` - Install via `sudo dnf install -y git` or `sudo yum install -y git` or `dev install git`
+  - `rust/cargo` - Install via `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y` or `dev install rust`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Windows (Chocolatey)
+- **Required:**
+  - `chocolatey` - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))` or `dev install chocolatey`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `curl` - Pre-installed with Git for Windows
+  - `unzip` or `powershell` - For extracting downloaded archives (unzip may not be included; PowerShell is always available on Windows)
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Pngyu or pngquant on any platform, ensure:
 
 1. **Internet connectivity** - Required to download packages
 2. **Administrative privileges** - Required for system-wide installation
-3. **Sufficient disk space** - At least 50 MB for installation with dependencies
+3. **Sufficient disk space** - At least 50 MB for installation with dependencies (up to 100 MB for Amazon Linux source compilation)
 
 ## Platform-Specific Installation
 

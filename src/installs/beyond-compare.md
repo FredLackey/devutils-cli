@@ -17,6 +17,46 @@ Before installing Beyond Compare on any platform, ensure:
 
 **Important**: Beyond Compare does NOT support ARM processors (including Apple Silicon natively, Raspberry Pi, or ARM-based Linux systems). On Apple Silicon Macs, it runs through Rosetta 2 translation. ARM Linux systems are not supported.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:**
+  - Rosetta 2 (for Apple Silicon Macs) - Usually auto-prompted by macOS when needed, or install manually via `softwareupdate --install-rosetta --agree-to-license`
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt install wget` (installer will auto-install if missing)
+- **Optional:** None
+- **Auto-installed:**
+  - GTK3 libraries, X11 libraries, and other GUI dependencies (handled by APT when installing the .deb package)
+
+### Raspberry Pi OS (APT/Snap)
+- **Installation not supported on this platform** - Beyond Compare does not support ARM architecture. Use alternatives like Meld (`sudo apt install meld`), KDiff3 (`sudo apt install kdiff3`), or vimdiff (`sudo apt install vim`).
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `wget` - Install via `sudo dnf install wget` or `sudo yum install wget` (installer will auto-install if missing)
+- **Optional:** None
+- **Auto-installed:**
+  - GTK3 libraries, X11 libraries (libXScrnSaver), and other GUI dependencies (handled by DNF/YUM when installing the .rpm package)
+
+### Windows (Chocolatey)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:**
+  - .NET Framework and other Windows runtime dependencies (handled by Chocolatey)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Beyond Compare installed on Windows - See Windows section above for installation via Chocolatey or download from https://www.scootersoftware.com/download
+- **Optional:**
+  - Chocolatey (for automated installation from Git Bash) - See Windows section for installation
+- **Auto-installed:** None (Git Bash inherits the Windows PATH and uses the Windows installation)
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

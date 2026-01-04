@@ -1,5 +1,64 @@
 # Installing Pandoc
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:**
+  - BasicTeX (for PDF output) - Install via `brew install --cask basictex`
+- **Auto-installed:**
+  - `gmp` (GNU multiple precision arithmetic library) - Automatically installed by Homebrew as a Pandoc dependency
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - None (APT is pre-installed on Ubuntu)
+- **Optional:**
+  - `texlive` and `texlive-latex-extra` (for PDF output) - Install via `sudo apt-get install -y texlive texlive-latex-extra`
+  - `texlive-latex-base` (minimal LaTeX for PDF output) - Install via `sudo apt-get install -y texlive-latex-base`
+- **Auto-installed:**
+  - None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - None (APT is pre-installed on Raspberry Pi OS)
+- **Optional:**
+  - `texlive` and `texlive-latex-extra` (for PDF output, large package) - Install via `sudo apt-get install -y texlive texlive-latex-extra`
+  - `texlive-latex-base` (minimal LaTeX for PDF output, recommended for limited storage) - Install via `sudo apt-get install -y texlive-latex-base`
+- **Auto-installed:**
+  - None
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - For downloading tarball from GitHub - Install via `sudo dnf install -y curl` (AL2023) or `sudo yum install -y curl` (AL2)
+  - `tar` - For extracting tarball (usually pre-installed)
+  - `sudo` privileges - For extracting to /usr/local
+- **Optional:**
+  - `texlive`, `texlive-latex`, `texlive-xetex` (for PDF output) - Install via `sudo dnf install -y texlive texlive-latex texlive-xetex` (AL2023) or `sudo yum install -y texlive texlive-latex texlive-xetex` (AL2)
+- **Auto-installed:**
+  - None (Pandoc is installed as a static binary from GitHub releases, not via package manager)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey package manager - Install via Administrator PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges (PowerShell or Command Prompt running as Administrator)
+- **Optional:**
+  - MiKTeX (for PDF output) - Install via `choco install miktex -y`
+- **Auto-installed:**
+  - None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Windows operating system (Windows 10 or Windows 11)
+  - Git for Windows (includes Git Bash) - Download from https://git-scm.com/download/win
+  - One of the following for Pandoc installation:
+    - Chocolatey on Windows host - Install via Administrator PowerShell (see Windows section above)
+    - OR Manual download capability to install MSI from https://github.com/jgm/pandoc/releases/download/3.8.3/pandoc-3.8.3-windows-x86_64.msi
+- **Optional:**
+  - MiKTeX on Windows host (for PDF output) - Install via `choco install miktex -y` from Administrator PowerShell
+- **Auto-installed:**
+  - None (Pandoc must be installed on Windows host first, then becomes available in Git Bash via Windows PATH inheritance)
+
 ## Overview
 
 Pandoc is a universal document converter that can convert files between a wide variety of markup formats. Often called the "Swiss Army knife" of document conversion, Pandoc supports input formats including Markdown, reStructuredText, HTML, LaTeX, DOCX, EPUB, and many others, with equally diverse output options including PDF, HTML, DOCX, ODT, and presentation formats.

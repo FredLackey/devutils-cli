@@ -20,6 +20,56 @@ Before installing Tailscale on any platform, ensure:
 3. **A Tailscale account** - Free tier supports up to 100 devices; sign up at https://tailscale.com
 4. **curl** - Required on Linux platforms for the installation script
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl` (will be installed automatically if missing)
+- **Optional:** None
+- **Auto-installed:**
+  - GPG signing key (added by install script)
+  - APT repository configuration (added by install script)
+  - `tailscale` package dependencies (handled by APT)
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl` (will be installed automatically if missing)
+- **Optional:** None
+- **Auto-installed:**
+  - GPG signing key (added by install script)
+  - APT repository configuration (added by install script)
+  - `tailscale` package dependencies (handled by APT)
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install -y curl` or `sudo yum install -y curl` (required for install script)
+- **Optional:**
+  - `yum-utils` - Install via `sudo yum install -y yum-utils` (provides yum-config-manager for manual repository setup; only needed for YUM-based systems like AL2)
+- **Auto-installed:**
+  - Repository configuration (added by install script or dnf/yum-config-manager)
+  - `tailscale` package dependencies (handled by DNF/YUM)
+  - systemd service configuration
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `Chocolatey` - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:**
+  - `winget` - Alternative package manager (pre-installed on Windows 11 and recent Windows 10)
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `Chocolatey` on Windows host - Install via PowerShell (see Windows section above)
+  - Tailscale installed on Windows host (Git Bash inherits Windows PATH)
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

@@ -12,6 +12,50 @@ AppCleaner is a small, free application that allows you to thoroughly uninstall 
 | Windows | Bulk Crap Uninstaller | Open-source bulk application uninstaller |
 | Linux | apt purge / apt autoremove | Built-in package manager cleanup commands |
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `dev install homebrew` or from [brew.sh](https://brew.sh)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:** None (installation not supported on this platform)
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** AppCleaner is macOS-only. Ubuntu uses built-in APT commands (`apt purge`, `apt autoremove`) which are pre-installed with the operating system.
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (installation not supported on this platform)
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** AppCleaner is macOS-only. Raspberry Pi OS uses built-in APT commands (`apt purge`, `apt autoremove`) which are pre-installed with the operating system.
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (installation not supported on this platform)
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** AppCleaner is macOS-only. Amazon Linux uses built-in DNF/YUM commands (`dnf remove`, `dnf autoremove`) which are pre-installed with the operating system.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - At least one of the following package managers:
+    - winget (Windows Package Manager) - Install via Microsoft Store (App Installer) or pre-installed on Windows 10 1809+
+    - Chocolatey - Install via `dev install chocolatey` or from [chocolatey.org](https://chocolatey.org/install)
+- **Optional:** None
+- **Auto-installed:**
+  - .NET 6 Desktop Runtime - Automatically installed by Bulk Crap Uninstaller's installer if not already present
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `curl` - Pre-installed with Git Bash (part of Git for Windows)
+  - `unzip` - Pre-installed with Git Bash (part of Git for Windows)
+- **Optional:**
+  - PowerShell - For alternative installation via winget from Git Bash (pre-installed on Windows)
+- **Auto-installed:** None
+- **Note:** The portable version of Bulk Crap Uninstaller includes the .NET 6 runtime, making it fully self-contained.
+
 ## Prerequisites
 
 Before installing, ensure you have:

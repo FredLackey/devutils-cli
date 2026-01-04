@@ -6,6 +6,40 @@ Camtasia is a professional screen recording and video editing software developed
 
 **Important Platform Limitation:** Camtasia is officially supported only on **macOS** and **Windows**. TechSmith does not provide Linux versions, which affects Ubuntu, Raspberry Pi OS, Amazon Linux, WSL, and other Linux distributions.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** Camtasia dependencies are handled automatically by the Homebrew cask installation process
+
+### Ubuntu (APT/Snap)
+- **Installation not supported** - TechSmith does not provide Linux versions of Camtasia. See Alternative Solutions section in the Ubuntu/Debian installation documentation for Linux-compatible screen recording tools.
+
+### Raspberry Pi OS (APT/Snap)
+- **Installation not supported** - Camtasia is not available for ARM architecture and TechSmith does not support Linux platforms. See Alternative Solutions section in the Raspberry Pi OS installation documentation for Linux-compatible screen recording tools.
+
+### Amazon Linux (DNF/YUM)
+- **Installation not supported** - TechSmith does not provide packages for any Linux distribution. See Alternative Solutions section in the Amazon Linux/RHEL installation documentation for Linux-compatible screen recording tools.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `winget` (Windows Package Manager) - Pre-installed on Windows 11 and Windows 10 (version 1809+). For manual installation, install "App Installer" from Microsoft Store or run `dev install winget`
+- **Optional:** None
+- **Auto-installed:**
+  - `Visual C++ Redistributable` - Required runtime library (installed automatically by winget if missing)
+  - `WebView2 Runtime` - Required for modern UI components (installed automatically by winget if missing)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `PowerShell` - Pre-installed on all supported Windows versions (Windows 10/11), accessible at `/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe`
+  - `winget` (on Windows host) - Install "App Installer" from Microsoft Store or run `dev install winget` from an Administrator PowerShell
+- **Optional:** None
+- **Auto-installed:**
+  - `Visual C++ Redistributable` - Required runtime library (installed automatically by winget if missing)
+  - `WebView2 Runtime` - Required for modern UI components (installed automatically by winget if missing)
+
 ## Prerequisites
 
 Before installing Camtasia on any platform, ensure you have:

@@ -1,5 +1,49 @@
 # Installing Messenger (Facebook Messenger Desktop Application)
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Caprine cask is self-contained)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - snapd (Snap package manager) - Install via `sudo apt-get update && sudo apt-get install -y snapd`
+- **Optional:** None
+- **Auto-installed:** All Caprine dependencies (Electron framework, GTK libraries, notification libraries) are handled automatically by Snap
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - git - Install via `sudo apt-get update && sudo apt-get install -y git`
+  - wget - Install via `sudo apt-get update && sudo apt-get install -y wget` (usually pre-installed)
+  - ARM architecture (aarch64 or armv7l) - Verify with `uname -m`
+- **Optional:** None
+- **Auto-installed:** All Caprine dependencies (Electron framework, GTK libraries) are handled automatically by Pi-Apps
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - FUSE and fuse-libs (for AppImage execution) - Install via `sudo dnf install -y fuse fuse-libs` (AL2023) or `sudo yum install -y fuse fuse-libs` (AL2)
+  - curl - Install via `sudo dnf install -y curl` or `sudo yum install -y curl` (usually pre-installed)
+- **Optional:**
+  - Desktop environment (GNOME, MATE, etc.) - Install via `sudo dnf groupinstall -y "Server with GUI"` (required for GUI applications)
+  - GTK3 libraries - Install via `sudo dnf install -y gtk3 at-spi2-atk libXScrnSaver` (may be required for AppImage execution)
+- **Auto-installed:** None (AppImage is self-contained once FUSE is available)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - winget package manager - Pre-installed on Windows 10 1809+ and Windows 11; if missing, install "App Installer" from Microsoft Store
+- **Optional:** None
+- **Auto-installed:** All Caprine dependencies (Electron framework, Visual C++ Redistributables) are handled automatically by winget
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - winget on Windows host - Pre-installed on Windows 10 1809+ and Windows 11; if missing, install "App Installer" from Microsoft Store
+  - Git for Windows (provides Git Bash) - Download from https://git-scm.com/download/win
+- **Optional:** None
+- **Auto-installed:** All Caprine dependencies are handled automatically by winget on the Windows host
+
 ## Overview
 
 Messenger (formerly Facebook Messenger) is Meta's instant messaging platform that allows users to send text messages, make voice and video calls, share files, photos, and videos, and communicate with Facebook friends and contacts. While Meta provides an official desktop application for macOS and Windows, Linux users must rely on third-party alternatives.

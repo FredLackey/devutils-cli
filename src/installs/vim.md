@@ -15,6 +15,57 @@ Vim provides:
 
 This guide documents Vim installation procedures for all platforms supported by DevUtils CLI.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `apt` - Pre-installed on Ubuntu/Debian systems
+  - `sudo` - Pre-installed, required for package installation
+- **Optional:** None
+- **Auto-installed:**
+  - `vim-runtime` - Runtime files, automatically installed by APT as a dependency
+  - `vim-common` - Common files shared between vim variants, automatically installed by APT
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `apt` - Pre-installed on Raspberry Pi OS (Debian-based)
+  - `sudo` - Pre-installed, required for package installation
+- **Optional:** None
+- **Auto-installed:**
+  - `vim-runtime` - Runtime files, automatically installed by APT as a dependency
+  - `vim-common` - Common files shared between vim variants, automatically installed by APT
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `dnf` (Amazon Linux 2023) or `yum` (Amazon Linux 2) - Pre-installed package manager
+  - `sudo` - Pre-installed, required for package installation
+- **Optional:** None
+- **Auto-installed:**
+  - `vim-common` - Common files, automatically installed as a dependency of vim-enhanced
+  - `vim-filesystem` - Filesystem layout, automatically installed as a dependency
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `Chocolatey` - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))` or run `dev install chocolatey`
+  - Administrator privileges - Required to run Chocolatey commands
+- **Optional:** None
+- **Auto-installed:**
+  - Runtime libraries - Chocolatey handles all runtime dependencies automatically
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `Chocolatey` - Must be installed on Windows host (see Windows section above) or run `dev install chocolatey`
+  - `PowerShell` - Pre-installed on Windows, required to execute Chocolatey commands from Git Bash
+  - Windows Vim installation - Installed via `choco install vim -y` in PowerShell
+- **Optional:** None
+- **Auto-installed:** None (Git Bash inherits the Windows installation via PATH)
+
 ## Prerequisites
 
 Before installing Vim on any platform, ensure:

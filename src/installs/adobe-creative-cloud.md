@@ -21,6 +21,38 @@ Before installing Adobe Creative Cloud, ensure you have:
 
 ---
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew automatically handles all Adobe Creative Cloud system dependencies)
+
+### Ubuntu (APT/Snap)
+Installation not yet supported on this platform. Adobe Creative Cloud is not officially available for Linux distributions.
+
+### Raspberry Pi OS (APT/Snap)
+Installation not yet supported on this platform. Adobe Creative Cloud is not available for ARM-based Linux systems.
+
+### Amazon Linux (DNF/YUM)
+Installation not yet supported on this platform. Adobe Creative Cloud is not officially available for Linux distributions.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `winget` (Windows Package Manager) - Install from Microsoft Store (search for "App Installer") or run `dev install winget`
+- **Optional:** None
+- **Auto-installed:** None (winget automatically handles all Adobe Creative Cloud system dependencies)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `powershell.exe` - Pre-installed on all supported Windows versions (Windows 10 1903+)
+  - `winget` (Windows Package Manager) - Install from Microsoft Store (search for "App Installer") or run `dev install winget`
+- **Optional:** None
+- **Auto-installed:** None
+
+---
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

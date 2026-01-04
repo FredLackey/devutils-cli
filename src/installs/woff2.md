@@ -1,5 +1,52 @@
 # Installing woff2
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+  - `Xcode Command Line Tools` - Install via `xcode-select --install`
+- **Optional:** None
+- **Auto-installed:**
+  - `brotli` - Compression library automatically installed by Homebrew when installing woff2
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `sudo privileges` - Required for running apt-get commands
+- **Optional:** None
+- **Auto-installed:**
+  - All runtime dependencies are automatically handled by the APT package manager
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `sudo privileges` - Required for running apt-get commands
+- **Optional:** None
+- **Auto-installed:**
+  - All runtime dependencies are automatically handled by the APT package manager
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `sudo privileges` - Required for installing build dependencies and binaries
+  - `gcc-c++` - Install via `sudo dnf install -y gcc-c++` (AL2023) or `sudo yum install -y gcc-c++` (AL2)
+  - `cmake` - Install via `sudo dnf install -y cmake` (AL2023) or `sudo yum install -y cmake3` (AL2)
+  - `git` - Install via `sudo dnf install -y git` (AL2023) or `sudo yum install -y git` (AL2)
+  - `brotli-devel` - Install via `sudo dnf install -y brotli-devel` (AL2023 only; AL2 uses bundled brotli)
+- **Optional:** None
+- **Auto-installed:**
+  - `brotli` (bundled) - For Amazon Linux 2, brotli is included as a git submodule and compiled during the build process
+
+### Windows (Chocolatey/winget)
+- **Required:** Installation not yet supported on this platform
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** The installer provides instructions to use WSL (Windows Subsystem for Linux) as an alternative. See the WSL section for WSL-specific dependencies.
+
+### Git Bash (Manual/Portable)
+- **Required:** Installation not yet supported on this platform
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** The installer provides instructions to use WSL (Windows Subsystem for Linux) as an alternative, either by installing woff2 in WSL directly or by creating wrapper scripts in Git Bash that invoke WSL commands.
+
 ## Overview
 
 woff2 is Google's reference implementation of the Web Open Font Format 2.0 (WOFF2), a modern, highly compressed container format for packaging TrueType and OpenType fonts for efficient delivery over the web. WOFF2 uses the Brotli compression algorithm to achieve significantly better compression ratios than the original WOFF 1.0 format, typically reducing font file sizes by 30% compared to WOFF 1.0 and up to 50-70% compared to uncompressed TTF/OTF fonts.

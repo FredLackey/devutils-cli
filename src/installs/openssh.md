@@ -17,6 +17,61 @@ OpenSSH includes:
 
 This guide documents OpenSSH installation procedures for all platforms supported by DevUtils CLI.
 
+## Dependencies
+
+### macOS (Homebrew)
+
+- **Required:** None (macOS includes system OpenSSH)
+- **Optional:**
+  - `homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew` (provides newer version with FIDO2 support)
+- **Auto-installed:**
+  - Xcode Command Line Tools (installed by Homebrew if not present)
+
+### Ubuntu (APT/Snap)
+
+- **Required:**
+  - `sudo` - Pre-installed on Ubuntu desktop/server
+  - APT package manager - Pre-installed on all Ubuntu systems
+- **Optional:** None
+- **Auto-installed:**
+  - systemd - Pre-installed on Ubuntu 15.04+ (used for SSH service management)
+
+### Raspberry Pi OS (APT/Snap)
+
+- **Required:**
+  - `sudo` - Pre-installed on Raspberry Pi OS
+  - APT package manager - Pre-installed on all Raspberry Pi OS installations
+- **Optional:** None
+- **Auto-installed:**
+  - systemd - Pre-installed on Raspberry Pi OS Jessie+ (used for SSH service management)
+
+### Amazon Linux (DNF/YUM)
+
+- **Required:**
+  - `sudo` - Pre-installed on Amazon Linux
+  - DNF (Amazon Linux 2023) or YUM (Amazon Linux 2) - Pre-installed based on version
+- **Optional:** None
+- **Auto-installed:**
+  - systemd - Pre-installed on Amazon Linux 2+ (used for SSH service management)
+
+### Windows (Chocolatey/winget)
+
+- **Required:**
+  - PowerShell 5.1+ - Pre-installed on Windows 10/11
+  - Administrator privileges - Required for Windows Capability installation
+  - Windows Update access - Required for downloading OpenSSH components
+- **Optional:** None
+- **Auto-installed:**
+  - Windows Firewall rules for SSH server (created automatically when server is installed)
+
+### Git Bash (Manual/Portable)
+
+- **Required:**
+  - Git for Windows - Install via `choco install git` or download from https://git-scm.com/download/win (OpenSSH is bundled)
+- **Optional:**
+  - Windows OpenSSH - Install via `dev install openssh` from PowerShell (allows using native Windows SSH instead of bundled version)
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing OpenSSH on any platform, ensure:

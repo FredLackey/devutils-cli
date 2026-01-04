@@ -6,6 +6,45 @@ Caffeine is a utility that prevents your computer from going to sleep, activatin
 
 On macOS, Caffeine is a lightweight menu bar application. On Linux, Caffeine is typically a GNOME Shell extension or a system tray indicator. On Windows, Caffeine is a portable utility that simulates keypresses to prevent idle detection.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:** None (systemd-inhibit is pre-installed on all systemd-based systems)
+- **Optional:**
+  - GNOME Shell - Install via `sudo apt install gnome-shell` (required for gnome-shell-extension-caffeine)
+  - gnome-extensions CLI tool - Install via `sudo apt install gnome-shell-extensions` (required to enable the GNOME extension)
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (xset and systemd-inhibit are pre-installed)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (systemd-inhibit is pre-installed on all systemd-based systems)
+- **Optional:**
+  - GNOME Shell - Install via `sudo dnf install gnome-shell` or `sudo yum install gnome-shell` (required for GNOME extension, if available in repositories)
+- **Auto-installed:** None
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell as Administrator: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Windows Caffeine installation - See Windows section above for installation via Chocolatey or manual download from https://www.zhornsoftware.co.uk/caffeine/
+- **Optional:**
+  - Chocolatey - Install via PowerShell as Administrator (enables automated installation from Git Bash)
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Caffeine on any platform, ensure:

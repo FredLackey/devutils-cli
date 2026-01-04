@@ -6,6 +6,58 @@ Cursor is an AI-powered code editor built on Visual Studio Code that provides in
 
 Cursor is available for macOS, Windows, and Linux. It requires an active internet connection for AI features and offers both free and paid subscription tiers.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:**
+  - Xcode Command Line Tools (automatically installed by Homebrew if not present)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl` (usually pre-installed)
+  - `apt-get` - System package manager (pre-installed)
+  - `sudo` privileges - Required for package installation
+- **Optional:**
+  - `libfuse2` (for Ubuntu 20.04-22.04) - Install via `sudo apt-get install -y libfuse2` (only needed for AppImage installation method)
+  - `libfuse2t64` (for Ubuntu 24.04+) - Install via `sudo apt-get install -y libfuse2t64` (only needed for AppImage installation method)
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get install -y curl` (usually pre-installed)
+  - `apt-get` - System package manager (pre-installed)
+  - `sudo` privileges - Required for package installation
+  - ARM64 architecture (aarch64) - Requires 64-bit Raspberry Pi OS; verify with `uname -m`
+- **Optional:**
+  - `libfuse2` - Install via `sudo apt-get install -y libfuse2` (only needed for AppImage installation method)
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install -y curl` or `sudo yum install -y curl` (usually pre-installed)
+  - `dnf` (Amazon Linux 2023, RHEL 8+, Fedora) or `yum` (Amazon Linux 2, older RHEL) - System package manager (pre-installed)
+  - `sudo` privileges - Required for package installation
+- **Optional:**
+  - `fuse` - Install via `sudo dnf install -y fuse fuse-libs` or `sudo yum install -y fuse fuse-libs` (only needed for AppImage installation method)
+  - Desktop environment - Install via `sudo dnf groupinstall -y "Server with GUI"` (Cursor is a GUI application)
+- **Auto-installed:** None
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `winget` - Pre-installed on Windows 10 version 1809+ and Windows 11; install from Microsoft Store via "App Installer" if missing
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `winget.exe` - Pre-installed on Windows 10 version 1809+ and Windows 11; accessible from Git Bash as `winget.exe`
+  - Git for Windows - Download from https://git-scm.com/downloads/win (provides Git Bash environment)
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Cursor on any platform, ensure:

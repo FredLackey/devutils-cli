@@ -1,5 +1,64 @@
 # Installing VLC
 
+## Dependencies
+
+### macOS (Homebrew)
+
+- **Required:**
+  - `homebrew` - Install via `dev install homebrew` or `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+
+- **Required:** None (APT is pre-installed on Ubuntu/Debian systems)
+- **Optional:**
+  - `vlc-plugin-access-extra` - Install via `sudo apt-get install vlc-plugin-access-extra` (for additional codec support)
+  - `libdvd-pkg` - Install via `sudo apt-get install libdvd-pkg` (for DVD playback support)
+- **Auto-installed:**
+  - Various multimedia codecs (libavcodec, libavformat, etc.)
+  - Qt5 libraries for GUI
+  - Audio/video output libraries
+
+### Raspberry Pi OS (APT/Snap)
+
+- **Required:** None (APT is pre-installed on Raspberry Pi OS)
+- **Optional:**
+  - `vlc-nox` - Install via `sudo apt-get install vlc-nox` (headless/command-line only version for servers)
+  - `vlc-plugin-base` - Install via `sudo apt-get install vlc-plugin-base` (additional plugin support)
+  - `vlc-plugin-video-output` - Install via `sudo apt-get install vlc-plugin-video-output` (additional video output modules)
+- **Auto-installed:**
+  - ARM-optimized multimedia codecs
+  - Hardware acceleration libraries (MMAL for Raspberry Pi GPU)
+  - Qt5 libraries for GUI
+
+### Amazon Linux (DNF/YUM)
+
+- **Required:**
+  - EPEL repository - Automatically installed via `sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm` (AL2023/RHEL9) or `sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm` (AL2/RHEL8)
+  - RPM Fusion Free repository - Automatically installed via `sudo dnf install -y https://download1.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm` (AL2023/RHEL9) or `sudo yum install -y https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm` (AL2/RHEL8)
+- **Optional:** None
+- **Auto-installed:**
+  - Multimedia codecs from RPM Fusion
+  - Qt5 libraries for GUI
+  - EPEL dependencies
+
+### Windows (Chocolatey/winget)
+
+- **Required:**
+  - `chocolatey` - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Alternative: `winget` (pre-installed on Windows 10/11)
+- **Optional:** None
+- **Auto-installed:** None (VLC is a self-contained installation)
+
+### Git Bash (Manual/Portable)
+
+- **Required:**
+  - VLC installed on Windows host (see Windows section above)
+  - `chocolatey` on Windows - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Overview
 
 VLC is a free and open-source cross-platform multimedia player and framework developed by the VideoLAN project. It plays most multimedia files, DVDs, Audio CDs, VCDs, and various streaming protocols without requiring additional codec packs. VLC is renowned for its versatility, supporting formats like MPEG-2, MPEG-4, H.264, MKV, WebM, WMV, MP3, FLAC, and many more out of the box.

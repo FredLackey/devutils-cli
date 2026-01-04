@@ -15,6 +15,66 @@ Before installing Chromium on any platform, ensure:
 
 **Important**: Chromium does not auto-update like Google Chrome. You must manually update or use your package manager to keep it current.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Chromium cask is self-contained)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - snapd service - Auto-installed by the installer script if missing via `sudo apt-get install -y snapd`
+- **Optional:** None
+- **Auto-installed:**
+  - snapd dependencies (systemd, squashfs-tools, etc.) - Automatically installed by APT when installing snapd
+
+### Raspberry Pi OS (APT)
+- **Required:** None (APT is pre-installed on Raspberry Pi OS)
+- **Optional:**
+  - chromium-codecs-ffmpeg-extra - Install via `sudo apt-get install -y chromium-codecs-ffmpeg-extra` (provides additional codec support for video playback)
+- **Auto-installed:**
+  - All Chromium runtime dependencies (graphics libraries, font rendering, etc.) - Automatically installed by APT
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - **For Amazon Linux 2023 (DNF method):**
+    - libXcomposite - Install via `sudo dnf install -y libXcomposite`
+    - libXdamage - Install via `sudo dnf install -y libXdamage`
+    - libXrandr - Install via `sudo dnf install -y libXrandr`
+    - libgbm - Install via `sudo dnf install -y libgbm`
+    - libxkbcommon - Install via `sudo dnf install -y libxkbcommon`
+    - pango - Install via `sudo dnf install -y pango`
+    - alsa-lib - Install via `sudo dnf install -y alsa-lib`
+    - atk - Install via `sudo dnf install -y atk`
+    - at-spi2-atk - Install via `sudo dnf install -y at-spi2-atk`
+    - cups-libs - Install via `sudo dnf install -y cups-libs`
+    - libdrm - Install via `sudo dnf install -y libdrm`
+  - **For Amazon Linux 2 (YUM method):**
+    - EPEL repository - Enable via `sudo amazon-linux-extras install -y epel`
+- **Optional:**
+  - xorg-x11-server-Xvfb - Install via `sudo dnf install -y xorg-x11-server-Xvfb` (required for headless operation on EC2 instances without GUI)
+- **Auto-installed:**
+  - Additional Chrome/Chromium dependencies - Automatically resolved by DNF/YUM during package installation
+
+### Windows (Chocolatey)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:**
+  - All runtime dependencies (Visual C++ redistributables, .NET Framework if needed) - Automatically handled by Chocolatey
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - **For portable installation method:**
+    - curl - Usually pre-installed with Git for Windows. If missing, install Git for Windows from https://git-scm.com/download/win
+    - unzip - Usually pre-installed with Git for Windows. If missing, install via `pacman -S unzip` (if using Git Bash with pacman) or download from http://gnuwin32.sourceforge.net/packages/unzip.htm
+  - **For Chocolatey installation method:**
+    - Chocolatey package manager - Install as described in Windows section above
+- **Optional:** None
+- **Auto-installed:** None (portable installation is self-contained)
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

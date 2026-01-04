@@ -1,5 +1,51 @@
 # Installing Bash Completion 2
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+  - Bash 4.2 or later - Install via `brew install bash` (macOS ships with Bash 3.2 which is incompatible)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - APT package manager (built-in on Ubuntu/Debian systems)
+  - Bash 4.2 or later (typically pre-installed on modern Ubuntu/Debian)
+- **Optional:** None
+- **Auto-installed:** All runtime dependencies are handled automatically by APT
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - APT package manager (built-in on Raspberry Pi OS)
+  - Bash 4.2 or later (typically pre-installed on Raspberry Pi OS)
+- **Optional:** None
+- **Auto-installed:** All runtime dependencies are handled automatically by APT
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - DNF (Amazon Linux 2023) or YUM (Amazon Linux 2) package manager (built-in)
+  - rpm command for verification (built-in)
+  - Bash 4.2 or later (typically pre-installed on Amazon Linux)
+- **Optional:** None
+- **Auto-installed:** All runtime dependencies are handled automatically by DNF/YUM
+
+### Windows (Chocolatey/winget)
+- **Required:** None (bash-completion is not natively supported on Windows)
+- **Optional:**
+  - Clink (for Bash-style line editing in cmd.exe) - Install via `choco install clink -y` (Note: This is NOT the same as bash-completion)
+- **Auto-installed:** None
+- **Note:** For actual bash-completion support on Windows, use WSL (see WSL section) or Git Bash (see Git Bash section)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git for Windows (includes Git Bash/MINGW64 environment) - Download from https://git-scm.com/download/win
+  - curl command (included with Git for Windows) for downloading completion scripts
+- **Optional:** None
+- **Auto-installed:** Git completion scripts are typically bundled with Git for Windows installation
+- **Note:** Git Bash provides limited bash-completion support. For full functionality, use WSL instead.
+
 ## Overview
 
 Bash Completion (bash-completion) is a collection of shell functions that take advantage of the programmable completion feature of Bash. It provides intelligent auto-completion for commands, file paths, options, and arguments when you press the Tab key. Version 2 (bash-completion@2) is designed for Bash 4.2 and later, offering improved performance and more comprehensive completion support compared to version 1.

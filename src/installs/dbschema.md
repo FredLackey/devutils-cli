@@ -6,6 +6,60 @@ DbSchema is a visual database design and management tool that supports schema de
 
 DbSchema is available for macOS, Windows, and Linux. It offers a free Community Edition and a paid Pro Edition with a 15-day trial included in all downloads. No registration is required to download and use DbSchema.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt install curl` (used for downloading the .deb package; usually pre-installed)
+  - `apt-get` - Pre-installed on Ubuntu/Debian systems
+- **Optional:** None
+- **Auto-installed:**
+  - JDBC drivers (downloaded automatically by DbSchema when connecting to databases)
+  - Package dependencies resolved automatically by apt-get during .deb installation
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt install curl` (used for downloading the ARM64 tar.gz package; usually pre-installed)
+  - 64-bit ARM architecture (aarch64) - Verify with `uname -m`
+  - `tar` - Pre-installed on Raspberry Pi OS (used for extracting the package)
+  - `sudo` privileges - Required for installation to /opt/DbSchema
+- **Optional:**
+  - `box64` - Install via `sudo apt install box64` (for running x86_64 version via emulation if ARM64 has compatibility issues)
+- **Auto-installed:** None
+- **Important Note:** DbSchema ARM64 support is limited on Raspberry Pi. Users may experience JavaFX compatibility issues. Raspberry Pi 4 or later with 4 GB+ RAM recommended.
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install curl` or `sudo yum install curl` (used for downloading the .rpm package)
+  - `dnf` or `yum` - Pre-installed on Amazon Linux/RHEL systems (dnf preferred on AL2023, RHEL 8+; yum on AL2, CentOS 7)
+- **Optional:** None
+- **Auto-installed:**
+  - JDBC drivers (downloaded automatically by DbSchema when connecting to databases)
+  - Package dependencies resolved automatically by dnf/yum during .rpm installation
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `PowerShell` - Pre-installed on Windows 10/11 (Windows PowerShell 5.1 or PowerShell Core 7+)
+  - `msiexec.exe` - Pre-installed on Windows (used for silent MSI installation)
+- **Optional:** None
+- **Auto-installed:**
+  - JDBC drivers (downloaded automatically by DbSchema when connecting to databases)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `PowerShell` - Pre-installed on Windows 10/11 (accessed via `powershell.exe` from Git Bash)
+  - `msiexec.exe` - Pre-installed on Windows (used for silent MSI installation)
+- **Optional:** None
+- **Auto-installed:**
+  - JDBC drivers (downloaded automatically by DbSchema when connecting to databases)
+- **Note:** Git Bash uses the Windows installation of DbSchema. The installer is run via PowerShell from within Git Bash.
+
 ## Prerequisites
 
 Before installing DbSchema on any platform, ensure:

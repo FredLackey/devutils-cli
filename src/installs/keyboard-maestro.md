@@ -1,5 +1,57 @@
 # Installing Keyboard Maestro
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `apt-get` - Pre-installed on Ubuntu/Debian systems
+  - Desktop environment (GNOME, KDE, XFCE, etc.) - Required for AutoKey GUI functionality
+- **Optional:**
+  - X11 display server - AutoKey does not work with Wayland; use `sudo apt install xorg` if needed
+- **Auto-installed:**
+  - Python 3 and dependencies - Automatically installed by `sudo apt install autokey-gtk`
+  - GTK libraries - Automatically installed by `sudo apt install autokey-gtk`
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `apt-get` - Pre-installed on Raspberry Pi OS
+  - Desktop environment - Required for AutoKey GUI functionality (use Raspberry Pi OS with desktop, not Lite)
+- **Optional:**
+  - X11 display server - Default on Raspberry Pi OS, no additional installation needed
+- **Auto-installed:**
+  - Python 3 and dependencies - Automatically installed by `sudo apt install autokey-gtk`
+  - GTK libraries - Automatically installed by `sudo apt install autokey-gtk`
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (installation not supported)
+- **Optional:** None
+- **Auto-installed:** None
+
+**Note:** Amazon Linux and RHEL are server operating systems without desktop environments. Desktop automation tools are not applicable. Use shell scripts, cron jobs, or systemd timers for server automation instead.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `Chocolatey` - Install via PowerShell (Admin): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))` or run `dev install chocolatey`
+  - OR `winget` - Pre-installed on Windows 10/11 (build 17763 or later)
+  - Administrator privileges - Required to install system-wide packages
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `PowerShell` - Pre-installed on all modern Windows versions
+  - `Chocolatey` or `winget` on Windows host - Install Chocolatey via PowerShell (Admin) as shown above, or use pre-installed winget
+- **Optional:**
+  - `curl` or `wget` - For portable installation method; install via `pacman -S curl` in Git Bash if not available
+  - `unzip` - For portable installation method; install via `pacman -S unzip` in Git Bash if not available
+- **Auto-installed:** None
+
 ## Overview
 
 Keyboard Maestro is a powerful macro and automation application for macOS developed by Stairways Software. It enables users to automate virtually any task on their Mac by creating macros that can be triggered by hotkeys, typed strings, application launches, time schedules, and many other triggers. With hundreds of built-in actions including flow control, conditions, looping, and the ability to execute AppleScript, JavaScript for Automation (JXA), and shell scripts, Keyboard Maestro is considered one of the most comprehensive automation tools available for macOS.

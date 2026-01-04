@@ -14,13 +14,54 @@ Git enables developers to:
 
 This guide documents Git installation procedures for all platforms supported by DevUtils CLI.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:** None (APT package manager is pre-installed on Ubuntu)
+- **Optional:**
+  - `software-properties-common` - Install via `sudo apt-get install -y software-properties-common` (required only if using the Git Core PPA for the latest version)
+- **Auto-installed:** Git runtime dependencies are automatically installed by APT
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (APT package manager is pre-installed on Raspberry Pi OS)
+- **Optional:**
+  - `software-properties-common` - Install via `sudo apt-get install -y software-properties-common` (required only if using the Git Core PPA for the latest version)
+- **Auto-installed:** Git runtime dependencies are automatically installed by APT
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (DNF/YUM package manager is pre-installed on Amazon Linux)
+- **Optional:** None
+- **Auto-installed:** Git runtime dependencies are automatically installed by DNF/YUM
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `chocolatey` - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))` or run `dev install chocolatey`
+- **Optional:** None
+- **Auto-installed:**
+  - Git Bash (Bash emulation environment)
+  - Git GUI (graphical interface)
+  - Git Credential Manager (credential storage helper)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `git` - Git for Windows must be installed (Git Bash is bundled with it). Download from https://git-scm.com/download/win or install via `choco install git -y`
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Git on any platform, ensure:
 
 1. **Internet connectivity** - Required to download Git packages
-2. **Administrative privileges** - Required for system-wide installation
+2. **Administrative privileges** - Required for system-wide installation (sudo on Linux/macOS, Administrator on Windows)
 3. **Terminal access** - Required to run installation commands
+4. **Platform-specific package manager** - See Dependencies section above for required package managers
 
 ## Platform-Specific Installation
 

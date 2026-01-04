@@ -11,6 +11,47 @@ WhatsApp is a cross-platform messaging application owned by Meta that allows use
 
 This guide documents the installation of the official WhatsApp desktop application where available, and WhatsApp for Linux as the definitive alternative for platforms without official support.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - Flatpak - Install via `sudo apt-get install -y flatpak`
+  - Flathub repository - Add via `flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo`
+- **Optional:** None
+- **Auto-installed:**
+  - Flatpak runtime dependencies (GNOME runtime, freedesktop runtime) - automatically installed by Flatpak when installing WhatsApp for Linux
+
+### Raspberry Pi OS (APT/Snap)
+- Installation not yet supported on this platform. WhatsApp does not provide native ARM packages. Users should access WhatsApp Web via browser at https://web.whatsapp.com
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - Flatpak - Install via `sudo dnf install -y flatpak` (Amazon Linux 2023/RHEL 8+) or `sudo yum install -y flatpak` (Amazon Linux 2)
+  - Flathub repository - Add via `flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo`
+  - Desktop environment (GNOME, MATE, or similar) - Install via `sudo dnf groupinstall -y "Server with GUI"` (Amazon Linux is typically a server OS)
+- **Optional:** None
+- **Auto-installed:**
+  - Flatpak runtime dependencies (GNOME runtime, freedesktop runtime) - automatically installed by Flatpak when installing WhatsApp for Linux
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - winget - Pre-installed on Windows 10 version 1809+ and Windows 11. If missing, install App Installer from Microsoft Store via `start ms-windows-store://pdp/?productid=9NBLGGH4NNS1`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - winget.exe - Pre-installed on Windows 10 version 1809+ and Windows 11. If missing, install App Installer from Microsoft Store
+  - Windows 10 version 1809 or later, or Windows 11
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing WhatsApp on any platform, ensure:

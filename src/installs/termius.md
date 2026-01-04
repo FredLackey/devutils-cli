@@ -1,5 +1,47 @@
 # Installing Termius
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew handles all application dependencies internally)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - Snap (snapd) - Pre-installed on Ubuntu 16.04+. If missing: `sudo apt-get update && sudo apt-get install -y snapd`
+  - systemd - Pre-installed on Ubuntu (required for snapd socket management)
+- **Optional:** None
+- **Auto-installed:** All Snap package dependencies are automatically handled by snapd
+
+### Raspberry Pi OS (APT/Snap)
+- **Installation not supported** - Termius does not provide ARM packages. The desktop application requires x86_64 architecture. Use Termius on another device to connect TO the Raspberry Pi.
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - DNF or YUM package manager - Pre-installed on Amazon Linux
+  - systemd - Pre-installed (required for snapd service management)
+- **Optional:**
+  - EPEL repository - Required for Amazon Linux 2 to install snapd: `sudo amazon-linux-extras install -y epel`
+  - Graphical desktop environment - Termius is a GUI application
+- **Auto-installed:** Snap package dependencies are automatically handled by snapd
+
+### Windows (Chocolatey)
+- **Required:**
+  - Chocolatey - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - PowerShell - Pre-installed on Windows 10/11
+- **Optional:** None
+- **Auto-installed:** All Chocolatey package dependencies
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - PowerShell on Windows host - Pre-installed on Windows 10/11
+  - Chocolatey on Windows host - Install via Administrator PowerShell (see Windows section above)
+  - Git Bash (Git for Windows) - Download from https://git-scm.com/download/win
+- **Optional:** None
+- **Auto-installed:** Same as Windows platform (Chocolatey handles dependencies)
+
 ## Overview
 
 Termius is a modern SSH client designed for productivity and collaboration. It enables secure connections to Linux servers, IoT devices, Docker containers, virtual machines, Raspberry Pi devices, and cloud instances (AWS, DigitalOcean, etc.) from desktop and mobile devices. Termius provides a multi-tab interface with split-view support, encrypted credential storage using AES-256 encryption, and cross-device synchronization for hosts, keys, and settings.

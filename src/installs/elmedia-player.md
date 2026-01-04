@@ -14,6 +14,39 @@ Key features include:
 
 **Important**: Elmedia Player is a **macOS-exclusive application**. It is not available for Windows, Linux, or any other operating system. The sections below for non-macOS platforms document this limitation and suggest alternative cross-platform media players.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:** None (Installation not supported - macOS-exclusive application)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (Installation not supported - macOS-exclusive application)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (Installation not supported - macOS-exclusive application)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Windows (Chocolatey/winget)
+- **Required:** None (Installation not supported - macOS-exclusive application)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:** None (Installation not supported - macOS-exclusive application)
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Elmedia Player, ensure:

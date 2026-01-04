@@ -14,6 +14,54 @@ ShellCheck is essential for developers, system administrators, and DevOps engine
 
 ShellCheck supports Bash, sh, dash, and ksh scripts. It does not support zsh scripts.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `dev install homebrew` or see installation steps below
+- **Optional:** None
+- **Auto-installed:**
+  - `gmp` (GNU multiple precision arithmetic library) - Automatically installed by Homebrew as a dependency
+
+### Ubuntu (APT/Snap)
+- **Required:** None (APT is built into Ubuntu/Debian distributions)
+- **Optional:** None
+- **Auto-installed:** All package dependencies are automatically handled by APT
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (APT is built into Raspberry Pi OS/Debian distributions)
+- **Optional:** None
+- **Auto-installed:** All package dependencies are automatically handled by APT
+
+### Amazon Linux (DNF/YUM)
+
+**For Amazon Linux 2023 (DNF):**
+- **Required:**
+  - `curl` - Install via `sudo dnf install -y curl` (typically pre-installed)
+  - `xz` - Install via `sudo dnf install -y xz` (required for extracting tarball)
+- **Optional:** None
+- **Auto-installed:** None (direct binary installation from GitHub)
+
+**For Amazon Linux 2 (YUM):**
+- **Required:**
+  - `amazon-linux-extras` - Pre-installed on Amazon Linux 2 (used to enable EPEL repository)
+- **Optional:** None
+- **Auto-installed:** All EPEL and ShellCheck package dependencies are automatically handled by YUM
+
+### Windows (Chocolatey)
+- **Required:**
+  - Chocolatey - Install via `dev install chocolatey` or see installation steps below
+- **Optional:** None
+- **Auto-installed:** None (binary installation managed by Chocolatey)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `curl` - Pre-installed with Git for Windows
+  - `unzip` - Pre-installed with Git for Windows
+  - Git for Windows (includes Git Bash) - Download from https://git-scm.com/download/win
+- **Optional:** None
+- **Auto-installed:** None (manual binary installation)
+
 ## Prerequisites
 
 Before installing ShellCheck on any platform, ensure:

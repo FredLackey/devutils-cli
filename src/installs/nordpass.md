@@ -17,6 +17,46 @@ Key features include:
 - **Raspberry Pi OS and Amazon Linux** do not have native NordPass desktop applications due to ARM architecture limitations (Raspberry Pi) and lack of Snap/Flatpak support (Amazon Linux)
 - For unsupported platforms, the NordPass **browser extension** or **web vault** (https://app.nordpass.com) can be used as alternatives
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew handles all application dependencies automatically)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `snapd` - Install via `sudo apt-get install -y snapd` (auto-installed by the script if missing)
+  - x86_64/amd64 architecture (ARM architectures like aarch64/armv7l are not supported)
+- **Optional:** None
+- **Auto-installed:** All Snap package dependencies are handled automatically by snapd
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Installation not supported on this platform. NordPass desktop application does not support ARM architecture (aarch64, armv7l). Use the browser extension or web vault instead.
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Installation not supported on this platform. Amazon Linux does not natively support Snap or Flatpak. Use the browser extension or web vault instead.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** All application dependencies are handled automatically by Chocolatey
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Chocolatey on the Windows host system - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Windows 10 or later (64-bit)
+- **Optional:** None
+- **Auto-installed:** Same as Windows platform (Chocolatey handles all application dependencies)
+
 ## Prerequisites
 
 Before installing NordPass on any platform, ensure:

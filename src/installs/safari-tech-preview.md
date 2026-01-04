@@ -19,6 +19,30 @@ Before installing Safari Technology Preview, ensure:
 
 **Critical Limitation**: Safari Technology Preview is **exclusively available for macOS**. Apple does not release Safari Technology Preview (or any version of Safari) for Windows, Linux, or any other operating system. This is a fundamental platform restriction, not a packaging limitation.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+  - macOS 15.0 (Sequoia) or later - Upgrade via System Settings > General > Software Update
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Installation not supported on this platform.** Apple does not release Safari or Safari Technology Preview for Linux distributions.
+
+### Raspberry Pi OS (APT/Snap)
+- **Installation not supported on this platform.** Apple does not release Safari or Safari Technology Preview for Linux distributions.
+
+### Amazon Linux (DNF/YUM)
+- **Installation not supported on this platform.** Apple does not release Safari or Safari Technology Preview for RPM-based Linux distributions.
+
+### Windows (Chocolatey/winget)
+- **Installation not supported on this platform.** Apple discontinued Safari for Windows in 2012; Safari Technology Preview has never been available for Windows.
+
+### Git Bash (Manual/Portable)
+- **Installation not supported on this platform.** Git Bash runs on Windows, where Safari Technology Preview is not available.
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

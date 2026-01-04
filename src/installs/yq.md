@@ -4,6 +4,55 @@
 
 yq is a lightweight and portable command-line YAML processor written in Go by Mike Farah. It uses jq-like syntax but works with YAML files as well as JSON, XML, CSV, TSV, INI, properties, and HCL formats. Think of yq as the jq or sed equivalent for YAML data - it allows you to read, filter, update, and transform structured data with concise expressions.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - snapd - Install via `sudo apt-get install snapd` (installer will attempt to install automatically if missing)
+  - sudo privileges for package installation
+- **Optional:** None
+- **Auto-installed:**
+  - snapd - Automatically installed via `sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y snapd` if not present
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - curl - Install via `sudo apt-get install curl` (typically pre-installed)
+  - uname - Pre-installed system utility for architecture detection
+  - sudo privileges for installation
+- **Optional:**
+  - snapd - Install via `sudo apt-get install snapd` (preferred for 64-bit installations, installer falls back to binary download if unavailable)
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - curl - Pre-installed on Amazon Linux (if missing: `sudo dnf install curl` or `sudo yum install curl`)
+  - uname - Pre-installed system utility for architecture detection
+  - sudo privileges for installation
+- **Optional:** None
+- **Auto-installed:** None
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))` or run `dev install chocolatey`
+  - Administrator privileges (run PowerShell or Command Prompt as Administrator)
+- **Optional:**
+  - winget - Pre-installed on Windows 11 and recent Windows 10 builds (alternative to Chocolatey)
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - curl - Pre-installed with Git for Windows
+  - mkdir - Pre-installed shell command
+  - Git for Windows - Install from https://git-scm.com/download/win
+- **Optional:** None
+- **Auto-installed:** None
+
 yq is essential for developers and DevOps engineers who work with Kubernetes manifests, Helm charts, Docker Compose files, CI/CD configurations, or any YAML-based infrastructure. Common use cases include:
 
 - Parsing and extracting values from YAML configuration files

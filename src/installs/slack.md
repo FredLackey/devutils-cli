@@ -6,6 +6,55 @@ Slack is a team communication and collaboration platform that provides messaging
 
 **Important Platform Note**: Slack for Linux is officially in beta. The native desktop application is only available for x86_64 (64-bit) architectures. ARM-based systems (including Raspberry Pi) do not have official native support and require alternative approaches documented below.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - Snap package manager - Pre-installed on Ubuntu 16.04+. For Debian, install via `sudo apt-get update && sudo apt-get install -y snapd`
+  - x86_64 architecture (verified automatically; ARM is not supported)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - Chromium web browser - Install via `sudo apt-get update && sudo apt-get install -y chromium-browser`
+  - Internet connectivity for web application access
+- **Optional:**
+  - Slacky unofficial client (experimental) - See documentation for installation from GitHub releases
+- **Auto-installed:** None
+- **Note:** Native Slack desktop application is not available for ARM architecture. Web application at https://app.slack.com is the recommended approach.
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - DNF (Amazon Linux 2023, RHEL 8+, Fedora) or YUM (Amazon Linux 2) package manager - Pre-installed on supported distributions
+  - `curl` and `ca-certificates` packages - Install via `sudo dnf install -y curl ca-certificates` (for GPG key import)
+  - x86_64 architecture (verified automatically; ARM is not supported)
+- **Optional:**
+  - Graphical desktop environment (X11 or Wayland) - Required for GUI functionality; headless servers should use web application at https://app.slack.com
+- **Auto-installed:** None
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges for installation
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Chocolatey package manager installed on Windows host - See Windows installation method above
+  - PowerShell access on Windows host
+  - Administrator privileges on Windows for installation
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Slack is installed on the Windows host, not within Git Bash environment. Access via `start slack:` or `cmd //c "start slack:"`
+
 ## Prerequisites
 
 Before installing Slack on any platform, ensure:

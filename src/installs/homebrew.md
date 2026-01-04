@@ -24,6 +24,72 @@ Key features of Homebrew:
 | Windows (Native) | Not Supported | Use WSL for Homebrew on Windows |
 | Git Bash | Not Supported | Use WSL for Homebrew on Windows |
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `/bin/bash` - Pre-installed with macOS
+  - `curl` - Pre-installed with macOS
+- **Optional:** None
+- **Auto-installed:**
+  - Xcode Command Line Tools (includes compilers, git, and build tools) - Installed automatically by the Homebrew installer if not already present
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `build-essential` - Install via `sudo apt-get install -y build-essential`
+  - `procps` - Install via `sudo apt-get install -y procps`
+  - `curl` - Install via `sudo apt-get install -y curl`
+  - `file` - Install via `sudo apt-get install -y file`
+  - `git` - Install via `sudo apt-get install -y git`
+  - `/bin/bash` - Pre-installed on Ubuntu
+  - `sudo` privileges
+- **Optional:** None
+- **Auto-installed:**
+  - `tar` - Installed as dependency of build-essential
+
+### Raspberry Pi OS (APT/Snap)
+- **Required (64-bit aarch64):**
+  - `build-essential` - Install via `sudo apt-get install -y build-essential`
+  - `procps` - Install via `sudo apt-get install -y procps`
+  - `curl` - Install via `sudo apt-get install -y curl`
+  - `file` - Install via `sudo apt-get install -y file`
+  - `git` - Install via `sudo apt-get install -y git`
+  - `/bin/bash` - Pre-installed on Raspberry Pi OS
+  - `sudo` privileges
+- **Required (32-bit armv7l):**
+  - All of the above, PLUS:
+  - `ruby` - Install via `sudo apt-get install -y ruby`
+  - `ruby-dev` - Install via `sudo apt-get install -y ruby-dev`
+- **Optional:**
+  - Swap space (recommended for systems with limited RAM to avoid out-of-memory errors during package compilation) - Configure via `sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile`
+- **Auto-installed:**
+  - `tar` - Installed as dependency of build-essential
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - Development Tools group - Install via `sudo dnf groupinstall -y "Development Tools"` (AL2023) or `sudo yum groupinstall -y "Development Tools"` (AL2)
+  - `procps-ng` - Install via `sudo dnf install -y procps-ng` (AL2023) or `procps` via `sudo yum install -y procps` (AL2)
+  - `curl` - Install via `sudo dnf install -y curl` (AL2023) or `sudo yum install -y curl` (AL2)
+  - `file` - Install via `sudo dnf install -y file` (AL2023) or `sudo yum install -y file` (AL2)
+  - `git` - Install via `sudo dnf install -y git` (AL2023) or `sudo yum install -y git` (AL2)
+  - `/bin/bash` - Pre-installed on Amazon Linux
+  - `sudo` privileges
+- **Optional:** None
+- **Auto-installed:**
+  - `gcc`, `g++`, `make` and various compiler dependencies - Installed via Development Tools group
+
+### Windows (Chocolatey/winget)
+- **Required:** Installation not supported on native Windows
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Homebrew does not run natively on Windows. Use Windows Subsystem for Linux (WSL) with Ubuntu to run Homebrew. See WSL installation instructions in the Platform-Specific Installation section below.
+
+### Git Bash (Manual/Portable)
+- **Required:** Installation not supported in Git Bash
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Git Bash does not provide a full Linux userspace required by Homebrew. Use Windows Subsystem for Linux (WSL) with Ubuntu to run Homebrew. See WSL installation instructions in the Platform-Specific Installation section below.
+
 ## Prerequisites
 
 Before installing Homebrew on any platform, ensure:

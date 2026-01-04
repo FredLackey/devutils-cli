@@ -13,6 +13,57 @@ Pinentry ensures that entered information is:
 
 Without a properly configured pinentry program, GPG operations that require a passphrase will fail with "No pinentry" errors. This guide documents pinentry installation procedures for all platforms supported by DevUtils CLI.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+  - `GnuPG` - Install via `brew install gnupg` or `dev install gpg`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `sudo privileges` - Required for APT operations
+  - `GnuPG` - Install via `sudo apt-get install -y gnupg` or `dev install gpg`
+- **Optional:**
+  - `pinentry-gnome3` - Install via `sudo apt-get install -y pinentry-gnome3` (for GNOME desktop environments)
+  - `pinentry-qt` - Install via `sudo apt-get install -y pinentry-qt` (for KDE/Qt desktop environments)
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `sudo privileges` - Required for APT operations
+  - `GnuPG` - Install via `sudo apt-get install -y gnupg` or `dev install gpg`
+- **Optional:**
+  - `pinentry-gnome3` - Install via `sudo apt-get install -y pinentry-gnome3` (for desktop environments)
+  - `pinentry-qt` - Install via `sudo apt-get install -y pinentry-qt` (for KDE/Qt desktop environments)
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `sudo privileges` - Required for DNF/YUM operations
+  - `GnuPG` - Install via `sudo dnf install -y gnupg` (AL2023) or `sudo yum install -y gnupg` (AL2), or `dev install gpg`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `GnuPG` - Pinentry is bundled with GnuPG on Windows. Install via `winget install --id GnuPG.GnuPG --silent` or `choco install gnupg -y`, or `dev install gpg`
+  - Either `winget` (built into Windows 10 1809+ and Windows 11) or `Chocolatey` - Install Chocolatey via `dev install chocolatey` if needed
+- **Optional:**
+  - `Gpg4win` - Install via `choco install gpg4win -y` (provides pinentry-qt.exe for Qt-based GUI dialog)
+- **Auto-installed:**
+  - `pinentry-basic.exe` - Automatically included with GnuPG installation
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `Windows GnuPG` - Install via `winget install --id GnuPG.GnuPG --silent` or `choco install gnupg -y` from PowerShell, or `dev install gpg`
+  - `Git for Windows` - Required to provide Git Bash environment (typically already installed). Download from https://git-scm.com/download/win
+- **Optional:** None
+- **Auto-installed:**
+  - `pinentry-basic.exe` - Automatically included with Windows GnuPG installation
+
 ## Prerequisites
 
 Before installing pinentry on any platform, ensure:

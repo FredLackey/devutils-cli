@@ -15,6 +15,49 @@ Before installing Microsoft Office 365 on any platform, ensure:
 3. **Valid Microsoft 365 subscription** - A license is required after installation
 4. **Administrative privileges** - Required for system-wide installation
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None (all Microsoft Office applications are bundled in the microsoft-office cask)
+
+### Ubuntu (APT/Snap)
+- **Required:** Installation not supported on this platform
+- **Optional:** N/A
+- **Auto-installed:** N/A
+
+**Note:** Microsoft Office 365 is not available natively on Ubuntu. See alternative approaches in the platform-specific section below.
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** Installation not supported on this platform
+- **Optional:** N/A
+- **Auto-installed:** N/A
+
+**Note:** Microsoft Office 365 is not available on Raspberry Pi OS due to ARM architecture incompatibility. See alternative approaches in the platform-specific section below.
+
+### Amazon Linux (DNF/YUM)
+- **Required:** Installation not supported on this platform
+- **Optional:** N/A
+- **Auto-installed:** N/A
+
+**Note:** Microsoft Office 365 is not available natively on Amazon Linux. See alternative approaches in the platform-specific section below.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Or winget (built into Windows 10 1809+ and Windows 11)
+- **Optional:** None
+- **Auto-installed:** None (all Microsoft Office applications are bundled in the office365proplus package)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - PowerShell - Pre-installed on Windows 10 and Windows 11
+  - Chocolatey on Windows host - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** None (installation uses Windows host's package manager)
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

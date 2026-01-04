@@ -13,6 +13,58 @@ Key features include:
 
 gitego uses Git's `includeIf` directive for identity switching and acts as a Git credential helper for HTTPS authentication.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `homebrew` - Install from https://brew.sh
+  - `git` - Install via `brew install git` (usually pre-installed with Xcode Command Line Tools)
+- **Optional:** None
+- **Auto-installed:**
+  - `go` (version 1.24+) - Automatically installed via `brew install go` if not present or version is too old
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `git` - Install via `sudo apt-get install -y git`
+  - `wget` - Install via `sudo apt-get install -y wget` (usually pre-installed)
+- **Optional:** None
+- **Auto-installed:**
+  - Go 1.24+ - Downloaded directly from https://go.dev/dl/go1.24.0.linux-amd64.tar.gz and installed to /usr/local/go
+  - `libsecret-1-0` - Installed via `sudo apt-get install -y libsecret-1-0` for secure PAT storage
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `git` - Install via `sudo apt-get install -y git`
+  - `wget` - Install via `sudo apt-get install -y wget` (usually pre-installed)
+- **Optional:** None
+- **Auto-installed:**
+  - Go 1.24+ - Downloaded directly from https://go.dev/dl/ (arm64 or armv6l variant based on detected architecture) and installed to /usr/local/go
+  - `libsecret-1-0` - Installed via `sudo apt-get install -y libsecret-1-0` for secure PAT storage
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `git` - Install via `sudo dnf install -y git` (AL2023) or `sudo yum install -y git` (AL2)
+- **Optional:** None
+- **Auto-installed:**
+  - `wget` - Installed via `sudo dnf install -y wget` or `sudo yum install -y wget` if not present
+  - Go 1.24+ - Downloaded directly from https://go.dev/dl/go1.24.0.linux-amd64.tar.gz and installed to /usr/local/go
+  - `libsecret` - Attempted installation via `sudo dnf install -y libsecret` or `sudo yum install -y libsecret` for secure PAT storage (may fail on headless servers, which is expected)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `git` - Install via `choco install git -y` or `winget install --id Git.Git --silent`
+  - `chocolatey` OR `winget` - At least one package manager must be installed. Install Chocolatey from https://chocolatey.org/install
+- **Optional:** None
+- **Auto-installed:**
+  - `go` (version 1.24+) - Installed via `choco install golang` or `winget install --id GoLang.Go` if not present or version is too old
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `git` - Install Git for Windows from https://git-scm.com/downloads
+  - `go` (version 1.24+) - Must be pre-installed on Windows via `choco install golang -y` or `winget install --id GoLang.Go --silent`
+- **Optional:** None
+- **Auto-installed:** None (Git Bash inherits Windows environment, so dependencies must be installed on Windows first)
+
 ## Prerequisites
 
 Before installing gitego on any platform, ensure:

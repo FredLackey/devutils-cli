@@ -6,6 +6,58 @@ Claude Code is an agentic coding tool developed by Anthropic that runs in your t
 
 Claude Code is distinct from the Claude Desktop application. Claude Code is a command-line interface (CLI) tool designed for developers to interact with Claude directly within their terminal and codebase, while Claude Desktop is a standalone GUI application for general-purpose AI conversations.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl` (automatically installed by the script if missing)
+- **Optional:**
+  - Node.js 18+ - Install via `curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs` (only needed for npm fallback installation)
+  - `npm` - Included with Node.js installation (only needed for npm fallback installation)
+- **Auto-installed:**
+  - `curl` - Automatically installed via APT if missing
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - 64-bit OS (aarch64 architecture) - Verify with `uname -m` (must output `aarch64`, not `armv7l`)
+  - Node.js 18+ - Install via `curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs`
+  - `npm` - Included with Node.js installation
+- **Optional:** None (npm installation is the primary method due to native installer compatibility issues on ARM64)
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install -y curl` (AL2023/RHEL8+) or `sudo yum install -y curl` (AL2) - automatically installed by the script if missing
+- **Optional:**
+  - Node.js 18+ - Install via `sudo dnf install -y nodejs` (AL2023) or `curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash - && sudo yum install -y nodejs` (AL2) - only needed for npm fallback installation
+  - `npm` - Included with Node.js installation (only needed for npm fallback installation)
+- **Auto-installed:**
+  - `curl` - Automatically installed via DNF/YUM if missing
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Either winget OR Chocolatey:
+    - `winget` - Pre-installed on Windows 10 (version 1809+) and Windows 11. If missing, install "App Installer" from Microsoft Store: `start ms-windows-store://pdp/?productid=9NBLGGH4NNS1`
+    - `choco` - Install via `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** None (winget is pre-installed on modern Windows)
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git for Windows - Download from https://git-scm.com/downloads/win (provides Git Bash environment)
+  - Either winget OR Chocolatey (same as Windows platform):
+    - `winget.exe` - Pre-installed on Windows 10/11, accessible from Git Bash
+    - `choco.exe` - Install Chocolatey on Windows, accessible from Git Bash via `choco.exe`
+- **Optional:**
+  - PowerShell - Pre-installed on Windows 10/11 (needed for native installer script method)
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Claude Code on any platform, ensure the following:

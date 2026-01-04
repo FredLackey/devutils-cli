@@ -6,6 +6,58 @@ NVM (Node Version Manager) is a version manager for Node.js, designed to be inst
 
 **Important Platform Note**: NVM (nvm-sh/nvm) is designed for POSIX-compliant systems (macOS, Linux, WSL). For native Windows environments (PowerShell, Command Prompt, Git Bash), use **nvm-windows** (coreybutler/nvm-windows), which is a completely separate project with similar functionality but different implementation.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:**
+  - Shell integration scripts (nvm.sh, bash_completion) - Installed automatically by Homebrew formula
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt install curl` (installer will install if missing)
+  - `git` - Install via `sudo apt install git` (NVM install script requires git to clone the repository)
+- **Optional:** None
+- **Auto-installed:**
+  - Build essentials - NVM install script handles dependency installation automatically
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt install curl` (installer will install if missing)
+  - `git` - Install via `sudo apt install git` (NVM install script requires git to clone the repository)
+- **Optional:**
+  - Swap space - For ARMv6 (Pi Zero/1) if compiling Node.js from source: `sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile`
+- **Auto-installed:**
+  - Build essentials - NVM install script handles dependency installation automatically
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `curl` - Install via `sudo dnf install curl` (AL2023) or `sudo yum install curl` (AL2) - installer will install if missing
+  - `git` - Install via `sudo dnf install git` or `sudo yum install git` (NVM install script requires git to clone the repository)
+- **Optional:** None
+- **Auto-installed:**
+  - Build essentials - NVM install script handles dependency installation automatically
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey OR winget (at least one must be present)
+    - Chocolatey: Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+    - winget: Pre-installed on Windows 10/11, or install App Installer from Microsoft Store
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git Bash (comes with Git for Windows) - Download from https://git-scm.com/download/win
+  - Chocolatey installed on Windows host - Install via PowerShell (see Windows section above)
+  - PowerShell access for interop - Pre-installed on Windows
+- **Optional:** None
+- **Auto-installed:** None
+
+**Note on Dependencies**: The NVM installer script is designed to be idempotent and will check for required dependencies before installation. On Unix-like systems (macOS, Ubuntu, Raspberry Pi OS, Amazon Linux), the installer will attempt to install `curl` automatically if missing using the system package manager. On Windows and Git Bash, the package manager (Chocolatey or winget) must already be installed.
+
 ## Prerequisites
 
 Before installing NVM on any platform, ensure:

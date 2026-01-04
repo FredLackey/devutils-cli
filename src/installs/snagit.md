@@ -6,6 +6,40 @@ Snagit is a professional screen capture and screen recording software developed 
 
 **Important Platform Limitation:** Snagit is officially supported only on **macOS** and **Windows**. TechSmith does not provide Linux versions, which affects Ubuntu, Raspberry Pi OS, Amazon Linux, WSL, and other Linux distributions.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:**
+  - `Xcode Command Line Tools` - Automatically installed by Homebrew during first use if not present
+
+### Ubuntu (APT/Snap)
+- **Installation not supported:** TechSmith does not provide Linux versions of Snagit. See the "Alternative: Flameshot" section below for Linux-compatible screen capture tools.
+
+### Raspberry Pi OS (APT/Snap)
+- **Installation not supported:** Snagit is not available for ARM architecture and TechSmith does not support Linux. See the "Alternative: Flameshot" section below for compatible tools.
+
+### Amazon Linux (DNF/YUM)
+- **Installation not supported:** TechSmith does not provide Linux versions of Snagit. See the "Alternative: Flameshot" section below for Linux-compatible screen capture tools.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `winget` (Windows Package Manager) - Pre-installed on Windows 11; for Windows 10, install "App Installer" from Microsoft Store or run `dev install winget`
+  - `.NET Framework 4.7.2 or later` - Download from [Microsoft .NET Framework 4.7.2](https://dotnet.microsoft.com/download/dotnet-framework/net472) or install via `choco install dotnetfx -y`
+- **Optional:**
+  - `WebView2 Runtime` - Usually bundled with Snagit installer; if needed, install via `choco install webview2-runtime -y`
+  - `Media Foundation Pack` - Required for Windows N editions; download from Microsoft Store
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `PowerShell` - Pre-installed on all modern Windows versions; verify with `powershell.exe -Command "Get-Host"`
+  - `winget` on Windows host - Pre-installed on Windows 11; for Windows 10, install "App Installer" from Microsoft Store
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Snagit on any platform, ensure you have:

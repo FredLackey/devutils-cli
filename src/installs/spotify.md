@@ -1,5 +1,53 @@
 # Installing Spotify
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `brew` (Homebrew package manager) - Install via `dev install homebrew` or visit https://brew.sh
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu/Debian (APT/Snap)
+- **Required:**
+  - `snapd` (Snap package manager) - Install via `sudo apt-get update && sudo apt-get install -y snapd && sudo systemctl enable --now snapd.socket`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - `curl` - Install via `sudo apt-get update && sudo apt-get install -y curl`
+  - APT package manager (pre-installed on Raspberry Pi OS)
+  - Spotify Premium account (required for Raspotify/Spotify Connect functionality)
+- **Optional:** None
+- **Auto-installed:**
+  - Raspotify service and all its dependencies (installed by https://dtcooper.github.io/raspotify/install.sh)
+
+### Amazon Linux/RHEL (DNF/YUM)
+- **Required:**
+  - `dnf` or `yum` package manager (pre-installed on Amazon Linux/RHEL)
+  - EPEL repository - Install via `sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm` (AL2023/RHEL9) or `sudo amazon-linux-extras install -y epel` (AL2)
+  - `snapd` - Install via `sudo dnf install -y snapd` or `sudo yum install -y snapd`
+  - Graphical desktop environment (GNOME, KDE, etc.) for GUI functionality
+- **Optional:** None
+- **Auto-installed:**
+  - Classic snap support symlink (`/snap` -> `/var/lib/snapd/snap`)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `choco` (Chocolatey package manager) - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges (required for installation)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `choco` (Chocolatey on Windows host) - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - PowerShell access (for invoking Windows package manager)
+  - Administrator privileges (required for installation on Windows host)
+- **Optional:** None
+- **Auto-installed:** None (Spotify is installed on Windows host and accessed from Git Bash)
+
 ## Overview
 
 Spotify is a digital music streaming service that provides access to millions of songs, podcasts, and videos from creators worldwide. The desktop application offers features including offline listening (with Premium), high-quality audio streaming, curated playlists, and seamless syncing across devices. Spotify is widely used for personal entertainment, background music during development, and podcast consumption.

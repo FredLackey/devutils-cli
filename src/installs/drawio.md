@@ -12,6 +12,54 @@ Key features:
 
 This guide documents Draw.io Desktop installation across all supported platforms.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** All application dependencies are automatically handled by the Homebrew cask installation process
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - snapd - Install via `sudo apt-get update && sudo apt-get install -y snapd` (automatically installed by the installer if missing)
+- **Optional:** None
+- **Auto-installed:** snapd package manager will be installed automatically if not present via `sudo apt-get install -y snapd`
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - curl - Install via `sudo apt-get install -y curl` (usually pre-installed)
+- **Optional:**
+  - snapd - Install via `sudo apt-get install -y snapd` (preferred installation method, but installer falls back to .deb package if unavailable)
+- **Auto-installed:** When using .deb package fallback, apt will automatically install any missing package dependencies
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - wget - Install via `sudo dnf install -y wget` (AL2023) or `sudo yum install -y wget` (AL2)
+  - curl - Install via `sudo dnf install -y curl` (AL2023) or `sudo yum install -y curl` (AL2)
+  - libxkbfile - Install via `sudo dnf install -y libxkbfile` (AL2023) or `sudo yum install -y libxkbfile` (AL2)
+  - libsecret - Install via `sudo dnf install -y libsecret` (AL2023) or `sudo yum install -y libsecret` (AL2)
+  - nss - Install via `sudo dnf install -y nss` (AL2023) or `sudo yum install -y nss` (AL2)
+  - gtk3 - Install via `sudo dnf install -y gtk3` (AL2023) or `sudo yum install -y gtk3` (AL2)
+  - libdrm - Install via `sudo dnf install -y libdrm` (AL2023) or `sudo yum install -y libdrm` (AL2)
+  - mesa-libgbm - Install via `sudo dnf install -y mesa-libgbm` (AL2023) or `sudo yum install -y mesa-libgbm` (AL2)
+  - alsa-lib - Install via `sudo dnf install -y alsa-lib` (AL2023) or `sudo yum install -y alsa-lib` (AL2)
+- **Optional:** None
+- **Auto-installed:** None (all dependencies must be manually installed before running Draw.io)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** All application dependencies are automatically handled by the Chocolatey package installation process
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - curl - Usually pre-installed with Git for Windows
+- **Optional:**
+  - unzip - Install via Git for Windows package manager or use PowerShell's Expand-Archive as fallback
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Draw.io on any platform, ensure:

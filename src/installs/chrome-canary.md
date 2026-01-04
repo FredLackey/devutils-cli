@@ -17,6 +17,45 @@ Before installing Chrome Canary on any platform, ensure:
 
 **Note**: Chrome Canary can run alongside Google Chrome stable. Both browsers maintain separate user profiles and do not interfere with each other.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None (Homebrew handles any system-level dependencies transparently)
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt install wget` (usually pre-installed)
+  - `gnupg` - Install via `sudo apt install gnupg` (usually pre-installed)
+- **Optional:** None
+- **Auto-installed:** Chrome runtime dependencies (fonts, libraries, etc.) are automatically resolved by APT during installation
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Installation not supported on this platform. Google does not provide ARM builds of Chrome Canary.
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None
+- **Optional:** None
+- **Auto-installed:** None
+- **Note:** Installation not supported on this platform. Google does not provide RPM packages for Chrome Canary.
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `Chocolatey` - Install via PowerShell (Administrator): `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+- **Optional:** None
+- **Auto-installed:** .NET Framework and other Windows runtime dependencies are handled automatically by Chocolatey
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `Chocolatey` - Uses Windows installation method (see Windows section above)
+- **Optional:** None
+- **Auto-installed:** Same as Windows platform
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

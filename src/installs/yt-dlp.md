@@ -15,6 +15,64 @@ Key capabilities include:
 
 **Important**: For full functionality (format conversion, audio extraction, thumbnail embedding), install FFmpeg alongside yt-dlp. See the FFmpeg installation guide for details.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew package manager - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+  - Xcode Command Line Tools - Auto-installed by Homebrew if missing, or manually via `xcode-select --install`
+- **Optional:**
+  - `ffmpeg` - Install via `brew install ffmpeg` or `dev install ffmpeg` (required for format conversion, audio extraction, and thumbnail embedding)
+- **Auto-installed:**
+  - Python - Homebrew automatically installs Python as a dependency of yt-dlp
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - APT package manager (pre-installed on Ubuntu)
+  - sudo privileges
+- **Optional:**
+  - `ffmpeg` - Install via `sudo apt-get install -y ffmpeg` or `dev install ffmpeg` (required for format conversion and audio extraction)
+  - `python3-pip` - Install via `sudo apt-get install -y python3-pip` (only needed for latest version via pip installation method)
+- **Auto-installed:**
+  - Python and all required Python dependencies are automatically installed by APT
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - APT package manager (pre-installed on Raspberry Pi OS)
+  - sudo privileges
+- **Optional:**
+  - `ffmpeg` - Install via `sudo apt-get install -y ffmpeg` or `dev install ffmpeg` (required for format conversion and audio extraction)
+  - `python3-pip` - Install via `sudo apt-get install -y python3-pip` (only needed if yt-dlp package is unavailable in older OS versions)
+- **Auto-installed:**
+  - Python and all required Python dependencies are automatically installed by APT
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `python3-pip` - Install via `sudo dnf install -y python3-pip` (AL2023) or `sudo yum install -y python3-pip` (AL2)
+  - Python 3.9 or later (usually pre-installed on Amazon Linux 2023)
+- **Optional:**
+  - FFmpeg - Not available in Amazon Linux repositories; requires manual installation via static binary from https://github.com/BtbN/FFmpeg-Builds/releases
+- **Auto-installed:**
+  - Python dependencies automatically installed via pip when using `pip install "yt-dlp[default]"`
+
+### Windows (Chocolatey)
+- **Required:**
+  - Chocolatey package manager - Install via PowerShell script at https://chocolatey.org/install or `dev install chocolatey`
+  - Administrator privileges (PowerShell or Command Prompt must be run as Administrator)
+- **Optional:**
+  - `ffmpeg` - Install via `choco install ffmpeg -y` or `dev install ffmpeg` (required for format conversion and audio extraction)
+- **Auto-installed:**
+  - Python (if needed) - Chocolatey automatically handles Python dependencies
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `curl` - Install via Git for Windows (usually included) or download from https://curl.se/windows/
+  - Git Bash environment (comes with Git for Windows) - Download from https://git-scm.com/download/win
+- **Optional:**
+  - FFmpeg - Manual installation required via download from https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip
+- **Auto-installed:**
+  - None (this is a fully manual portable installation method)
+
 ## Prerequisites
 
 Before installing yt-dlp on any platform, ensure:

@@ -23,6 +23,78 @@ Before installing LaTeX on any platform, ensure:
 3. **Sufficient disk space** - Full installation requires 7+ GB; basic installation requires approximately 300 MB
 4. **Time** - Full installation can take 30-60 minutes depending on network speed
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `dev install homebrew` or `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+  - Internet connectivity - For downloading MacTeX packages (~4 GB)
+  - Command Line Tools for Xcode - Auto-installed by Homebrew if missing
+- **Optional:** None
+- **Auto-installed:**
+  - Perl - Included with macOS
+  - curl - Pre-installed on macOS
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - sudo privileges - For APT package installation
+  - Internet connectivity - For downloading TeX Live packages (several GB)
+  - APT package manager - Pre-installed on Ubuntu
+- **Optional:** None
+- **Auto-installed:**
+  - Perl and Perl modules - Installed automatically as dependencies of `texlive-full`
+  - Font packages - Included in `texlive-full` metapackage
+  - Build tools - Installed as dependencies if needed
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:**
+  - sudo privileges - For APT package installation
+  - Internet connectivity - For downloading TeX Live packages (several GB)
+  - APT package manager - Pre-installed on Raspberry Pi OS
+  - High-quality SD card (Class 10+) or SSD - For acceptable installation performance
+- **Optional:**
+  - Swap space (2+ GB) - For compiling complex documents on low-RAM devices (install via `fallocate` and `mkswap`)
+- **Auto-installed:**
+  - Perl and Perl modules - Installed automatically as dependencies
+  - ARM-optimized packages - Handled by APT for ARM architecture
+  - Font packages - Included in `texlive-full` metapackage
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - sudo privileges - For DNF/YUM package installation
+  - Internet connectivity - For downloading TeX Live packages
+  - DNF (AL2023/RHEL9) or YUM (AL2/RHEL8) - Pre-installed based on OS version
+- **Optional:**
+  - Perl and perl-Digest-MD5 - Only required for native TUG installer (install via `sudo dnf install -y perl perl-Digest-MD5`)
+- **Auto-installed:**
+  - Perl modules - Installed as package dependencies
+  - Font collections - Included in scheme-full or collection packages
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via `dev install chocolatey` or PowerShell script from chocolatey.org
+  - Administrator privileges - For Chocolatey package installation
+  - Internet connectivity - For downloading TeX Live packages (~8 GB)
+  - PowerShell 5.0+ - Pre-installed on Windows 10/11
+- **Optional:** None
+- **Auto-installed:**
+  - Perl (Strawberry Perl) - Bundled with TeX Live Windows installation
+  - TeX Live utilities - Included in the texlive Chocolatey package
+  - Windows-specific binaries - Installed to `C:\texlive\<year>\bin\windows`
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Git Bash - Installed as part of Git for Windows
+  - Chocolatey on Windows host - For automated installation (install via `dev install chocolatey`)
+  - PowerShell - For Chocolatey interop from Git Bash (pre-installed on Windows 10/11)
+  - Administrator privileges - For system-wide installation via Chocolatey
+  - Internet connectivity - For downloading TeX Live packages (~8 GB)
+- **Optional:**
+  - Perl for Windows - Only required for portable/manual TUG installer (download from strawberryperl.com or via `choco install strawberryperl`)
+- **Auto-installed:**
+  - TeX Live binaries - Installed on Windows host, accessible via shared PATH
+  - Perl (Strawberry Perl) - Bundled with TeX Live Windows installation
+
 ## Platform-Specific Installation
 
 ### macOS (Homebrew)

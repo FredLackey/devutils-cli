@@ -19,6 +19,43 @@ Common use cases include:
 
 The original Unix tree command was written by Steve Baker and is licensed under the GNU General Public License v2 (GPL-2.0).
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - Homebrew - Install via `dev install homebrew` or `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:** None (APT package manager is pre-installed on Ubuntu)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Raspberry Pi OS (APT/Snap)
+- **Required:** None (APT package manager is pre-installed on Raspberry Pi OS)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Amazon Linux (DNF/YUM)
+- **Required:** None (DNF is pre-installed on Amazon Linux 2023, YUM is pre-installed on Amazon Linux 2)
+- **Optional:** None
+- **Auto-installed:** None
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - Chocolatey - Install via `dev install chocolatey` or follow instructions at https://chocolatey.org/install
+- **Optional:**
+  - winget (pre-installed on Windows 10 version 1809+ and Windows 11) - Can be used as alternative to Chocolatey via `winget install --id GnuWin32.Tree`
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `curl` - Pre-bundled with Git for Windows (https://git-scm.com/download/win)
+  - `unzip` - Included in recent Git for Windows versions (https://git-scm.com/download/win)
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing tree on any platform, ensure:

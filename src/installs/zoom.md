@@ -6,6 +6,61 @@ Zoom is a video conferencing and collaboration platform that provides video meet
 
 **Important Platform Note**: Zoom does not provide native ARM builds for Linux. Raspberry Pi and other ARM-based Linux systems require either x86 emulation via Box86/Box64 or using the Zoom web application in a browser.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Required:**
+  - `wget` - Install via `sudo apt-get install -y wget` (usually pre-installed)
+  - `dpkg` - Install via `sudo apt-get install -y dpkg` (usually pre-installed)
+  - `sudo` - System package, typically pre-installed
+  - x86_64 architecture - Verified via `uname -m` (ARM not supported)
+- **Optional:** None
+- **Auto-installed:**
+  - `libgl1-mesa-glx` - OpenGL library (auto-installed by apt-get when installing .deb)
+  - `libegl1-mesa` - EGL library (auto-installed by apt-get when installing .deb)
+  - `libxcb-xtest0` - X11 extension library (auto-installed by apt-get when installing .deb)
+  - `libxcb-xinerama0` - X11 multi-monitor library (auto-installed by apt-get when installing .deb)
+
+### Raspberry Pi OS (APT/Snap)
+- **Installation not supported on this platform** - Zoom does not provide native ARM packages. Use the Zoom web application at https://zoom.us/wc via Chromium browser instead.
+
+### Amazon Linux (DNF/YUM)
+- **Required:**
+  - `dnf` or `yum` - Install via system package manager (pre-installed on Amazon Linux)
+  - `rpm` - Install via `sudo dnf install -y rpm` or `sudo yum install -y rpm` (usually pre-installed)
+  - `sudo` - System package, typically pre-installed
+  - x86_64 architecture - Verified via `uname -m` (ARM not supported)
+- **Optional:**
+  - Graphical desktop environment - Required for GUI functionality (install GNOME via `sudo dnf groupinstall -y "Server with GUI"`)
+  - `curl` - Install via `sudo dnf install -y curl`
+  - `ca-certificates` - Install via `sudo dnf install -y ca-certificates`
+- **Auto-installed:**
+  - `libxcb` - X11 protocol library (auto-installed by dnf/yum when installing RPM)
+  - `libxcb-xinerama` - X11 multi-monitor library (auto-installed by dnf/yum when installing RPM)
+  - `xcb-util-image` - X11 image utilities (auto-installed by dnf/yum when installing RPM)
+  - `xcb-util-keysyms` - X11 keyboard utilities (auto-installed by dnf/yum when installing RPM)
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `Chocolatey` - Install via PowerShell as Administrator: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  - Administrator privileges - Required for Chocolatey package installation
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - Windows installation of Zoom via Chocolatey (see Windows section above)
+  - `PowerShell` - Pre-installed on Windows
+  - `choco` command availability - Requires Chocolatey installed on Windows host
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Zoom on any platform, ensure:

@@ -13,6 +13,37 @@ Key features include:
 
 **Platform Availability**: Superwhisper is a commercial application available for macOS, iOS, and Windows. It is **not available** for Linux distributions including Ubuntu, Raspberry Pi OS, or Amazon Linux.
 
+## Dependencies
+
+### macOS (Homebrew)
+- **Required:**
+  - `Homebrew` - Install via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` or run `dev install homebrew`
+- **Optional:** None
+- **Auto-installed:** None
+
+### Ubuntu (APT/Snap)
+- **Installation not yet supported on this platform** - Superwhisper is not available for Linux distributions
+
+### Raspberry Pi OS (APT/Snap)
+- **Installation not yet supported on this platform** - Superwhisper is not available for Linux distributions
+
+### Amazon Linux (DNF/YUM)
+- **Installation not yet supported on this platform** - Superwhisper is not available for Linux distributions
+
+### Windows (Chocolatey/winget)
+- **Required:**
+  - `PowerShell` - Pre-installed on Windows 10 and later
+  - Internet connectivity - Required for downloading the installer from superwhisper.com
+- **Optional:** None
+- **Auto-installed:** None
+
+### Git Bash (Manual/Portable)
+- **Required:**
+  - `PowerShell.exe` - Pre-installed on Windows 10 and later (accessed via `powershell.exe` from Git Bash)
+  - Internet connectivity - Required for downloading the installer from superwhisper.com
+- **Optional:** None
+- **Auto-installed:** None
+
 ## Prerequisites
 
 Before installing Superwhisper, ensure:
