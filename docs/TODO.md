@@ -1,0 +1,3 @@
+- kill-node command: Looks for the Node instances in the current git repo, interogates the acutal process to determine where it is running from and the files it is using, and then kills it off if it is associated with this repo
+
+- build out the cli commands for each of the scripts.  For example, src/scripts/backup-source.js needs to be globally available as `backup-source` once the page is installed globally.
