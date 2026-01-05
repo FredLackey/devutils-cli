@@ -407,6 +407,31 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Pinentry is already installed on the system.
+ *
+ * This function checks for Pinentry installation using platform-appropriate methods:
+ * - macOS: Checks if 'pinentry-mac' Homebrew formula is installed
+ * - Windows: Checks if 'pinentry-basic' command exists (bundled with GnuPG)
+ * - Linux/Git Bash: Checks if 'pinentry' command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if Pinentry is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('pinentry-mac');
+  }
+
+  if (platform.type === 'windows') {
+    return shell.commandExists('pinentry-basic');
+  }
+
+  // Linux and Git Bash: Check if pinentry command exists
+  return shell.commandExists('pinentry');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Pinentry is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -466,6 +491,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

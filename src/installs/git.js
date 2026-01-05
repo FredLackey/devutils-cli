@@ -293,6 +293,34 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Git is installed on the current platform.
+ *
+ * Uses platform-appropriate verification:
+ * - macOS: Checks Homebrew formula (system Git may exist via Xcode CLT)
+ * - Linux: Checks if git command exists
+ * - Windows: Checks Chocolatey package
+ * - Git Bash: Checks if git command exists
+ *
+ * @returns {Promise<boolean>} True if Git is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check Homebrew formula (system Git may exist via Xcode CLT)
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('git');
+  }
+
+  // Windows: Check Chocolatey package
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('git');
+  }
+
+  // Linux and Git Bash: Check if git command exists
+  return shell.commandExists('git');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Git is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -354,6 +382,7 @@ async function install() {
 module.exports = {
   install,
   isEligible,
+  isInstalled,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

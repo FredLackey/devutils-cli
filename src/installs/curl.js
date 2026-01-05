@@ -266,6 +266,34 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if cURL is installed on the current platform.
+ *
+ * Uses platform-appropriate verification:
+ * - macOS: Checks Homebrew formula (system cURL always exists)
+ * - Linux: Checks if curl command exists
+ * - Windows: Checks Chocolatey package (system cURL always exists)
+ * - Git Bash: Checks if curl command exists
+ *
+ * @returns {Promise<boolean>} True if cURL is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check Homebrew formula (system cURL is always present at /usr/bin/curl)
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('curl');
+  }
+
+  // Windows: Check Chocolatey package (system cURL is always present)
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('curl');
+  }
+
+  // Linux and Git Bash: Check if curl command exists
+  return shell.commandExists('curl');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * cURL can be installed on all supported platforms:
@@ -333,6 +361,7 @@ async function install() {
 module.exports = {
   install,
   isEligible,
+  isInstalled,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

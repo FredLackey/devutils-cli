@@ -192,6 +192,26 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if yum-utils is installed on the current system.
+ * @returns {Promise<boolean>} True if yum-utils is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (['amazon_linux', 'fedora', 'rhel'].includes(platform.type)) {
+    // Check if either yum-utils or dnf-utils is installed
+    const checkResult = await shell.exec('rpm -q yum-utils dnf-utils 2>/dev/null');
+    if (checkResult.code === 0 && checkResult.stdout.trim()) {
+      const installedPackages = checkResult.stdout
+        .split('\n')
+        .filter(line => !line.includes('is not installed') && line.trim());
+      return installedPackages.length > 0;
+    }
+    return false;
+  }
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * yum-utils is only supported on Red Hat-based Linux distributions.
  * @returns {boolean} True if installation is supported on this platform
@@ -255,6 +275,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -664,6 +664,41 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Postman is already installed on the system.
+ *
+ * This function checks for Postman installation using platform-appropriate methods:
+ * - macOS: Checks if Postman.app exists in /Applications
+ * - Windows: Checks if Chocolatey package 'postman' is installed
+ * - Linux: Checks if Snap package 'postman' is installed or command exists
+ *
+ * @returns {Promise<boolean>} True if Postman is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return isPostmanInstalledMacOS();
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+
+  // Ubuntu/Debian/WSL: Check Snap installation
+  if (['ubuntu', 'debian', 'wsl'].includes(platform.type)) {
+    return snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  // Raspberry Pi: Check tarball installation
+  if (platform.type === 'raspbian') {
+    return isPostmanInstalledLinuxTarball();
+  }
+
+  // Other Linux: Check if command exists
+  return isPostmanCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Postman is NOT available on headless server platforms (Amazon Linux, RHEL, Fedora).
  * @returns {boolean} True if installation is supported on this platform
@@ -724,6 +759,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -193,6 +193,48 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if AppCleaner (or equivalent) is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if AppCleaner
+ * (macOS) or Bulk Crap Uninstaller (Windows) is already installed.
+ *
+ * @returns {Promise<boolean>} True if AppCleaner/equivalent is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for AppCleaner.app
+  if (platform.type === 'macos') {
+    return macosApps.isAppInstalled('AppCleaner');
+  }
+
+  // Windows: Check for Bulk Crap Uninstaller via winget or Chocolatey
+  if (platform.type === 'windows') {
+    const WINGET_PACKAGE_ID = 'Klocman.BulkCrapUninstaller';
+    const CHOCO_PACKAGE_NAME = 'bulk-crap-uninstaller';
+
+    if (winget.isInstalled()) {
+      const isInstalledViaWinget = await winget.isPackageInstalled(WINGET_PACKAGE_ID);
+      if (isInstalledViaWinget) {
+        return true;
+      }
+    }
+
+    if (choco.isInstalled()) {
+      const isInstalledViaChoco = await choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+      if (isInstalledViaChoco) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // Other platforms: Not supported
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * AppCleaner/equivalent can be installed on:
@@ -246,6 +288,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

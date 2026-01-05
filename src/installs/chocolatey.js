@@ -354,6 +354,18 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Chocolatey is installed on the current platform.
+ *
+ * This function uses the internal isChocolateyInstalled helper to check if
+ * the 'choco' command exists in PATH.
+ *
+ * @returns {Promise<boolean>} True if Chocolatey is installed
+ */
+async function isInstalled() {
+  return isChocolateyInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Chocolatey can only be installed on:
@@ -416,6 +428,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

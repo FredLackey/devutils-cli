@@ -729,6 +729,21 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Yarn is installed on the current system.
+ * @returns {Promise<boolean>} True if Yarn is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled(HOMEBREW_FORMULA_NAME);
+  }
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+  return isYarnCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Yarn is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -789,6 +804,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -393,6 +393,45 @@ async function install_gitbash() {
 // -----------------------------------------------------------------------------
 
 /**
+ * Check if build essential tools are installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if build tools
+ * are installed:
+ * - macOS: Checks for Xcode Command Line Tools
+ * - Linux: Checks for GCC and Make commands
+ * - Windows: Checks for Visual Studio Build Tools via Chocolatey
+ *
+ * @returns {Promise<boolean>} True if build tools are installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for Xcode Command Line Tools
+  if (platform.type === 'macos') {
+    return await isXcodeCliInstalled();
+  }
+
+  // Ubuntu/Debian/Raspberry Pi/WSL: Check for gcc and make
+  if (['ubuntu', 'debian', 'wsl', 'raspbian'].includes(platform.type)) {
+    return isGccInstalled() && isMakeInstalled();
+  }
+
+  // Amazon Linux/RHEL/Fedora: Check for gcc and make
+  if (['amazon_linux', 'rhel', 'fedora'].includes(platform.type)) {
+    return isGccInstalled() && isMakeInstalled();
+  }
+
+  // Windows: Check for Visual Studio Build Tools via Chocolatey
+  if (platform.type === 'windows') {
+    const buildToolsInstalled = await choco.isPackageInstalled('visualstudio2022buildtools');
+    const vcToolsInstalled = await choco.isPackageInstalled('visualstudio2022-workload-vctools');
+    return buildToolsInstalled && vcToolsInstalled;
+  }
+
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Build essential tools can be installed on:
@@ -467,6 +506,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

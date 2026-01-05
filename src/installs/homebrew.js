@@ -922,6 +922,38 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Homebrew is currently installed on the system.
+ *
+ * This function checks for Homebrew installation across all supported platforms:
+ * - macOS: Checks if brew command exists or Homebrew directory exists
+ * - Linux/WSL: Checks if brew command exists or Linuxbrew directory exists
+ * - Windows/Git Bash: Always returns false (Homebrew not supported)
+ *
+ * @returns {Promise<boolean>} True if Homebrew is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // Windows and Git Bash don't support Homebrew
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return false;
+  }
+
+  // Check if brew command exists
+  if (isBrewInstalled()) {
+    return true;
+  }
+
+  // Also check if Homebrew directory exists (may not be in PATH)
+  if (platform.type === 'macos') {
+    return doesBrewDirectoryExist('macos');
+  }
+
+  // Linux platforms (including WSL)
+  return doesBrewDirectoryExist('linux');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Homebrew is supported on macOS and Linux (including WSL).
  * Windows and Git Bash are NOT supported (use WSL instead).
@@ -981,6 +1013,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -248,6 +248,35 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if LFTP is installed on the current platform.
+ *
+ * On macOS, checks if the lftp formula is installed via Homebrew.
+ * On Windows, checks if lftp is installed via Chocolatey.
+ * On Linux, checks if the lftp command exists.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('lftp');
+  }
+
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('lftp');
+  }
+
+  // Linux: Check if lftp command exists
+  // Git Bash is not supported for LFTP
+  if (platform.type === 'gitbash') {
+    return false;
+  }
+
+  return shell.commandExists('lftp');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * LFTP is supported on all major platforms except Git Bash.
  * @returns {boolean} True if installation is supported on this platform
@@ -308,6 +337,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -408,6 +408,42 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Adobe Creative Cloud is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Adobe
+ * Creative Cloud is already installed:
+ * - macOS: Checks for the app bundle in /Applications
+ * - Windows: Checks installation paths and winget
+ * - WSL/Git Bash: Checks Windows host via PowerShell
+ *
+ * @returns {Promise<boolean>} True if Adobe Creative Cloud is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for the app bundle
+  if (platform.type === 'macos') {
+    return isInstalledMacOS();
+  }
+
+  // Windows: Check installation paths
+  if (platform.type === 'windows') {
+    return await isInstalledWindows();
+  }
+
+  // WSL and Git Bash: Check Windows host installation via PowerShell
+  if (platform.type === 'wsl' || platform.type === 'gitbash') {
+    const checkResult = await shell.exec(
+      `powershell.exe -NoProfile -Command "Test-Path 'C:\\Program Files\\Adobe\\Adobe Creative Cloud\\ACC\\Creative Cloud.exe'"`
+    );
+    return checkResult.code === 0 && checkResult.stdout.trim().toLowerCase() === 'true';
+  }
+
+  // Linux platforms: Not supported, return false
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Adobe Creative Cloud can be installed on:
@@ -476,6 +512,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

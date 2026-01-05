@@ -801,6 +801,43 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Go is currently installed on the system.
+ *
+ * This function checks for Go installation across all supported platforms:
+ * - macOS: Checks for Go via Homebrew formula or go command
+ * - Windows: Checks for Go via Chocolatey or go command
+ * - Linux/Git Bash: Checks if go command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if Go is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if Go formula is installed via Homebrew
+    const formulaInstalled = await brew.isFormulaInstalled(HOMEBREW_FORMULA_NAME);
+    if (formulaInstalled) {
+      return true;
+    }
+    // Also check if go command exists
+    return isGoCommandAvailable();
+  }
+
+  if (platform.type === 'windows') {
+    // Check if Go package is installed via Chocolatey
+    const packageInstalled = await choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+    if (packageInstalled) {
+      return true;
+    }
+    // Also check if go command exists
+    return isGoCommandAvailable();
+  }
+
+  // Linux, WSL, and Git Bash: Check if go command exists
+  return isGoCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Go is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -859,6 +896,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

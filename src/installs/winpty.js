@@ -252,6 +252,23 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if winpty is installed on the current system.
+ * @returns {Promise<boolean>} True if winpty is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'windows') {
+    // winpty is bundled with Git for Windows
+    return choco.isPackageInstalled('git');
+  }
+  if (platform.type === 'gitbash') {
+    return shell.commandExists(WINPTY_COMMAND);
+  }
+  // winpty is not applicable on non-Windows platforms
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * winpty is only applicable to Windows and Git Bash (Windows environments).
  * @returns {boolean} True if installation is supported on this platform
@@ -316,6 +333,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

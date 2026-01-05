@@ -558,6 +558,31 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Pandoc is already installed on the system.
+ *
+ * This function checks for Pandoc installation using platform-appropriate methods:
+ * - macOS: Checks if Homebrew formula is installed
+ * - Windows: Checks if Chocolatey package is installed
+ * - Linux/Git Bash: Checks if 'pandoc' command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if Pandoc is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled(HOMEBREW_FORMULA_NAME);
+  }
+
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+
+  // Linux and Git Bash: Check if command exists
+  return shell.commandExists('pandoc');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Pandoc is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -617,6 +642,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

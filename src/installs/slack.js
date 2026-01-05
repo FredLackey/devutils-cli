@@ -612,6 +612,33 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Slack is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Slack
+ * is already installed on the system.
+ *
+ * @returns {Promise<boolean>} True if Slack is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return isSlackInstalledMacOS();
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+
+  if (['ubuntu', 'debian', 'wsl'].includes(platform.type)) {
+    return snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  // For other platforms (Amazon Linux, etc.), check for command
+  return isSlackCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Slack is NOT available on ARM platforms (Raspberry Pi).
  * @returns {boolean} True if installation is supported on this platform
@@ -671,6 +698,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

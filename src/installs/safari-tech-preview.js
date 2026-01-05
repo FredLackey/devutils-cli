@@ -262,6 +262,27 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Safari Technology Preview is already installed on the system.
+ *
+ * This function checks for Safari Technology Preview installation on macOS
+ * by looking for the application bundle in /Applications. Returns false on
+ * all non-macOS platforms since Safari Technology Preview is macOS-only.
+ *
+ * @returns {Promise<boolean>} True if Safari Technology Preview is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // Safari Technology Preview is macOS-only
+  if (platform.type !== 'macos') {
+    return false;
+  }
+
+  // Check if app bundle exists
+  return isAlreadyInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Safari Technology Preview is ONLY available on macOS.
  * @returns {boolean} True if installation is supported on this platform
@@ -320,6 +341,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

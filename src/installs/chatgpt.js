@@ -337,6 +337,56 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if ChatGPT is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if ChatGPT
+ * is already installed:
+ * - macOS: Checks for ChatGPT.app in /Applications
+ * - Windows/Git Bash: Checks for Microsoft Store app via winget
+ * - Ubuntu/Debian: Checks for Snap package
+ *
+ * @returns {Promise<boolean>} True if ChatGPT is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for ChatGPT.app
+  if (platform.type === 'macos') {
+    return macosApps.isAppInstalled('ChatGPT');
+  }
+
+  // Windows: Check via winget
+  if (platform.type === 'windows') {
+    const listResult = await shell.exec(`winget list --id ${WINDOWS_STORE_ID}`);
+    return listResult.code === 0 && listResult.stdout.includes(WINDOWS_STORE_ID);
+  }
+
+  // Git Bash: Check via winget.exe
+  if (platform.type === 'gitbash') {
+    const listResult = await shell.exec(`winget.exe list --id ${WINDOWS_STORE_ID}`);
+    return listResult.code === 0 && listResult.stdout.includes(WINDOWS_STORE_ID);
+  }
+
+  // Ubuntu/Debian: Check for Snap package
+  if (['ubuntu', 'debian'].includes(platform.type)) {
+    return await snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  // WSL: Check Windows host via winget.exe
+  if (platform.type === 'wsl') {
+    const hasWinget = shell.commandExists('winget.exe');
+    if (hasWinget) {
+      const listResult = await shell.exec(`winget.exe list --id ${WINDOWS_STORE_ID}`);
+      return listResult.code === 0 && listResult.stdout.includes(WINDOWS_STORE_ID);
+    }
+    return false;
+  }
+
+  // Other platforms: Not supported
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * ChatGPT desktop app can be installed on:
@@ -393,6 +443,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

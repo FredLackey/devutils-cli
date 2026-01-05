@@ -896,6 +896,25 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if NVM is installed on the current platform.
+ *
+ * On macOS and Linux, checks if NVM (nvm-sh/nvm) is installed.
+ * On Windows and Git Bash, checks if nvm-windows is installed.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return isNvmWindowsInstalled();
+  }
+
+  // macOS and Linux: Check for nvm-sh/nvm
+  return isNvmShInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * NVM is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -956,6 +975,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -439,6 +439,56 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Bash Completion is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Bash Completion
+ * is already installed:
+ * - macOS: Checks for bash-completion@2 Homebrew formula
+ * - Ubuntu/Debian/WSL/Raspberry Pi: Checks for bash-completion APT package
+ * - Amazon Linux/RHEL/Fedora: Checks for bash-completion RPM package
+ *
+ * @returns {Promise<boolean>} True if Bash Completion is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for bash-completion@2 via Homebrew
+  if (platform.type === 'macos') {
+    return await brew.isFormulaInstalled('bash-completion@2');
+  }
+
+  // Ubuntu/Debian/WSL/Raspberry Pi: Check for bash-completion via APT
+  if (['ubuntu', 'debian', 'wsl', 'raspbian'].includes(platform.type)) {
+    return await apt.isPackageInstalled('bash-completion');
+  }
+
+  // Amazon Linux/RHEL/Fedora: Check for bash-completion via rpm
+  if (['amazon_linux', 'rhel', 'fedora'].includes(platform.type)) {
+    const checkResult = await shell.exec('rpm -q bash-completion 2>/dev/null');
+    return checkResult.code === 0;
+  }
+
+  // Git Bash: Check if Git completion script exists
+  if (platform.type === 'gitbash' || (platform.type === 'windows' && process.env.MSYSTEM)) {
+    const gitCompletionPaths = [
+      '/c/Program Files/Git/mingw64/share/git/completion/git-completion.bash',
+      '/mingw64/share/git/completion/git-completion.bash',
+      '/usr/share/git/completion/git-completion.bash'
+    ];
+    for (const completionPath of gitCompletionPaths) {
+      const checkResult = await shell.exec(`test -f "${completionPath}" && echo "exists"`);
+      if (checkResult.stdout.trim() === 'exists') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Windows (native): Not supported
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Bash Completion can be installed on:
@@ -506,6 +556,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

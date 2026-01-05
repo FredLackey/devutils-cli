@@ -677,6 +677,30 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Sublime Text is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Sublime Text
+ * is already installed on the system by checking for the 'subl' command.
+ *
+ * @returns {Promise<boolean>} True if Sublime Text is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    const caskInstalled = await brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+    if (caskInstalled) return true;
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+
+  // For all platforms, check if subl command is available
+  return isSublimeCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Sublime Text is available on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -735,6 +759,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

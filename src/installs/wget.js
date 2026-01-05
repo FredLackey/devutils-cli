@@ -323,6 +323,21 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if wget is installed on the current system.
+ * @returns {Promise<boolean>} True if wget is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('wget');
+  }
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('wget');
+  }
+  return shell.commandExists('wget');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * wget is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -381,6 +396,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

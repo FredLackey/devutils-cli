@@ -234,6 +234,27 @@ async function install_gitbash() {
 // -----------------------------------------------------------------------------
 
 /**
+ * Check if lsb-release is installed on the current platform.
+ *
+ * lsb-release is a Linux-only utility. On supported platforms
+ * (Ubuntu, Debian, Raspberry Pi OS, WSL), checks if the lsb_release
+ * command exists.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // lsb-release is only available on Debian-based Linux distributions
+  if (['ubuntu', 'debian', 'wsl', 'raspbian'].includes(platform.type)) {
+    return shell.commandExists('lsb_release');
+  }
+
+  // Not applicable for other platforms (macOS, Windows, Amazon Linux, etc.)
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * lsb-release is a Linux-only utility, only supported on Debian-based distros.
  * @returns {boolean} True if installation is supported on this platform
@@ -302,6 +323,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

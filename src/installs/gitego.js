@@ -824,6 +824,18 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if gitego is currently installed on the system.
+ *
+ * This function checks if the gitego command exists in PATH.
+ * gitego is installed via `go install` on all platforms.
+ *
+ * @returns {Promise<boolean>} True if gitego is installed, false otherwise
+ */
+async function isInstalled() {
+  return isGitegoInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * gitego is supported on all major platforms via Go.
  * @returns {boolean} True if installation is supported on this platform
@@ -884,6 +896,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -705,6 +705,28 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if OpenSSH is installed on the current platform.
+ *
+ * Uses platform-specific detection methods:
+ * - macOS: Checks Homebrew formula installation
+ * - Windows: Checks if ssh command exists (built-in feature)
+ * - Linux/Git Bash: Checks if ssh command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if OpenSSH is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if OpenSSH is installed via Homebrew (system SSH is always available)
+    return brew.isFormulaInstalled(HOMEBREW_FORMULA_NAME);
+  }
+
+  // Linux, Windows, and Git Bash: Check if ssh command exists
+  return shell.commandExists('ssh');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * OpenSSH is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -763,6 +785,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -619,6 +619,24 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if WhatsApp is installed on the current system.
+ * @returns {Promise<boolean>} True if WhatsApp is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+  if (platform.type === 'windows') {
+    return winget.isPackageInstalled(WINGET_PACKAGE_ID);
+  }
+  if (['ubuntu', 'debian', 'amazon_linux', 'fedora', 'rhel'].includes(platform.type)) {
+    return isWhatsAppFlatpakInstalled();
+  }
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * WhatsApp is supported on all major platforms except Raspberry Pi OS.
  * @returns {boolean} True if installation is supported on this platform
@@ -677,6 +695,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

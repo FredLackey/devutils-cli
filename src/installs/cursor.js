@@ -449,6 +449,46 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Cursor is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Cursor
+ * is already installed:
+ * - macOS: Checks for Cursor.app in /Applications
+ * - Windows/Git Bash/WSL: Checks for winget package
+ * - Ubuntu/Debian/Raspberry Pi/Amazon Linux: Checks for cursor command
+ *
+ * @returns {Promise<boolean>} True if Cursor is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for Cursor.app
+  if (platform.type === 'macos') {
+    return macosApps.isAppInstalled(MACOS_APP_NAME);
+  }
+
+  // Windows: Check via winget
+  if (platform.type === 'windows') {
+    return await winget.isPackageInstalled(WINGET_PACKAGE_ID);
+  }
+
+  // WSL and Git Bash: Check via winget.exe
+  if (platform.type === 'wsl' || platform.type === 'gitbash') {
+    const checkResult = await shell.exec(
+      `winget.exe list --exact --id "${WINGET_PACKAGE_ID}" 2>/dev/null`
+    );
+    return checkResult.code === 0 && checkResult.stdout.includes(WINGET_PACKAGE_ID);
+  }
+
+  // Ubuntu/Debian/Raspberry Pi/Amazon Linux: Check for cursor command
+  if (['ubuntu', 'debian', 'raspbian', 'amazon_linux', 'rhel', 'fedora'].includes(platform.type)) {
+    return shell.commandExists('cursor');
+  }
+
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Cursor can be installed on:
@@ -506,6 +546,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

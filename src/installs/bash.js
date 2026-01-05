@@ -328,6 +328,18 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Bash is installed on the current platform.
+ *
+ * This function uses the internal isBashInstalled helper to check if the
+ * bash command exists in PATH.
+ *
+ * @returns {Promise<boolean>} True if Bash is installed
+ */
+async function isInstalled() {
+  return isBashInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Bash can be installed on all supported platforms:
@@ -386,6 +398,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

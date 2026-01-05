@@ -680,6 +680,41 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Google Chrome is currently installed on the system.
+ *
+ * This function checks for Google Chrome installation across all supported platforms:
+ * - macOS: Checks for Google Chrome.app via Homebrew cask or application bundle
+ * - Windows: Checks for Chrome.exe at standard installation paths
+ * - Linux: Checks if google-chrome or google-chrome-stable command exists
+ *
+ * @returns {Promise<boolean>} True if Google Chrome is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if Google Chrome app bundle exists
+    if (isChromeInstalledMacOS()) {
+      return true;
+    }
+    // Also check via Homebrew cask
+    return await brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return isChromeInstalledWindows();
+  }
+
+  if (platform.type === 'raspbian') {
+    // Chrome is not available for Raspberry Pi
+    return false;
+  }
+
+  // Linux platforms: Check if google-chrome command exists
+  return isChromeInstalledLinux();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Google Chrome is NOT supported on ARM-based platforms (Raspberry Pi).
  * @returns {boolean} True if installation is supported on this platform
@@ -742,6 +777,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

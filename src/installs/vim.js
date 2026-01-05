@@ -327,6 +327,21 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Vim is installed on the current system.
+ * @returns {Promise<boolean>} True if Vim is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('vim');
+  }
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('vim');
+  }
+  return shell.commandExists('vim');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Vim is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -387,6 +402,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -166,12 +166,33 @@ async function ensureFlatpakInstalled() {
 }
 
 /**
+ * Checks if the system has a display environment (not headless).
+ * Flatpak requires a display environment and D-Bus to function properly.
+ *
+ * @returns {boolean} True if a display environment is detected
+ */
+function hasDisplayEnvironment() {
+  // Check for common display environment variables
+  const hasDisplay = process.env.DISPLAY ||
+                     process.env.WAYLAND_DISPLAY ||
+                     process.env.XDG_CURRENT_DESKTOP;
+  return Boolean(hasDisplay);
+}
+
+/**
  * Adds the Flathub repository if not already configured.
  * Flathub is the source for the Bambu Studio Flatpak package.
  *
  * @returns {Promise<boolean>} True if Flathub is available after this function
  */
 async function ensureFlathubConfigured() {
+  // Check if we're in a headless environment
+  if (!hasDisplayEnvironment()) {
+    console.log('Warning: No display environment detected (DISPLAY, WAYLAND_DISPLAY, or XDG_CURRENT_DESKTOP).');
+    console.log('Bambu Studio requires a desktop environment to run.');
+    console.log('Attempting to configure Flathub anyway...');
+  }
+
   // Check if Flathub is already configured
   const checkResult = await shell.exec('flatpak remote-list | grep -i flathub');
   if (checkResult.code === 0 && checkResult.stdout.includes('flathub')) {
@@ -187,6 +208,20 @@ async function ensureFlathubConfigured() {
 
   if (addResult.code !== 0) {
     console.error('Failed to add Flathub repository:', addResult.stderr);
+
+    // Provide helpful context if this is likely a headless/Docker environment
+    if (addResult.stderr.includes('system bus') || addResult.stderr.includes('D-Bus')) {
+      console.log('');
+      console.log('This error typically occurs in headless or containerized environments.');
+      console.log('Bambu Studio is a GUI application and requires:');
+      console.log('  1. A desktop environment (GNOME, KDE, XFCE, etc.)');
+      console.log('  2. X11 or Wayland display server');
+      console.log('  3. D-Bus system bus');
+      console.log('');
+      console.log('If you are in a Docker container or headless server, Bambu Studio');
+      console.log('cannot be installed or run. Use a desktop Linux system instead.');
+    }
+
     return false;
   }
 
@@ -715,6 +750,50 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Bambu Studio is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Bambu Studio
+ * is already installed:
+ * - macOS: Checks for the app bundle in /Applications
+ * - Windows: Checks for the executable in Program Files
+ * - Linux: Checks for Flatpak installation
+ * - Raspberry Pi: Checks for Pi-Apps installation
+ *
+ * @returns {Promise<boolean>} True if Bambu Studio is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for the app bundle
+  if (platform.type === 'macos') {
+    return isInstalledOnMacOS();
+  }
+
+  // Windows: Check for the executable
+  if (platform.type === 'windows') {
+    return await isInstalledOnWindows();
+  }
+
+  // Git Bash: Check for Windows installation
+  if (platform.type === 'gitbash') {
+    const checkResult = await shell.exec('ls "/c/Program Files/Bambu Studio/bambu-studio.exe" 2>/dev/null');
+    return checkResult.code === 0;
+  }
+
+  // Raspberry Pi: Check via Pi-Apps
+  if (platform.type === 'raspbian') {
+    return await isInstalledOnRaspbian();
+  }
+
+  // Linux platforms (Ubuntu, Debian, WSL, Amazon Linux, Fedora, RHEL): Check Flatpak
+  if (['ubuntu', 'debian', 'wsl', 'amazon_linux', 'fedora', 'rhel'].includes(platform.type)) {
+    return await isInstalledViaFlatpak();
+  }
+
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Bambu Studio can be installed on all supported platforms:
@@ -782,6 +861,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

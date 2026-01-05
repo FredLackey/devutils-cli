@@ -715,6 +715,32 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Gemini CLI is currently installed on the system.
+ *
+ * This function checks for Gemini CLI installation across all supported platforms:
+ * - macOS: Checks for gemini-cli via Homebrew formula or gemini command
+ * - Other platforms: Checks if gemini command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if Gemini CLI is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if Gemini CLI formula is installed via Homebrew
+    const formulaInstalled = await brew.isFormulaInstalled(HOMEBREW_FORMULA_NAME);
+    if (formulaInstalled) {
+      return true;
+    }
+    // Also check if gemini command exists
+    return isGeminiCliInstalled();
+  }
+
+  // All other platforms: Check if gemini command exists
+  return isGeminiCliInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Gemini CLI is supported on all major platforms via npm.
  * @returns {boolean} True if installation is supported on this platform
@@ -766,6 +792,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

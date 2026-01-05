@@ -262,6 +262,25 @@ async function install_gitbash() {
 // -----------------------------------------------------------------------------
 
 /**
+ * Check if software-properties-common is installed on the current platform.
+ *
+ * This function checks if the add-apt-repository command is available,
+ * which indicates software-properties-common is installed.
+ *
+ * @returns {Promise<boolean>} True if software-properties-common is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // software-properties-common is only available on Debian-based systems
+  if (!['ubuntu', 'debian', 'wsl', 'raspbian'].includes(platform.type)) {
+    return false;
+  }
+
+  return isAddAptRepositoryInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * software-properties-common is only available on Debian-based Linux distributions.
  * @returns {boolean} True if installation is supported on this platform
@@ -330,6 +349,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

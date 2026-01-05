@@ -226,6 +226,30 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Elmedia Player is currently installed on the system.
+ *
+ * Elmedia Player is ONLY available on macOS. This function checks for the
+ * application bundle in /Applications or ~/Applications.
+ *
+ * @returns {Promise<boolean>} True if Elmedia Player is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if Elmedia Player app bundle exists
+    if (isInstalledMacOS()) {
+      return true;
+    }
+    // Also check via Homebrew cask
+    return await brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+
+  // Elmedia Player is not available on any other platform
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Elmedia Player is ONLY available on macOS.
  * @returns {boolean} True if installation is supported on this platform
@@ -290,6 +314,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

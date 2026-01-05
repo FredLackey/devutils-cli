@@ -315,6 +315,27 @@ async function install_gitbash() {
 // -----------------------------------------------------------------------------
 
 /**
+ * Check if procps is already installed on the system.
+ *
+ * This function checks for procps installation by verifying both 'ps' and 'free'
+ * commands are available. The 'free' command specifically is a procps utility
+ * that does not exist on macOS/BSD, making it a reliable indicator.
+ *
+ * @returns {Promise<boolean>} True if procps is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // procps is Linux-only
+  if (!['ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel'].includes(platform.type)) {
+    return false;
+  }
+
+  // Check if core procps utilities are available
+  return areProcpsUtilitiesInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * procps is Linux-ONLY (requires /proc filesystem).
  * @returns {boolean} True if installation is supported on this platform
@@ -381,6 +402,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

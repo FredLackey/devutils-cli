@@ -639,6 +639,27 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Zoom is installed on the current system.
+ * @returns {Promise<boolean>} True if Zoom is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return isZoomInstalledMacOS();
+  }
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+  if (['ubuntu', 'debian'].includes(platform.type)) {
+    return isZoomInstalledDpkg();
+  }
+  if (['amazon_linux', 'fedora', 'rhel'].includes(platform.type)) {
+    return isZoomInstalledRpm();
+  }
+  return isZoomCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Zoom is supported on all major platforms except Raspberry Pi OS
  * (ARM architecture not supported by Zoom).
@@ -698,6 +719,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

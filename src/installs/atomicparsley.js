@@ -541,6 +541,19 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if AtomicParsley is installed on the current platform.
+ *
+ * This function verifies that the AtomicParsley command exists and is accessible.
+ * It handles the case-sensitivity of the command name across different platforms.
+ *
+ * @returns {Promise<boolean>} True if AtomicParsley is installed
+ */
+async function isInstalled() {
+  // Use the internal helper which handles case-sensitivity
+  return await isAtomicParsleyInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * AtomicParsley can be installed on all supported platforms:
@@ -606,6 +619,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

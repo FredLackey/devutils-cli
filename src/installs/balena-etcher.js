@@ -147,6 +147,23 @@ async function install_macos() {
  * @returns {Promise<void>}
  */
 async function install_ubuntu() {
+  // Check architecture FIRST - Balena Etcher only provides AMD64 packages for Linux
+  // This must be checked before attempting any installations
+  const arch = os.getArch();
+  if (arch !== 'x64') {
+    console.log(`Balena Etcher does not provide official ${arch} packages for Ubuntu/Debian.`);
+    console.log('');
+    console.log('Note: Official Balena Etcher releases only support x64 (AMD64) architecture.');
+    console.log('For ARM64 systems:');
+    console.log('  - Raspberry Pi: Use Pi-Apps (community ARM build)');
+    console.log('  - Other ARM64 Linux: Community builds available at:');
+    console.log('    https://github.com/Itai-Nelken/BalenaEtcher-arm');
+    console.log('');
+    console.log('Alternatively, consider using Raspberry Pi Imager (official ARM support):');
+    console.log('  sudo apt-get install -y rpi-imager');
+    return;
+  }
+
   // Check if already installed (idempotency check)
   const alreadyInstalled = await isInstalledOnDebian();
   if (alreadyInstalled) {
@@ -295,6 +312,20 @@ async function install_raspbian() {
  * @returns {Promise<void>}
  */
 async function install_amazon_linux() {
+  // Check architecture FIRST - Balena Etcher only provides x86_64 packages for Linux
+  // This must be checked before attempting any installations
+  const arch = os.getArch();
+  if (arch !== 'x64') {
+    console.log(`Balena Etcher does not provide official ${arch} packages for RHEL/Fedora/Amazon Linux.`);
+    console.log('');
+    console.log('Note: Official Balena Etcher releases only support x64 (x86_64) architecture.');
+    console.log('For ARM64 systems, community builds may be available at:');
+    console.log('  https://github.com/Itai-Nelken/BalenaEtcher-arm');
+    console.log('');
+    console.log('Alternatively, consider using other image writing tools with ARM support.');
+    return;
+  }
+
   // Check if already installed (idempotency check)
   const alreadyInstalled = await isInstalledOnRPM();
   if (alreadyInstalled) {
@@ -441,6 +472,17 @@ async function install_windows() {
  * @returns {Promise<void>}
  */
 async function install_ubuntu_wsl() {
+  // Check architecture FIRST - Balena Etcher only provides AMD64 packages for Linux
+  // This must be checked before attempting any installations
+  const arch = os.getArch();
+  if (arch !== 'x64') {
+    console.log(`Balena Etcher does not provide official ${arch} packages for WSL.`);
+    console.log('');
+    console.log('Note: Official Balena Etcher releases only support x64 (AMD64) architecture.');
+    console.log('For ARM64 WSL, consider installing Balena Etcher on Windows directly instead.');
+    return;
+  }
+
   // Check if already installed (idempotency check)
   const alreadyInstalled = await isInstalledOnDebian();
   if (alreadyInstalled) {
@@ -534,6 +576,44 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Balena Etcher is installed on the current platform.
+ *
+ * Uses platform-appropriate verification:
+ * - macOS: Checks for application bundle in /Applications
+ * - Ubuntu/Debian/WSL: Checks dpkg package database
+ * - Raspberry Pi OS: Checks for balena-etcher-electron command
+ * - Amazon Linux/RHEL/Fedora: Checks rpm package database
+ * - Windows: Checks for executable in Program Files
+ *
+ * @returns {Promise<boolean>} True if Balena Etcher is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  const checks = {
+    'macos': isInstalledOnMacOS,
+    'ubuntu': isInstalledOnDebian,
+    'debian': isInstalledOnDebian,
+    'wsl': isInstalledOnDebian,
+    'raspbian': isInstalledOnRaspbian,
+    'amazon_linux': isInstalledOnRPM,
+    'fedora': isInstalledOnRPM,
+    'rhel': isInstalledOnRPM,
+    'windows': isInstalledOnWindows,
+    'gitbash': isInstalledOnWindows,
+  };
+
+  const checker = checks[platform.type];
+  if (!checker) {
+    return false;
+  }
+
+  // Handle both sync and async checkers
+  const result = checker();
+  return result instanceof Promise ? await result : result;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Balena Etcher can be installed on all supported platforms:
@@ -591,6 +671,7 @@ async function install() {
 module.exports = {
   install,
   isEligible,
+  isInstalled,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

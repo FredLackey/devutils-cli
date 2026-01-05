@@ -592,6 +592,35 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Keyboard Maestro (or equivalent automation tool) is installed.
+ *
+ * On macOS, checks if Keyboard Maestro cask is installed via Homebrew.
+ * On Windows/Git Bash, checks if AutoHotkey is installed via Chocolatey.
+ * On Linux, checks if autokey-gtk command exists.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return choco.isPackageInstalled(CHOCO_AUTOHOTKEY_PACKAGE);
+  }
+
+  // Linux: Check if autokey-gtk command exists
+  if (['ubuntu', 'debian', 'raspbian', 'wsl'].includes(platform.type)) {
+    return shell.commandExists('autokey-gtk');
+  }
+
+  // Server platforms (amazon_linux, rhel, fedora) don't have automation tools
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Keyboard Maestro (or equivalent) is supported on desktop platforms.
  * Server operating systems (Amazon Linux, RHEL, Fedora) are NOT supported.
@@ -656,6 +685,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

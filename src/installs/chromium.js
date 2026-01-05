@@ -495,6 +495,76 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Chromium is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Chromium
+ * is already installed:
+ * - macOS: Checks for Chromium.app in /Applications
+ * - Windows: Checks for Chocolatey package or chromium command
+ * - Ubuntu/Debian/WSL: Checks for Snap package
+ * - Raspberry Pi: Checks for APT package
+ * - Amazon Linux: Checks for google-chrome-stable or chromium-browser command
+ *
+ * @returns {Promise<boolean>} True if Chromium is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for Chromium.app
+  if (platform.type === 'macos') {
+    return isChromiumInstalledOnMacOS();
+  }
+
+  // Windows: Check for Chocolatey package or command
+  if (platform.type === 'windows') {
+    const choco = require('../utils/windows/choco');
+    const isPackageInstalled = await choco.isPackageInstalled('chromium');
+    if (isPackageInstalled) {
+      return true;
+    }
+    return shell.commandExists('chromium');
+  }
+
+  // Git Bash: Check for command or portable installation
+  if (platform.type === 'gitbash') {
+    if (shell.commandExists('chromium')) {
+      return true;
+    }
+    // Check portable installation location
+    const portablePath = path.join(os.getHomeDir(), 'Applications', 'Chromium', 'chromium.exe');
+    return fs.existsSync(portablePath);
+  }
+
+  // Ubuntu/Debian: Check for Snap package
+  if (['ubuntu', 'debian'].includes(platform.type)) {
+    const snap = require('../utils/ubuntu/snap');
+    return await snap.isSnapInstalled('chromium');
+  }
+
+  // WSL: Check for Snap or APT package
+  if (platform.type === 'wsl') {
+    const snap = require('../utils/ubuntu/snap');
+    const apt = require('../utils/ubuntu/apt');
+    const snapInstalled = await snap.isSnapInstalled('chromium');
+    if (snapInstalled) return true;
+    return await apt.isPackageInstalled('chromium-browser');
+  }
+
+  // Raspberry Pi: Check for APT package
+  if (platform.type === 'raspbian') {
+    const apt = require('../utils/ubuntu/apt');
+    return await apt.isPackageInstalled('chromium-browser');
+  }
+
+  // Amazon Linux/RHEL/Fedora: Check for Chrome or Chromium command
+  if (['amazon_linux', 'rhel', 'fedora'].includes(platform.type)) {
+    return shell.commandExists('google-chrome-stable') || shell.commandExists('chromium-browser');
+  }
+
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Chromium can be installed on all supported platforms:
@@ -559,6 +629,7 @@ async function install() {
 // Export all functions for testing and programmatic use
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -379,6 +379,31 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if ShellCheck is already installed on the system.
+ *
+ * This function checks for ShellCheck installation using platform-appropriate methods:
+ * - macOS: Checks if Homebrew formula is installed
+ * - Windows: Checks if Chocolatey package is installed
+ * - Linux/Git Bash: Checks if 'shellcheck' command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if ShellCheck is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('shellcheck');
+  }
+
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('shellcheck');
+  }
+
+  // Linux and Git Bash: Check if command exists
+  return shell.commandExists('shellcheck');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * ShellCheck is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -437,6 +462,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

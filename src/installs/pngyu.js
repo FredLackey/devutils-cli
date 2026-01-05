@@ -742,6 +742,36 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Pngyu (or pngquant) is already installed on the system.
+ *
+ * This function checks for Pngyu/pngquant installation using platform-appropriate methods:
+ * - macOS: Checks if Pngyu cask is installed OR pngquant formula is installed
+ * - Windows: Checks if Chocolatey package 'pngyu' is installed
+ * - Linux/Git Bash: Checks if 'pngquant' command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if Pngyu or pngquant is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check for Pngyu app or pngquant CLI
+    const caskInstalled = await brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+    if (caskInstalled) return true;
+    const formulaInstalled = await brew.isFormulaInstalled(HOMEBREW_PNGQUANT_FORMULA);
+    if (formulaInstalled) return true;
+    return isPngyuInstalledMacOS();
+  }
+
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+
+  // Linux and Git Bash: Check if pngquant command exists
+  return shell.commandExists('pngquant');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Pngyu (or pngquant CLI) is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -805,6 +835,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

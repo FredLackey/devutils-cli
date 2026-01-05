@@ -454,6 +454,43 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Camtasia is installed on the current platform.
+ *
+ * This function uses the existing internal helper functions to determine if
+ * Camtasia is already installed:
+ * - macOS: Checks for Camtasia*.app in /Applications
+ * - Windows: Checks installation paths and winget
+ * - WSL/Git Bash: Checks Windows host via PowerShell
+ *
+ * @returns {Promise<boolean>} True if Camtasia is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for the app bundle
+  if (platform.type === 'macos') {
+    return isInstalledMacOS();
+  }
+
+  // Windows: Check installation paths
+  if (platform.type === 'windows') {
+    return await isInstalledWindows();
+  }
+
+  // WSL and Git Bash: Check Windows host installation via PowerShell
+  if (platform.type === 'wsl' || platform.type === 'gitbash') {
+    const checkPaths = WINDOWS_INSTALL_PATHS.map(p => `(Test-Path '${p}')`).join(' -or ');
+    const checkResult = await shell.exec(
+      `powershell.exe -NoProfile -Command "${checkPaths}"`
+    );
+    return checkResult.code === 0 && checkResult.stdout.trim().toLowerCase() === 'true';
+  }
+
+  // Linux platforms: Not supported
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Camtasia can be installed on:
@@ -525,6 +562,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

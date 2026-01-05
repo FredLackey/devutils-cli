@@ -350,6 +350,52 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Google Chrome Canary is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Chrome Canary
+ * is already installed:
+ * - macOS: Checks for Google Chrome Canary.app in /Applications
+ * - Windows: Checks for Chocolatey package or executable in AppData
+ * - Ubuntu/Debian/WSL: Checks for google-chrome-canary command
+ *
+ * @returns {Promise<boolean>} True if Chrome Canary is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for the app bundle
+  if (platform.type === 'macos') {
+    return macosApps.isAppInstalled(MACOS_APP_NAME);
+  }
+
+  // Windows: Check for Chocolatey package or direct file
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    const isPackageInstalled = await choco.isPackageInstalled(WINDOWS_PACKAGE_NAME);
+    if (isPackageInstalled) {
+      return true;
+    }
+
+    // Also check the Chrome SxS directory (Canary uses SxS for side-by-side installation)
+    const localAppData = process.env.LOCALAPPDATA || '';
+    if (localAppData) {
+      const chromeSxSPath = path.join(localAppData, 'Google', 'Chrome SxS', 'Application', 'chrome.exe');
+      if (fs.existsSync(chromeSxSPath)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Ubuntu/Debian/WSL: Check for the command
+  if (['ubuntu', 'debian', 'wsl'].includes(platform.type)) {
+    return shell.commandExists(LINUX_COMMAND_NAME);
+  }
+
+  // Unsupported platforms
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Google Chrome Canary can be installed on:
@@ -411,6 +457,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

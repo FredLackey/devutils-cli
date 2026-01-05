@@ -585,6 +585,33 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Superwhisper is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Superwhisper
+ * is already installed on the system.
+ *
+ * @returns {Promise<boolean>} True if Superwhisper is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return isSuperwhisperInstalledMacOS();
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash' || platform.type === 'wsl') {
+    // Check for Windows installation path
+    const result = await shell.exec(
+      'powershell.exe -NoProfile -Command "Test-Path \\"$env:LOCALAPPDATA\\Programs\\superwhisper\\""'
+    );
+    return result.code === 0 && result.stdout.trim().toLowerCase() === 'true';
+  }
+
+  // Superwhisper is not available on Linux platforms
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Superwhisper is only available for macOS, Windows, WSL (installs on Windows), and Git Bash.
  * @returns {boolean} True if installation is supported on this platform
@@ -645,6 +672,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -363,6 +363,23 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if unzip is installed on the current system.
+ * @returns {Promise<boolean>} True if unzip is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    // macOS always has system unzip, also check Homebrew
+    const hasBrewUnzip = await brew.isFormulaInstalled('unzip');
+    return hasBrewUnzip || shell.commandExists('unzip');
+  }
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('unzip');
+  }
+  return shell.commandExists('unzip');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * unzip is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -424,6 +441,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

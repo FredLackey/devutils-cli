@@ -713,6 +713,48 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Messenger (Caprine) is installed on the current platform.
+ *
+ * On macOS, checks if Caprine cask is installed via Homebrew.
+ * On Windows, checks if Caprine is installed via winget.
+ * On Ubuntu/Debian, checks if Caprine is installed via Snap.
+ * On Raspberry Pi, checks if Caprine is installed via Pi-Apps.
+ * On Amazon Linux, checks for AppImage.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return winget.isPackageInstalled(WINGET_PACKAGE_ID);
+  }
+
+  if (platform.type === 'ubuntu' || platform.type === 'debian') {
+    return snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  if (platform.type === 'raspbian') {
+    return isCaprineInstalledPiApps();
+  }
+
+  if (platform.type === 'amazon_linux' || platform.type === 'rhel' || platform.type === 'fedora') {
+    return isCaprineInstalledAppImage();
+  }
+
+  // WSL: Check for Snap installation
+  if (platform.type === 'wsl') {
+    return snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Messenger (Caprine) is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -771,6 +813,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

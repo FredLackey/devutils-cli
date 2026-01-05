@@ -360,6 +360,33 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if the file command is currently installed on the system.
+ *
+ * This function checks for the file command across all supported platforms:
+ * - macOS: Checks if file command exists (system-provided)
+ * - Windows: Checks for file via Chocolatey or command existence
+ * - Linux/Git Bash: Checks if file command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if file is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'windows') {
+    // Check if file package is installed via Chocolatey
+    const packageInstalled = await choco.isPackageInstalled('file');
+    if (packageInstalled) {
+      return true;
+    }
+    // Also check if file command exists
+    return shell.commandExists('file');
+  }
+
+  // macOS, Linux, WSL, and Git Bash: Check if file command exists
+  return shell.commandExists('file');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * The file command is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -418,6 +445,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

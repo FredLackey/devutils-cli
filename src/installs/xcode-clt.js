@@ -429,6 +429,18 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Xcode Command Line Tools are installed on the current system.
+ * @returns {Promise<boolean>} True if Xcode CLT is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return isCommandLineToolsInstalled();
+  }
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Xcode Command Line Tools are ONLY available on macOS.
  * @returns {boolean} True if installation is supported on this platform
@@ -489,6 +501,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -671,6 +671,38 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Microsoft Teams is installed on the current platform.
+ *
+ * On macOS, checks if Teams.app exists.
+ * On Windows/Git Bash, checks if Teams is installed via Chocolatey.
+ * On Linux, checks if teams-for-linux command exists.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash' || platform.type === 'wsl') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+
+  if (platform.type === 'raspbian') {
+    return snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  // Ubuntu/Debian and other Linux: Check for teams-for-linux command
+  if (['ubuntu', 'debian', 'amazon_linux', 'rhel', 'fedora'].includes(platform.type)) {
+    return shell.commandExists('teams-for-linux');
+  }
+
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Microsoft Teams is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -729,6 +761,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -587,6 +587,39 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if NordPass is installed on the current platform.
+ *
+ * On macOS, checks if NordPass.app exists.
+ * On Windows/Git Bash, checks if NordPass is installed via Chocolatey.
+ * On Ubuntu/Debian, checks if NordPass is installed via Snap.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+
+  if (platform.type === 'ubuntu' || platform.type === 'debian') {
+    return snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  // WSL: Check for Snap installation
+  if (platform.type === 'wsl') {
+    return snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  // Raspberry Pi and Amazon Linux: NordPass is not available
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * NordPass is available on macOS, Windows, and Ubuntu/Debian.
  * NOT available on Raspberry Pi, Amazon Linux, or other server distros.
@@ -649,6 +682,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

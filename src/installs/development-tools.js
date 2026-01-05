@@ -459,6 +459,39 @@ async function install_gitbash() {
 }
 
 // -----------------------------------------------------------------------------
+// Installation Check
+// -----------------------------------------------------------------------------
+
+/**
+ * Check if development tools are currently installed on the system.
+ *
+ * This function checks for development tools across all supported platforms:
+ * - macOS: Checks for Xcode Command Line Tools via xcode-select
+ * - Ubuntu/Debian/Raspbian/WSL: Checks for build-essential (gcc and make)
+ * - Amazon Linux/RHEL/Fedora: Checks for Development Tools (gcc and make)
+ * - Windows: Checks for Visual Studio Build Tools via Chocolatey
+ *
+ * @returns {Promise<boolean>} True if development tools are installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return await isXcodeCliInstalled();
+  }
+
+  if (platform.type === 'windows') {
+    // Check for Visual Studio Build Tools via Chocolatey
+    const buildToolsInstalled = await choco.isPackageInstalled('visualstudio2022buildtools');
+    const vcToolsInstalled = await choco.isPackageInstalled('visualstudio2022-workload-vctools');
+    return buildToolsInstalled && vcToolsInstalled;
+  }
+
+  // Linux platforms: Check if gcc and make are available
+  return isGccInstalled() && isMakeInstalled();
+}
+
+// -----------------------------------------------------------------------------
 // Eligibility Check
 // -----------------------------------------------------------------------------
 
@@ -543,6 +576,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

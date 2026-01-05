@@ -897,6 +897,43 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Docker is currently installed on the system.
+ *
+ * This function checks for Docker installation across all supported platforms:
+ * - macOS: Checks for Docker Desktop via Homebrew cask or docker command
+ * - Windows: Checks for Docker Desktop via Chocolatey or docker command
+ * - Linux: Checks if docker command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if Docker is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if Docker Desktop cask is installed
+    const caskInstalled = await brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+    if (caskInstalled) {
+      return true;
+    }
+    // Also check if docker command exists
+    return isDockerCommandAvailable();
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    // Check if Docker Desktop package is installed via Chocolatey
+    const packageInstalled = await choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+    if (packageInstalled) {
+      return true;
+    }
+    // Also check if docker command exists
+    return isDockerCommandAvailable();
+  }
+
+  // Linux and WSL: Check if docker command exists
+  return isDockerCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Docker can be installed on all supported platforms:
@@ -964,6 +1001,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

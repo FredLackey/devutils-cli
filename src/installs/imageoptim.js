@@ -852,6 +852,30 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if ImageOptim (or equivalent image optimization tools) is installed.
+ *
+ * On macOS, checks if the ImageOptim cask is installed via Homebrew.
+ * On Windows, checks if optipng is installed via Chocolatey.
+ * On Linux and Git Bash, checks if the optipng command exists.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('optipng');
+  }
+
+  // Linux and Git Bash: Check if optipng command exists
+  return shell.commandExists('optipng');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * ImageOptim (or equivalent CLI tools) is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -910,6 +934,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

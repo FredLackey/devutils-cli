@@ -757,6 +757,43 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if FFmpeg is currently installed on the system.
+ *
+ * This function checks for FFmpeg installation across all supported platforms:
+ * - macOS: Checks for FFmpeg via Homebrew formula or ffmpeg command
+ * - Windows: Checks for FFmpeg via Chocolatey or ffmpeg command
+ * - Linux/Git Bash: Checks if ffmpeg command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if FFmpeg is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if FFmpeg formula is installed via Homebrew
+    const formulaInstalled = await brew.isFormulaInstalled(HOMEBREW_FORMULA_NAME);
+    if (formulaInstalled) {
+      return true;
+    }
+    // Also check if ffmpeg command exists
+    return isFFmpegCommandAvailable();
+  }
+
+  if (platform.type === 'windows') {
+    // Check if FFmpeg package is installed via Chocolatey
+    const packageInstalled = await choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+    if (packageInstalled) {
+      return true;
+    }
+    // Also check if ffmpeg command exists
+    return isFFmpegCommandAvailable();
+  }
+
+  // Linux, WSL, and Git Bash: Check if ffmpeg command exists
+  return isFFmpegCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * FFmpeg is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -815,6 +852,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

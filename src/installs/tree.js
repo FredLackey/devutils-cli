@@ -319,6 +319,21 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if tree is installed on the current system.
+ * @returns {Promise<boolean>} True if tree is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('tree');
+  }
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('tree');
+  }
+  return shell.commandExists('tree');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * tree is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -377,6 +392,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

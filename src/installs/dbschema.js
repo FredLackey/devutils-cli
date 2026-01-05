@@ -571,6 +571,36 @@ async function checkWindowsInstallation() {
 }
 
 /**
+ * Check if DbSchema is currently installed on the system.
+ *
+ * This function checks for DbSchema installation across all supported platforms:
+ * - macOS: Checks for DbSchema.app via Homebrew cask or application bundle
+ * - Windows: Checks for DbSchema.exe at the standard installation path
+ * - Linux: Checks for the DbSchema executable at /opt/DbSchema/DbSchema
+ *
+ * @returns {Promise<boolean>} True if DbSchema is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if DbSchema app bundle exists
+    if (macosApps.isAppInstalled('DbSchema')) {
+      return true;
+    }
+    // Also check via Homebrew cask
+    return await brew.isCaskInstalled('dbschema');
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return await checkWindowsInstallation();
+  }
+
+  // Linux platforms (ubuntu, debian, wsl, raspbian, amazon_linux, rhel, fedora)
+  return await checkLinuxInstallation();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * DbSchema can be installed on:
@@ -629,6 +659,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

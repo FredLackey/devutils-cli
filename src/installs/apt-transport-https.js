@@ -264,6 +264,33 @@ async function install_gitbash() {
 // -----------------------------------------------------------------------------
 
 /**
+ * Check if apt-transport-https (or built-in HTTPS support) is installed.
+ *
+ * This function checks whether HTTPS transport is available for APT.
+ * On modern systems (APT 1.5+), HTTPS is built-in and always returns true.
+ * On legacy systems, it checks if the apt-transport-https package is installed.
+ *
+ * @returns {Promise<boolean>} True if HTTPS transport is available
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // Only applicable on Debian-based systems
+  if (!['ubuntu', 'debian', 'wsl', 'raspbian'].includes(platform.type)) {
+    return false;
+  }
+
+  // Check if APT has built-in HTTPS support (APT 1.5+)
+  const hasBuiltIn = await hasBuiltInHttpsSupport();
+  if (hasBuiltIn) {
+    return true;
+  }
+
+  // On legacy systems, check if the package is installed
+  return await apt.isPackageInstalled('apt-transport-https');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * apt-transport-https can be installed on Debian-based systems:
@@ -340,6 +367,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

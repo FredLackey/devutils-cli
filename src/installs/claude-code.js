@@ -485,6 +485,18 @@ async function installViaNodeNpm() {
 }
 
 /**
+ * Check if Claude Code is installed on the current platform.
+ *
+ * This function uses the internal isClaudeCodeInstalled helper to check if
+ * the 'claude' command exists in PATH.
+ *
+ * @returns {Promise<boolean>} True if Claude Code is installed
+ */
+async function isInstalled() {
+  return isClaudeCodeInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Claude Code can be installed on all supported platforms:
@@ -545,6 +557,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

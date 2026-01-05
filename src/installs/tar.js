@@ -295,6 +295,20 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if tar is installed on the current system.
+ * @returns {Promise<boolean>} True if tar is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    // macOS always has system tar, check for GNU tar from Homebrew
+    const hasGnuTar = await brew.isFormulaInstalled('gnu-tar');
+    return hasGnuTar || shell.commandExists('tar');
+  }
+  return shell.commandExists('tar');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * tar is available on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -356,6 +370,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

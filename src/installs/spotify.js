@@ -748,6 +748,37 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Spotify is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Spotify
+ * is already installed on the system.
+ *
+ * @returns {Promise<boolean>} True if Spotify is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return isSpotifyInstalledMacOS();
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash') {
+    return choco.isPackageInstalled(CHOCO_PACKAGE_NAME);
+  }
+
+  if (['ubuntu', 'debian', 'wsl'].includes(platform.type)) {
+    return snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+  }
+
+  if (platform.type === 'raspbian') {
+    return isRaspotifyInstalled();
+  }
+
+  // For Amazon Linux and other platforms, check for command
+  return isSpotifyCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Spotify is available on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -806,6 +837,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

@@ -461,6 +461,59 @@ async function install_gitbash() {
 // -----------------------------------------------------------------------------
 
 /**
+ * Check if CA certificates are installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if CA certificates
+ * are installed:
+ * - macOS: Checks for ca-certificates Homebrew formula
+ * - Linux (Debian-based): Checks for ca-certificates APT package and bundle file
+ * - Linux (RHEL-based): Checks for ca-certificates RPM package and bundle file
+ * - Windows/Git Bash: Checks for certificate store or bundle file
+ *
+ * @returns {Promise<boolean>} True if CA certificates are installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for ca-certificates via Homebrew
+  if (platform.type === 'macos') {
+    return await brew.isFormulaInstalled('ca-certificates');
+  }
+
+  // Ubuntu/Debian/WSL/Raspberry Pi: Check for package and bundle file
+  if (['ubuntu', 'debian', 'wsl', 'raspbian'].includes(platform.type)) {
+    const packageInstalled = await isDebianCaCertsInstalled();
+    const bundleExists = await doesDebianCertBundleExist();
+    return packageInstalled && bundleExists;
+  }
+
+  // Amazon Linux/RHEL/Fedora: Check for RPM package and bundle file
+  if (['amazon_linux', 'rhel', 'fedora'].includes(platform.type)) {
+    const rpmResult = await shell.exec('rpm -q ca-certificates 2>/dev/null');
+    const bundleExists = await doesRhelCertBundleExist();
+    return rpmResult.code === 0 && bundleExists;
+  }
+
+  // Windows: Check if certificate store has certificates
+  if (platform.type === 'windows') {
+    const countResult = await shell.exec('powershell -Command "(Get-ChildItem Cert:\\LocalMachine\\Root).Count"');
+    if (countResult.code === 0) {
+      const certCount = parseInt(countResult.stdout.trim(), 10);
+      return certCount > 100;
+    }
+    return false;
+  }
+
+  // Git Bash: Check if CA bundle file exists
+  if (platform.type === 'gitbash') {
+    const bundleCheckResult = await shell.exec('test -f /mingw64/etc/ssl/certs/ca-bundle.crt');
+    return bundleCheckResult.code === 0;
+  }
+
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * CA certificates can be installed on all supported platforms:
@@ -538,6 +591,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

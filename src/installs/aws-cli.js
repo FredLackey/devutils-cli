@@ -132,15 +132,15 @@ async function install_macos() {
 }
 
 /**
- * Install AWS CLI on Ubuntu/Debian using Snap
+ * Install AWS CLI on Ubuntu/Debian using Snap or manual installer
  *
- * The official AWS CLI Snap package is recommended over APT because
- * the APT repositories contain outdated AWS CLI v1 packages.
+ * Tries Snap first (official package), but falls back to manual installer
+ * if Snap is unavailable (e.g., in Docker containers or systems without systemd).
  *
  * Prerequisites:
  * - Ubuntu 18.04+ or Debian 10+ (64-bit)
- * - snapd service installed and running
  * - sudo privileges
+ * - curl and unzip (auto-installed if missing)
  *
  * @returns {Promise<void>}
  */
@@ -152,42 +152,124 @@ async function install_ubuntu() {
     return;
   }
 
-  // Check if snap is available, install it if not
-  if (!snap.isInstalled()) {
-    console.log('Snap is not installed. Installing snapd...');
-    const aptResult = await apt.install('snapd');
-    if (!aptResult.success) {
-      console.log('Failed to install snapd.');
-      console.log(aptResult.output);
-      return;
+  // Try Snap first if it's available
+  if (snap.isInstalled()) {
+    console.log('Installing AWS CLI via Snap...');
+    const result = await snap.install(SNAP_PACKAGE_NAME, { classic: true });
+
+    if (result.success) {
+      // Verify the installation succeeded
+      const isInstalled = isAwsCliInstalled() || await snap.isSnapInstalled(SNAP_PACKAGE_NAME);
+      if (isInstalled) {
+        const version = await getAwsCliVersion();
+        if (version) {
+          console.log(`AWS CLI installed successfully (version ${version}).`);
+        } else {
+          console.log('AWS CLI installed successfully.');
+          console.log('You may need to log out and back in, or add /snap/bin to your PATH.');
+        }
+        return;
+      }
     }
-    console.log('snapd installed. You may need to log out and back in for snap to work.');
+    // Snap installation failed, fall through to manual installer
+    console.log('Snap installation failed, using manual installer instead...');
+  } else {
+    console.log('Snap is not available, using manual installer...');
   }
 
-  console.log('Installing AWS CLI via Snap...');
-  // AWS CLI requires --classic flag for access to system files
-  const result = await snap.install(SNAP_PACKAGE_NAME, { classic: true });
+  // Manual installer method (works in all environments including Docker)
+  console.log('Installing AWS CLI v2 using the official installer...');
 
-  if (!result.success) {
-    console.log('Failed to install AWS CLI via Snap.');
-    console.log(result.output);
+  // Ensure required tools are available
+  if (!shell.commandExists('unzip')) {
+    console.log('Installing unzip...');
+    const unzipResult = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y unzip');
+    if (unzipResult.code !== 0) {
+      console.log('Failed to install unzip.');
+      console.log(unzipResult.stderr);
+      return;
+    }
+  }
+
+  if (!shell.commandExists('curl')) {
+    console.log('Installing curl...');
+    const curlResult = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl');
+    if (curlResult.code !== 0) {
+      console.log('Failed to install curl.');
+      console.log(curlResult.stderr);
+      return;
+    }
+  }
+
+  // Detect architecture and select the appropriate installer
+  const arch = os.getArch();
+  let installerUrl;
+
+  if (arch === 'arm64' || arch === 'aarch64') {
+    installerUrl = 'https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip';
+    console.log('Detected ARM64 architecture');
+  } else if (arch === 'x64' || arch === 'x86_64') {
+    installerUrl = 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip';
+    console.log('Detected x86_64 architecture');
+  } else {
+    console.log(`Unsupported architecture: ${arch}`);
+    console.log('AWS CLI v2 supports x86_64 and aarch64 only.');
+    return;
+  }
+
+  // Download the installer
+  console.log('Downloading AWS CLI v2 installer...');
+  const downloadResult = await shell.exec(
+    `curl -s "${installerUrl}" -o "/tmp/awscliv2.zip"`
+  );
+
+  if (downloadResult.code !== 0) {
+    console.log('Failed to download AWS CLI installer.');
+    console.log(downloadResult.stderr);
+    return;
+  }
+
+  // Extract the installer
+  console.log('Extracting installer...');
+  const extractResult = await shell.exec('unzip -o -q /tmp/awscliv2.zip -d /tmp');
+
+  if (extractResult.code !== 0) {
+    console.log('Failed to extract AWS CLI installer.');
+    console.log(extractResult.stderr);
+    await shell.exec('rm -f /tmp/awscliv2.zip');
+    return;
+  }
+
+  // Run the installer
+  console.log('Running installer...');
+  const installResult = await shell.exec('sudo /tmp/aws/install');
+
+  // Clean up
+  await shell.exec('rm -rf /tmp/awscliv2.zip /tmp/aws');
+
+  if (installResult.code !== 0) {
+    console.log('Failed to run AWS CLI installer.');
+    console.log(installResult.stderr);
     return;
   }
 
   // Verify the installation succeeded
-  // Note: Snap may not be in PATH immediately, so check both ways
-  const isInstalled = isAwsCliInstalled() || await snap.isSnapInstalled(SNAP_PACKAGE_NAME);
-  if (isInstalled) {
-    const version = await getAwsCliVersion();
-    if (version) {
+  // Check both PATH and the standard installation location
+  const awsPath = shell.which('aws') || (await shell.exec('test -f /usr/local/bin/aws && echo "/usr/local/bin/aws"')).stdout.trim();
+
+  if (awsPath) {
+    // Try to get version using the full path
+    const versionResult = await shell.exec(`${awsPath} --version 2>&1`);
+    if (versionResult.code === 0 && versionResult.stdout) {
+      const match = versionResult.stdout.match(/aws-cli\/(\S+)/);
+      const version = match ? match[1] : 'unknown';
       console.log(`AWS CLI installed successfully (version ${version}).`);
     } else {
       console.log('AWS CLI installed successfully.');
-      console.log('You may need to log out and back in, or add /snap/bin to your PATH.');
     }
   } else {
-    console.log('Installation completed but AWS CLI not found.');
-    console.log('Try logging out and back in, or run: export PATH=$PATH:/snap/bin');
+    console.log('Installation completed but AWS CLI command not found.');
+    console.log('Try opening a new terminal or adding /usr/local/bin to your PATH.');
   }
 }
 
@@ -324,10 +406,26 @@ async function install_amazon_linux() {
       await shell.exec('sudo yum install -y curl');
     }
 
+    // Detect architecture and select the appropriate installer
+    const arch = os.getArch();
+    let installerUrl;
+
+    if (arch === 'arm64' || arch === 'aarch64') {
+      installerUrl = 'https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip';
+      console.log('Detected ARM64 architecture');
+    } else if (arch === 'x64' || arch === 'x86_64') {
+      installerUrl = 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip';
+      console.log('Detected x86_64 architecture');
+    } else {
+      console.log(`Unsupported architecture: ${arch}`);
+      console.log('AWS CLI v2 supports x86_64 and aarch64 only.');
+      return;
+    }
+
     // Download the installer
     console.log('Downloading AWS CLI v2 installer...');
     const downloadResult = await shell.exec(
-      'curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"'
+      `curl -s "${installerUrl}" -o "/tmp/awscliv2.zip"`
     );
 
     if (downloadResult.code !== 0) {
@@ -481,10 +579,26 @@ async function install_ubuntu_wsl() {
       await apt.install('curl');
     }
 
+    // Detect architecture and select the appropriate installer
+    const arch = os.getArch();
+    let installerUrl;
+
+    if (arch === 'arm64' || arch === 'aarch64') {
+      installerUrl = 'https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip';
+      console.log('Detected ARM64 architecture');
+    } else if (arch === 'x64' || arch === 'x86_64') {
+      installerUrl = 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip';
+      console.log('Detected x86_64 architecture');
+    } else {
+      console.log(`Unsupported architecture: ${arch}`);
+      console.log('AWS CLI v2 supports x86_64 and aarch64 only.');
+      return;
+    }
+
     // Download the installer
     console.log('Downloading AWS CLI v2 installer...');
     const downloadResult = await shell.exec(
-      'curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"'
+      `curl -s "${installerUrl}" -o "/tmp/awscliv2.zip"`
     );
 
     if (downloadResult.code !== 0) {
@@ -585,6 +699,18 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if AWS CLI is installed on the current platform.
+ *
+ * This function checks if the AWS CLI command exists in PATH.
+ * It uses the internal isAwsCliInstalled helper.
+ *
+ * @returns {Promise<boolean>} True if AWS CLI is installed
+ */
+async function isInstalled() {
+  return isAwsCliInstalled();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * AWS CLI can be installed on:
@@ -648,6 +774,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

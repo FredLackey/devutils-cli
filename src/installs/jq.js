@@ -299,6 +299,30 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if jq is installed on the current platform.
+ *
+ * On macOS, checks if the jq formula is installed via Homebrew.
+ * On Windows, checks if jq is installed via Chocolatey.
+ * On Linux and Git Bash, checks if the jq command exists.
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('jq');
+  }
+
+  if (platform.type === 'windows') {
+    return choco.isPackageInstalled('jq');
+  }
+
+  // Linux and Git Bash: Check if jq command exists
+  return shell.commandExists('jq');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * jq is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -357,6 +381,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

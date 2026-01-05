@@ -866,6 +866,58 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Draw.io is currently installed on the system.
+ *
+ * This function checks for Draw.io installation across all supported platforms:
+ * - macOS: Checks for draw.io.app via Homebrew cask or application bundle
+ * - Windows: Checks for Draw.io via Chocolatey or executable path
+ * - Linux: Checks for Draw.io via Snap, dpkg, or RPM
+ *
+ * @returns {Promise<boolean>} True if Draw.io is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if Draw.io app bundle exists
+    if (isInstalledMacOS()) {
+      return true;
+    }
+    // Also check via Homebrew cask
+    return await brew.isCaskInstalled(HOMEBREW_CASK_NAME);
+  }
+
+  if (platform.type === 'windows') {
+    // Check via Chocolatey or executable path
+    if (await isInstalledChoco()) {
+      return true;
+    }
+    return await isInstalledWindowsExe();
+  }
+
+  if (platform.type === 'gitbash') {
+    // Git Bash uses portable version, check in portable-apps directory
+    const homeDir = os.getHomeDir();
+    const portableDir = `${homeDir}/portable-apps/drawio`;
+    const checkResult = await shell.exec(`ls "${portableDir}/draw.io.exe" 2>/dev/null`);
+    if (checkResult.code === 0) {
+      return true;
+    }
+    // Also check Windows installation
+    return await isInstalledWindowsExe();
+  }
+
+  // Linux platforms: Check Snap first, then deb, then rpm
+  if (await isInstalledSnap()) {
+    return true;
+  }
+  if (await isInstalledDeb()) {
+    return true;
+  }
+  return await isInstalledRpm();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Draw.io can be installed on all supported platforms:
@@ -933,6 +985,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

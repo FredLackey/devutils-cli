@@ -447,6 +447,30 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Microsoft Office is installed on the current platform.
+ *
+ * On macOS, checks if Microsoft Word.app exists.
+ * On Windows/Git Bash, checks if Office is installed via Chocolatey or file path.
+ * On Linux, Microsoft Office is not available (returns false).
+ *
+ * @returns {Promise<boolean>} True if installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return isInstalledMacOS();
+  }
+
+  if (platform.type === 'windows' || platform.type === 'gitbash' || platform.type === 'wsl') {
+    return isInstalledWindows();
+  }
+
+  // Linux: Microsoft Office is not available
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * Microsoft Office is only available on macOS, Windows, and WSL (via Windows host).
  * @returns {boolean} True if installation is supported on this platform
@@ -510,6 +534,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

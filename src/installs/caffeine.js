@@ -366,6 +366,56 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if Caffeine (or equivalent) is installed on the current platform.
+ *
+ * This function performs platform-specific checks to determine if Caffeine
+ * or its equivalent sleep-prevention functionality is available:
+ * - macOS: Checks for Caffeine.app in /Applications
+ * - Windows: Checks for Caffeine package via Chocolatey
+ * - Linux: Checks for systemd-inhibit (built-in) or GNOME extension
+ *
+ * @returns {Promise<boolean>} True if Caffeine/equivalent is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  // macOS: Check for Caffeine.app
+  if (platform.type === 'macos') {
+    return macosApps.isAppInstalled('Caffeine');
+  }
+
+  // Windows: Check for Caffeine via Chocolatey
+  if (platform.type === 'windows') {
+    return await choco.isPackageInstalled('caffeine');
+  }
+
+  // Git Bash: Check for Windows Caffeine installation
+  if (platform.type === 'gitbash') {
+    const chocoPath = '/c/ProgramData/chocolatey/lib/caffeine/tools/caffeine.exe';
+    const existsResult = await shell.exec(`ls "${chocoPath}" 2>/dev/null`);
+    return existsResult.code === 0;
+  }
+
+  // Ubuntu/Debian/WSL: Check for GNOME extension or systemd-inhibit
+  if (['ubuntu', 'debian', 'wsl'].includes(platform.type)) {
+    // Check for GNOME Caffeine extension
+    const gnomeExtensionResult = await shell.exec('gnome-extensions list 2>/dev/null | grep -q "caffeine@patapon.info"');
+    if (gnomeExtensionResult.code === 0) {
+      return true;
+    }
+    // systemd-inhibit is always available on systemd-based systems
+    return shell.commandExists('systemd-inhibit');
+  }
+
+  // Raspberry Pi/Amazon Linux: systemd-inhibit is built-in
+  if (['raspbian', 'amazon_linux', 'rhel', 'fedora'].includes(platform.type)) {
+    return shell.commandExists('systemd-inhibit');
+  }
+
+  return false;
+}
+
+/**
  * Check if this installer is supported on the current platform.
  *
  * Caffeine/sleep prevention can be installed or configured on all platforms:
@@ -424,6 +474,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

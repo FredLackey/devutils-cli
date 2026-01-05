@@ -14,8 +14,9 @@ RUN dnf install -y \
     gnupg2 \
     && dnf clean all
 
-# Install Node.js 20 LTS
-RUN dnf module install -y nodejs:20/common \
+# Install Node.js 20 LTS from NodeSource
+RUN curl -fsSL https://rpm.nodesource.com/setup_20.x | bash - \
+    && dnf install -y nodejs \
     && dnf clean all
 
 # Create non-root test user (simulates real usage)

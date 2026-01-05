@@ -38,7 +38,7 @@ usage() {
     echo "Usage: ./testing/test.sh [OPTIONS] [PLATFORM] [TEST_SUITE]"
     echo ""
     echo "Platforms: ubuntu, debian, amazonlinux, fedora, all (default)"
-    echo "Test suites: cli, configure, ignore, identity, install"
+    echo "Test suites: cli, configure, ignore, identity, install, install-full"
     echo ""
     echo "Options:"
     echo "  --shell PLATFORM    Open interactive shell in container"
@@ -51,8 +51,12 @@ usage() {
     echo "  ./testing/test.sh                     # Run all tests on all platforms"
     echo "  ./testing/test.sh ubuntu              # Run all tests on Ubuntu"
     echo "  ./testing/test.sh ubuntu cli          # Run CLI tests on Ubuntu"
+    echo "  ./testing/test.sh ubuntu install-full # Run full installation tests (slow)"
     echo "  ./testing/test.sh --shell debian      # Open shell in Debian container"
     echo "  ./testing/test.sh --clean             # Clean up Docker resources"
+    echo ""
+    echo "Note: install-full runs actual installations and verifies results."
+    echo "      It is slow and not included in default 'all' test runs."
 }
 
 # Build images

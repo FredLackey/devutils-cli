@@ -72,7 +72,8 @@ function detect() {
     }
 
     // RHEL-based (Amazon Linux, CentOS, Fedora, RHEL)
-    if (fs.existsSync('/etc/redhat-release')) {
+    // Check for /etc/redhat-release OR /etc/system-release (Amazon Linux 2023 uses system-release)
+    if (fs.existsSync('/etc/redhat-release') || fs.existsSync('/etc/system-release')) {
       if (distro === 'amzn' || distro === 'amazon') {
         result.type = 'amazon_linux';
       } else if (distro === 'fedora') {

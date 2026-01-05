@@ -375,6 +375,33 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if GPG is currently installed on the system.
+ *
+ * This function checks for GPG installation across all supported platforms:
+ * - macOS: Checks for gnupg via Homebrew formula or gpg command
+ * - Windows: Checks if gpg command exists
+ * - Linux/Git Bash: Checks if gpg command exists in PATH
+ *
+ * @returns {Promise<boolean>} True if GPG is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    // Check if gnupg formula is installed via Homebrew
+    const formulaInstalled = await brew.isFormulaInstalled('gnupg');
+    if (formulaInstalled) {
+      return true;
+    }
+    // Also check if gpg command exists
+    return shell.commandExists('gpg');
+  }
+
+  // All other platforms: Check if gpg command exists
+  return shell.commandExists('gpg');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * GPG is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -434,6 +461,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

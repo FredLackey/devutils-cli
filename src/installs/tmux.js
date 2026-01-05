@@ -252,6 +252,18 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if tmux is installed on the current system.
+ * @returns {Promise<boolean>} True if tmux is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('tmux');
+  }
+  return shell.commandExists('tmux');
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * tmux is only available on Unix-like systems (not Windows/Git Bash).
  * @returns {boolean} True if installation is supported on this platform
@@ -315,6 +327,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

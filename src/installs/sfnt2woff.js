@@ -558,6 +558,27 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if sfnt2woff is already installed on the system.
+ *
+ * This function checks for sfnt2woff installation using platform-appropriate methods:
+ * - macOS: Checks if Homebrew formula is installed
+ * - Linux: Checks if 'sfnt2woff' command exists in PATH
+ * - Windows/Git Bash: Checks if 'sfnt2woff' command exists (npm-based)
+ *
+ * @returns {Promise<boolean>} True if sfnt2woff is installed, false otherwise
+ */
+async function isInstalled() {
+  const platform = os.detect();
+
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled(HOMEBREW_FORMULA_NAME);
+  }
+
+  // All platforms: Check if command exists
+  return isSfnt2woffCommandAvailable();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * sfnt2woff is supported on all major platforms.
  * @returns {boolean} True if installation is supported on this platform
@@ -618,6 +639,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

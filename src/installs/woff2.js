@@ -460,6 +460,18 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if woff2 is installed on the current system.
+ * @returns {Promise<boolean>} True if woff2 is installed
+ */
+async function isInstalled() {
+  const platform = os.detect();
+  if (platform.type === 'macos') {
+    return brew.isFormulaInstalled('woff2');
+  }
+  return isWoff2Installed();
+}
+
+/**
  * Check if this installer is supported on the current platform.
  * woff2 is supported on all Unix-like platforms. Windows and Git Bash users
  * should use WSL for woff2 functionality.
@@ -521,6 +533,7 @@ async function install() {
 
 module.exports = {
   install,
+  isInstalled,
   isEligible,
   install_macos,
   install_ubuntu,

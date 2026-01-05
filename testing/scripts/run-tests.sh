@@ -102,12 +102,14 @@ main() {
     clean_environment
 
     # Define test suites
+    # Note: install-full runs actual installations (slow) - not included in default run
     declare -A TESTS=(
         ["cli"]="$SCRIPT_DIR/test-cli.sh"
         ["configure"]="$SCRIPT_DIR/test-configure.sh"
         ["ignore"]="$SCRIPT_DIR/test-ignore.sh"
         ["identity"]="$SCRIPT_DIR/test-identity.sh"
         ["install"]="$SCRIPT_DIR/test-install.sh"
+        ["install-full"]="$SCRIPT_DIR/test-install-full.sh"
     )
 
     # Run specific test or all tests
