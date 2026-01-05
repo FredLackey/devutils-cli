@@ -1,88 +1,1245 @@
 [
-  { "filename": "adobe-creative-cloud.js", "name": "Adobe Creative Cloud", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "appcleaner.js", "name": "AppCleaner", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "apt-transport-https.js", "name": "apt-transport-https", "status": "test-pending", "depends_on": [] },
-  { "filename": "atomicparsley.js", "name": "AtomicParsley", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "aws-cli.js", "name": "AWS CLI", "status": "test-pending", "depends_on": ["curl.js", "homebrew.js", "chocolatey.js", "unzip.js"] },
-  { "filename": "balena-etcher.js", "name": "Balena Etcher", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "bambu-studio.js", "name": "Bambu Studio", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "bash-completion.js", "name": "Bash Completion 2", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "bash.js", "name": "Bash", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "beyond-compare.js", "name": "Beyond Compare", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "build-essential.js", "name": "build-essential", "status": "test-pending", "depends_on": [] },
-  { "filename": "ca-certificates.js", "name": "ca-certificates", "status": "test-pending", "depends_on": [] },
-  { "filename": "caffeine.js", "name": "Caffeine", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "camtasia.js", "name": "Camtasia", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "chatgpt.js", "name": "ChatGPT", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "chocolatey.js", "name": "Chocolatey", "status": "test-pending", "depends_on": [] },
-  { "filename": "chrome-canary.js", "name": "Google Chrome Canary", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "chromium.js", "name": "Chromium", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "claude-code.js", "name": "Claude Code", "status": "test-pending", "depends_on": ["node.js"] },
-  { "filename": "curl.js", "name": "cURL", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "cursor.js", "name": "Cursor", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "dbschema.js", "name": "DbSchema", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "development-tools.js", "name": "Development Tools", "status": "test-pending", "depends_on": [] },
-  { "filename": "docker.js", "name": "Docker", "status": "test-pending", "depends_on": ["curl.js", "ca-certificates.js", "homebrew.js", "chocolatey.js", "wsl.js"] },
-  { "filename": "drawio.js", "name": "Draw.IO", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "elmedia-player.js", "name": "Elmedia Player", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "ffmpeg.js", "name": "FFmpeg", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js", "xcode-clt.js", "curl.js", "wget.js", "tar.js", "unzip.js"] },
-  { "filename": "file.js", "name": "file", "status": "test-pending", "depends_on": [] },
-  { "filename": "gemini-cli.js", "name": "Gemini CLI", "status": "test-pending", "depends_on": ["node.js"] },
-  { "filename": "git.js", "name": "Git", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js", "software-properties-common.js"] },
-  { "filename": "gitego.js", "name": "gitego", "status": "test-pending", "depends_on": ["node.js"] },
-  { "filename": "go.js", "name": "Go", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "google-chrome.js", "name": "Google Chrome", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js", "wget.js"] },
-  { "filename": "gpg.js", "name": "GPG", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js", "pinentry.js"] },
-  { "filename": "homebrew.js", "name": "Homebrew", "status": "test-pending", "depends_on": ["curl.js", "xcode-clt.js", "git.js", "build-essential.js", "procps.js", "file.js", "development-tools.js"] },
-  { "filename": "imageoptim.js", "name": "ImageOptim", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "jq.js", "name": "jq", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "keyboard-maestro.js", "name": "Keyboard Maestro", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "latex.js", "name": "LaTeX", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "lftp.js", "name": "LFTP", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "lsb-release.js", "name": "lsb-release", "status": "test-pending", "depends_on": [] },
-  { "filename": "messenger.js", "name": "Messenger", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "microsoft-office.js", "name": "Microsoft Office 365", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "microsoft-teams.js", "name": "Microsoft Teams", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "node.js", "name": "Node.js", "status": "test-pending", "depends_on": ["curl.js", "ca-certificates.js", "gpg.js", "homebrew.js", "chocolatey.js"] },
-  { "filename": "nordpass.js", "name": "Nord Pass", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "nvm.js", "name": "nvm", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js", "curl.js", "git.js", "winpty.js"] },
-  { "filename": "openssh.js", "name": "OpenSSH", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "pandoc.js", "name": "Pandoc", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "pinentry.js", "name": "pinentry", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "pngyu.js", "name": "Pngyu", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "postman.js", "name": "Postman", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "procps.js", "name": "procps", "status": "test-pending", "depends_on": [] },
-  { "filename": "safari-tech-preview.js", "name": "Safari Technology Preview", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "sfnt2woff.js", "name": "sfnt2woff", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "shellcheck.js", "name": "ShellCheck", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "slack.js", "name": "Slack", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "snagit.js", "name": "Snagit", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "software-properties-common.js", "name": "software-properties-common", "status": "test-pending", "depends_on": [] },
-  { "filename": "spotify.js", "name": "Spotify", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "studio-3t.js", "name": "Studio 3T", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "sublime-text.js", "name": "Sublime Text", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "superwhisper.js", "name": "Superwhisper", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "tailscale.js", "name": "Tailscale", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js", "curl.js"] },
-  { "filename": "tar.js", "name": "tar", "status": "test-pending", "depends_on": [] },
-  { "filename": "termius.js", "name": "Termius", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "terraform.js", "name": "Terraform", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js", "wget.js", "gpg.js", "software-properties-common.js", "unzip.js", "yum-utils.js", "lsb-release.js", "ca-certificates.js"] },
-  { "filename": "tidal.js", "name": "Tidal", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "tmux.js", "name": "tmux", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "tree.js", "name": "Tree", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "unzip.js", "name": "unzip", "status": "test-pending", "depends_on": [] },
-  { "filename": "vim.js", "name": "Vim", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "vlc.js", "name": "VLC", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "vscode.js", "name": "Visual Studio Code", "status": "test-pending", "depends_on": ["gpg.js", "wget.js", "apt-transport-https.js", "homebrew.js", "chocolatey.js", "winpty.js"] },
-  { "filename": "wget.js", "name": "wget", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "whatsapp.js", "name": "WhatsApp", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "winpty.js", "name": "winpty", "status": "test-pending", "depends_on": [] },
-  { "filename": "woff2.js", "name": "woff2", "status": "test-pending", "depends_on": ["homebrew.js"] },
-  { "filename": "wsl.js", "name": "WSL 2", "status": "test-pending", "depends_on": [] },
-  { "filename": "xcode-clt.js", "name": "Xcode CLT", "status": "test-pending", "depends_on": [] },
-  { "filename": "xcode.js", "name": "Xcode", "status": "test-pending", "depends_on": ["xcode-clt.js"] },
-  { "filename": "yarn.js", "name": "Yarn", "status": "test-pending", "depends_on": ["curl.js", "ca-certificates.js", "gpg.js", "homebrew.js", "chocolatey.js", "winpty.js"] },
-  { "filename": "yq.js", "name": "yq", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "yt-dlp.js", "name": "yt-dlp", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] },
-  { "filename": "yum-utils.js", "name": "yum-utils", "status": "test-pending", "depends_on": [] },
-  { "filename": "zoom.js", "name": "Zoom", "status": "test-pending", "depends_on": ["homebrew.js", "chocolatey.js"] }
+  {
+    "filename": "adobe-creative-cloud.js",
+    "name": "Adobe Creative Cloud",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "appcleaner.js",
+    "name": "AppCleaner",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "apt-transport-https.js",
+    "name": "apt-transport-https",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "atomicparsley.js",
+    "name": "AtomicParsley",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "aws-cli.js",
+    "name": "AWS CLI",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "unzip.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "balena-etcher.js",
+    "name": "Balena Etcher",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "bambu-studio.js",
+    "name": "Bambu Studio",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "bash-completion.js",
+    "name": "Bash Completion 2",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "bash.js",
+    "name": "Bash",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "beyond-compare.js",
+    "name": "Beyond Compare",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "build-essential.js",
+    "name": "build-essential",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "ca-certificates.js",
+    "name": "ca-certificates",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "caffeine.js",
+    "name": "Caffeine",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "camtasia.js",
+    "name": "Camtasia",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "chatgpt.js",
+    "name": "ChatGPT",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "chocolatey.js",
+    "name": "Chocolatey",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "chrome-canary.js",
+    "name": "Google Chrome Canary",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "chromium.js",
+    "name": "Chromium",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "claude-code.js",
+    "name": "Claude Code",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "node.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "curl.js",
+    "name": "cURL",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "cursor.js",
+    "name": "Cursor",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "dbschema.js",
+    "name": "DbSchema",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "development-tools.js",
+    "name": "Development Tools",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "docker.js",
+    "name": "Docker",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "ca-certificates.js",
+        "priority": 0
+      },
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "wsl.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "drawio.js",
+    "name": "Draw.IO",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "elmedia-player.js",
+    "name": "Elmedia Player",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "ffmpeg.js",
+    "name": "FFmpeg",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "xcode-clt.js",
+        "priority": 0
+      },
+      {
+        "name": "homebrew.js",
+        "priority": 1
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "wget.js",
+        "priority": 0
+      },
+      {
+        "name": "tar.js",
+        "priority": 0
+      },
+      {
+        "name": "unzip.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "file.js",
+    "name": "file",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "gemini-cli.js",
+    "name": "Gemini CLI",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "node.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "git.js",
+    "name": "Git",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "software-properties-common.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "gitego.js",
+    "name": "gitego",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "node.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "go.js",
+    "name": "Go",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "google-chrome.js",
+    "name": "Google Chrome",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "wget.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "gpg.js",
+    "name": "GPG",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "pinentry.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "homebrew.js",
+    "name": "Homebrew",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "xcode-clt.js",
+        "priority": 0
+      },
+      {
+        "name": "git.js",
+        "priority": 0
+      },
+      {
+        "name": "build-essential.js",
+        "priority": 0
+      },
+      {
+        "name": "procps.js",
+        "priority": 0
+      },
+      {
+        "name": "file.js",
+        "priority": 0
+      },
+      {
+        "name": "development-tools.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "imageoptim.js",
+    "name": "ImageOptim",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "jq.js",
+    "name": "jq",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "keyboard-maestro.js",
+    "name": "Keyboard Maestro",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "latex.js",
+    "name": "LaTeX",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "lftp.js",
+    "name": "LFTP",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "lsb-release.js",
+    "name": "lsb-release",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "messenger.js",
+    "name": "Messenger",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "microsoft-office.js",
+    "name": "Microsoft Office 365",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "microsoft-teams.js",
+    "name": "Microsoft Teams",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "node.js",
+    "name": "Node.js",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "ca-certificates.js",
+        "priority": 0
+      },
+      {
+        "name": "gpg.js",
+        "priority": 0
+      },
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "nordpass.js",
+    "name": "Nord Pass",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "nvm.js",
+    "name": "nvm",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "git.js",
+        "priority": 0
+      },
+      {
+        "name": "winpty.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "openssh.js",
+    "name": "OpenSSH",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "pandoc.js",
+    "name": "Pandoc",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "pinentry.js",
+    "name": "pinentry",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "pngyu.js",
+    "name": "Pngyu",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "postman.js",
+    "name": "Postman",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "procps.js",
+    "name": "procps",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "safari-tech-preview.js",
+    "name": "Safari Technology Preview",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "sfnt2woff.js",
+    "name": "sfnt2woff",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "shellcheck.js",
+    "name": "ShellCheck",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "slack.js",
+    "name": "Slack",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "snagit.js",
+    "name": "Snagit",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "software-properties-common.js",
+    "name": "software-properties-common",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "spotify.js",
+    "name": "Spotify",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "studio-3t.js",
+    "name": "Studio 3T",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "sublime-text.js",
+    "name": "Sublime Text",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "superwhisper.js",
+    "name": "Superwhisper",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "tailscale.js",
+    "name": "Tailscale",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "curl.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "tar.js",
+    "name": "tar",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "termius.js",
+    "name": "Termius",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "terraform.js",
+    "name": "Terraform",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "wget.js",
+        "priority": 0
+      },
+      {
+        "name": "gpg.js",
+        "priority": 0
+      },
+      {
+        "name": "software-properties-common.js",
+        "priority": 0
+      },
+      {
+        "name": "unzip.js",
+        "priority": 0
+      },
+      {
+        "name": "yum-utils.js",
+        "priority": 0
+      },
+      {
+        "name": "lsb-release.js",
+        "priority": 0
+      },
+      {
+        "name": "ca-certificates.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "tidal.js",
+    "name": "Tidal",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "tmux.js",
+    "name": "tmux",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "tree.js",
+    "name": "Tree",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "unzip.js",
+    "name": "unzip",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "vim.js",
+    "name": "Vim",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "vlc.js",
+    "name": "VLC",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "vscode.js",
+    "name": "Visual Studio Code",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "gpg.js",
+        "priority": 0
+      },
+      {
+        "name": "wget.js",
+        "priority": 0
+      },
+      {
+        "name": "apt-transport-https.js",
+        "priority": 0
+      },
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "winpty.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "wget.js",
+    "name": "wget",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "whatsapp.js",
+    "name": "WhatsApp",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "winpty.js",
+    "name": "winpty",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "woff2.js",
+    "name": "woff2",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "wsl.js",
+    "name": "WSL 2",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "xcode-clt.js",
+    "name": "Xcode CLT",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "xcode.js",
+    "name": "Xcode",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "xcode-clt.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "yarn.js",
+    "name": "Yarn",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "ca-certificates.js",
+        "priority": 0
+      },
+      {
+        "name": "gpg.js",
+        "priority": 0
+      },
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      },
+      {
+        "name": "winpty.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "yq.js",
+    "name": "yq",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "yt-dlp.js",
+    "name": "yt-dlp",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "filename": "yum-utils.js",
+    "name": "yum-utils",
+    "status": "test-pending",
+    "depends_on": []
+  },
+  {
+    "filename": "zoom.js",
+    "name": "Zoom",
+    "status": "test-pending",
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0
+      }
+    ]
+  }
 ]

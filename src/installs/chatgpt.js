@@ -337,6 +337,25 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * ChatGPT desktop app can be installed on:
+ * - macOS (official OpenAI app via Homebrew, Apple Silicon only)
+ * - Windows (official OpenAI app via winget from Microsoft Store)
+ * - Ubuntu/Debian (third-party Snap wrapper)
+ * - WSL (Windows host app or wslu web browser integration)
+ * - Git Bash (Windows app via winget)
+ *
+ * Note: Raspberry Pi and Amazon Linux are NOT supported.
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer.
  *
  * This function automatically detects the current operating system and
@@ -374,6 +393,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

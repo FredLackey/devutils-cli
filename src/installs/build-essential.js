@@ -389,6 +389,30 @@ async function install_gitbash() {
 }
 
 // -----------------------------------------------------------------------------
+// Eligibility Check
+// -----------------------------------------------------------------------------
+
+/**
+ * Check if this installer is supported on the current platform.
+ *
+ * Build essential tools can be installed on:
+ * - macOS (Xcode Command Line Tools)
+ * - Ubuntu/Debian (build-essential package via APT)
+ * - Raspberry Pi OS (build-essential package via APT)
+ * - Amazon Linux/RHEL/Fedora (Development Tools group via DNF/YUM)
+ * - Windows (Visual Studio Build Tools via Chocolatey)
+ * - WSL (build-essential package via APT)
+ *
+ * Note: Git Bash provides guidance only (no automated install)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows'].includes(platform.type);
+}
+
+// -----------------------------------------------------------------------------
 // Main Installation Entry Point
 // -----------------------------------------------------------------------------
 
@@ -443,6 +467,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

@@ -350,6 +350,26 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * Google Chrome Canary can be installed on:
+ * - macOS (via Homebrew cask)
+ * - Ubuntu/Debian (via Google's APT repository)
+ * - WSL (via Google's APT repository)
+ * - Windows (via Chocolatey)
+ * - Git Bash (via Windows Chocolatey)
+ *
+ * Note: Raspberry Pi (ARM architecture) and Amazon Linux/RHEL (no RPM packages)
+ * are NOT supported.
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects the current platform and runs
  * the appropriate installer function.
  *
@@ -391,6 +411,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

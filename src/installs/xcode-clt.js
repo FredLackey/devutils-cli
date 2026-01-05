@@ -429,6 +429,16 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ * Xcode Command Line Tools are ONLY available on macOS.
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return platform.type === 'macos';
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer.
  *
  * This function automatically detects the current operating system and invokes
@@ -479,6 +489,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

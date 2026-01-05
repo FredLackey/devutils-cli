@@ -328,6 +328,25 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * Bash can be installed on all supported platforms:
+ * - macOS (via Homebrew - upgrades from default Bash 3.2)
+ * - Ubuntu/Debian (via APT)
+ * - Raspberry Pi OS (via APT)
+ * - Amazon Linux/RHEL/Fedora (via DNF/YUM)
+ * - Windows (via Git for Windows/Chocolatey)
+ * - WSL (via APT)
+ * - Git Bash (already included, can update Git for Windows)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer.
  *
  * This function automatically detects the current operating system and invokes
@@ -367,6 +386,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

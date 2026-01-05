@@ -309,3 +309,127 @@ Group package for RHEL/Amazon Linux providing compilation tools.
 
 **Used by:**
 - homebrew
+
+---
+
+## Dependency Handling Behavior
+
+This section documents how each installer handles its dependencies at runtime. Understanding this behavior helps users know what to expect when running `dev install <tool>`.
+
+### Behavior Categories
+
+| Category | Description | User Action Required |
+|----------|-------------|---------------------|
+| **Exits with Message** | Installation stops and displays instructions | User must install dependency first |
+| **Auto-Installs Inline** | Prerequisites installed automatically | None - fully automatic |
+| **Pre-installed/Bundled** | Dependency already present on system | None |
+
+### Platform-Specific Patterns
+
+#### macOS (Homebrew Required)
+
+Most macOS installers require Homebrew. If Homebrew is not installed:
+- Installation **exits gracefully** with a message
+- User is instructed to run `dev install homebrew` first
+- Installation does **NOT** proceed automatically
+
+**Installers that exit if Homebrew is missing:**
+- adobe-creative-cloud, appcleaner, atomicparsley, aws-cli, balena-etcher, bambu-studio
+- bash, bash-completion, beyond-compare, caffeine, camtasia, chatgpt
+- chrome-canary, chromium, cursor, dbschema, docker, drawio
+- elmedia-player, ffmpeg, git, go, google-chrome, gpg, imageoptim
+- jq, keyboard-maestro, latex, lftp, messenger, microsoft-office
+- microsoft-teams, node, nordpass, nvm, openssh, pandoc, pinentry
+- pngyu, postman, safari-tech-preview, sfnt2woff, shellcheck, slack
+- snagit, spotify, studio-3t, sublime-text, superwhisper, tailscale
+- termius, terraform, tidal, tmux, tree, vim, vlc, vscode, wget
+- whatsapp, woff2, xcode, yarn, yq, yt-dlp, zoom
+
+**Exception - Docker throws an error instead of returning:**
+- docker.js throws an `Error` if Homebrew is missing (install fails with error)
+
+#### Windows (Chocolatey Required)
+
+Most Windows installers require Chocolatey. If Chocolatey is not installed:
+- Installation **exits gracefully** with a message
+- User is instructed to install Chocolatey (PowerShell command provided)
+- Installation does **NOT** proceed automatically
+
+**Installers that exit if Chocolatey is missing:**
+- atomicparsley, aws-cli, balena-etcher, bambu-studio, beyond-compare
+- camtasia, chrome-canary, chromium, curl, cursor, dbschema, docker
+- drawio, ffmpeg, git, go, google-chrome, gpg, jq, latex, lftp
+- messenger, microsoft-office, microsoft-teams, node, nordpass, nvm
+- openssh, pandoc, pinentry, postman, shellcheck, slack, snagit
+- spotify, studio-3t, sublime-text, tailscale, termius, terraform
+- tidal, tmux, tree, vim, vlc, vscode, wget, whatsapp, yarn, yq
+- yt-dlp, zoom
+
+**Exception - Docker throws an error instead of returning:**
+- docker.js throws an `Error` if Chocolatey is missing (install fails with error)
+
+#### Git Bash (Mixed Behavior)
+
+Git Bash installers have varying behavior:
+
+**Pre-installed/Bundled (no action needed):**
+- curl - bundled with Git for Windows
+- git - bundled with Git for Windows (Git Bash IS Git)
+
+**Uses Chocolatey via PowerShell:**
+- docker, node, nvm, terraform, vscode, yarn - call `powershell.exe` to run Chocolatey
+- If Chocolatey is not installed, installation exits with instructions
+
+**Not Supported:**
+- homebrew - not available for Git Bash (advises WSL)
+
+#### Ubuntu/Debian/Raspbian (Auto-Install Prerequisites)
+
+Linux installers using APT typically **auto-install prerequisites inline**. The user does not need to install dependencies first.
+
+**Examples of auto-installed prerequisites:**
+- docker.js: Installs `ca-certificates`, `curl` automatically
+- node.js: Installs `curl`, `ca-certificates`, `gnupg` automatically
+- vscode.js: Installs `wget`, `gpg`, `apt-transport-https` automatically
+- terraform.js: Installs `gnupg`, `software-properties-common`, `wget` automatically
+- homebrew.js: Installs `build-essential`, `procps`, `curl`, `file`, `git` automatically
+
+**Simple APT installers (no special prerequisites):**
+- curl, git, vim, tree, tmux, jq, wget, gpg, openssh, pandoc, shellcheck
+
+#### Amazon Linux (Auto-Install Prerequisites)
+
+Amazon Linux installers using DNF/YUM typically **auto-install prerequisites inline**.
+
+**Examples of auto-installed prerequisites:**
+- terraform.js: Installs `yum-utils` automatically
+- homebrew.js: Installs `Development Tools` group, `procps-ng`, `curl`, `file`, `git` automatically
+
+**Simple DNF/YUM installers (no special prerequisites):**
+- curl, git, vim, tree, tmux, jq, wget, gpg
+
+#### WSL (Ubuntu Behavior)
+
+WSL installers follow the same behavior as Ubuntu:
+- Prerequisites are **auto-installed inline**
+- No manual dependency installation required
+
+### Summary Table by Installer
+
+| Installer | macOS | Windows | Git Bash | Ubuntu/Debian | Amazon Linux |
+|-----------|-------|---------|----------|---------------|--------------|
+| curl | Exits (Homebrew) | Exits (Choco) | Bundled | Auto-install | Auto-install |
+| docker | **Throws** (Homebrew) | **Throws** (Choco) | PowerShell | Auto-install | Auto-install |
+| git | Exits (Homebrew) | Exits (Choco) | Bundled | Auto-install | Auto-install |
+| homebrew | N/A (is the dep) | Not supported | Not supported | Auto-install | Auto-install |
+| node | Exits (Homebrew) | Exits (Choco) | PowerShell | Auto-install | Auto-install |
+| terraform | Exits (Homebrew) | Exits (Choco) | PowerShell | Auto-install | Auto-install |
+| vscode | Exits (Homebrew) | Exits (Choco) | PowerShell | Auto-install | Auto-install |
+
+### Key Takeaways
+
+1. **macOS/Windows users**: Must install package manager (Homebrew/Chocolatey) first
+2. **Linux users**: Dependencies are handled automatically - just run `dev install <tool>`
+3. **Git Bash users**: Some tools bundled, others require Chocolatey on Windows host
+4. **Most installers exit gracefully** with helpful messages rather than throwing errors
+5. **docker.js is an exception** - it throws an error if package manager is missing

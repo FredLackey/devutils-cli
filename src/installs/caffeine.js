@@ -366,6 +366,25 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * Caffeine/sleep prevention can be installed or configured on all platforms:
+ * - macOS (Caffeine.app via Homebrew cask)
+ * - Ubuntu/Debian (GNOME extension or systemd-inhibit)
+ * - Raspberry Pi OS (xset and systemd-inhibit, built-in)
+ * - Amazon Linux/RHEL/Fedora (systemd-inhibit, built-in)
+ * - Windows (Caffeine via Chocolatey)
+ * - WSL (systemd-inhibit or Windows app)
+ * - Git Bash (Windows Caffeine via Chocolatey)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer.
  *
  * This function automatically detects the current operating system and distribution,
@@ -405,6 +424,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

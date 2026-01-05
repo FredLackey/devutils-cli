@@ -585,6 +585,24 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * AWS CLI can be installed on:
+ * - macOS (via Homebrew)
+ * - Ubuntu/Debian (via Snap)
+ * - Raspberry Pi OS (via Snap, 64-bit only)
+ * - Amazon Linux/RHEL/Fedora (via DNF/YUM or manual installer)
+ * - Windows (via Chocolatey)
+ * - WSL (via Snap or manual installer)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'wsl', 'windows'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer
  *
  * Supported platforms:
@@ -630,6 +648,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

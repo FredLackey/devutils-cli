@@ -449,6 +449,25 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * Cursor can be installed on:
+ * - macOS (via Homebrew cask)
+ * - Ubuntu/Debian (via direct .deb download)
+ * - Raspberry Pi OS (via direct .deb download, ARM64 only)
+ * - Amazon Linux/RHEL/Fedora (via direct .rpm download)
+ * - Windows (via winget)
+ * - WSL (installs on Windows host via winget)
+ * - Git Bash (installs on Windows host via winget)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer
  *
  * This function uses os.detect() to determine the current platform and
@@ -487,6 +506,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

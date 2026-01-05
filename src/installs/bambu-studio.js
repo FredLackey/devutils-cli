@@ -715,6 +715,25 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * Bambu Studio can be installed on all supported platforms:
+ * - macOS (via Homebrew cask)
+ * - Ubuntu/Debian (via Flatpak from Flathub)
+ * - Raspberry Pi OS (via Pi-Apps, 64-bit only)
+ * - Amazon Linux/RHEL/Fedora (via Flatpak from Flathub)
+ * - Windows (via Chocolatey)
+ * - WSL (via Flatpak with WSLg)
+ * - Git Bash (via Windows Chocolatey)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer.
  *
  * This function automatically determines the current operating system and
@@ -763,6 +782,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

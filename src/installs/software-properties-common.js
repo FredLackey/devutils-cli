@@ -258,6 +258,20 @@ async function install_gitbash() {
 }
 
 // -----------------------------------------------------------------------------
+// Eligibility Check
+// -----------------------------------------------------------------------------
+
+/**
+ * Check if this installer is supported on the current platform.
+ * software-properties-common is only available on Debian-based Linux distributions.
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['ubuntu', 'debian', 'wsl', 'raspbian'].includes(platform.type);
+}
+
+// -----------------------------------------------------------------------------
 // Main Installation Entry Point
 // -----------------------------------------------------------------------------
 
@@ -316,6 +330,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

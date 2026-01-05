@@ -439,6 +439,30 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * Bash Completion can be installed on:
+ * - macOS (via Homebrew)
+ * - Ubuntu/Debian (via APT)
+ * - Raspberry Pi OS (via APT)
+ * - Amazon Linux/RHEL/Fedora (via DNF/YUM)
+ * - WSL (via APT)
+ * - Git Bash (manual setup with Git completion scripts)
+ *
+ * Note: Native Windows is not supported (Bash Completion is a Unix tool)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  // Git Bash is handled specially - check for MSYSTEM environment variable
+  if (platform.type === 'windows' && process.env.MSYSTEM) {
+    return true;
+  }
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects platform and runs the appropriate installer.
  *
  * This function uses the os.detect() utility to identify the current platform
@@ -482,6 +506,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

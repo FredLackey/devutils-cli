@@ -457,6 +457,29 @@ async function install_gitbash() {
 }
 
 // -----------------------------------------------------------------------------
+// Eligibility Check
+// -----------------------------------------------------------------------------
+
+/**
+ * Check if this installer is supported on the current platform.
+ *
+ * CA certificates can be installed on all supported platforms:
+ * - macOS (Homebrew ca-certificates formula)
+ * - Ubuntu/Debian (ca-certificates package via APT)
+ * - Ubuntu on WSL (ca-certificates package via APT)
+ * - Raspberry Pi OS (ca-certificates package via APT)
+ * - Amazon Linux/RHEL/Fedora (ca-certificates package via DNF/YUM)
+ * - Windows (certutil for Windows Certificate Store)
+ * - Git Bash (bundled with Git for Windows)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'].includes(platform.type);
+}
+
+// -----------------------------------------------------------------------------
 // Main Installation Entry Point
 // -----------------------------------------------------------------------------
 
@@ -515,6 +538,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

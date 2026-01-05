@@ -193,6 +193,20 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * AppCleaner/equivalent can be installed on:
+ * - macOS (AppCleaner via Homebrew cask)
+ * - Windows (Bulk Crap Uninstaller via winget/Chocolatey)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'windows'].includes(platform.type);
+}
+
+/**
  * Main installation entry point - detects platform and runs appropriate installer.
  *
  * This function automatically detects the current operating system and invokes
@@ -232,6 +246,7 @@ async function install() {
 
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,

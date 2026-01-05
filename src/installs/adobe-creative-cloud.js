@@ -408,6 +408,22 @@ async function install_gitbash() {
 }
 
 /**
+ * Check if this installer is supported on the current platform.
+ *
+ * Adobe Creative Cloud can be installed on:
+ * - macOS (via Homebrew cask)
+ * - Windows (via winget)
+ * - WSL (installs on Windows host via PowerShell)
+ * - Git Bash (installs on Windows host via PowerShell)
+ *
+ * @returns {boolean} True if installation is supported on this platform
+ */
+function isEligible() {
+  const platform = os.detect();
+  return ['macos', 'windows', 'wsl', 'gitbash'].includes(platform.type);
+}
+
+/**
  * Main installation entry point.
  *
  * Detects the current platform and runs the appropriate installer function.
@@ -460,6 +476,7 @@ async function install() {
 // Export all functions for use as a module and for testing
 module.exports = {
   install,
+  isEligible,
   install_macos,
   install_ubuntu,
   install_ubuntu_wsl,
