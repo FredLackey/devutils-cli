@@ -68,6 +68,18 @@ You MUST follow the workflow exactly as written for EVERY technology. There are 
 - Do NOT proceed to the next technology until the current one passes ALL tests
 - Do NOT mark a technology as tested if any test failures remain
 - Do NOT attempt to test platforms that lack Docker support (macOS, Windows, Git Bash, Raspberry Pi OS)
+- Do NOT mark a technology as "ready" unless it has completed the full test-fix-retest cycle and actually installs the technology successfully
+
+**The Test-Fix-Retest Requirement (Absolute Rule):**
+
+A technology may ONLY be marked as "ready" when ALL of the following conditions are met:
+1. The installer has been tested on all Docker-supported platforms
+2. If any test failed, the installer code was fixed
+3. After fixes, the installer was re-tested to confirm it works
+4. The final test run shows the technology actually installs successfully (not just "no errors")
+5. You have verified the installation output confirms the software is present and functional
+
+**This is non-negotiable.** A passing test means the software is installed and working, not just that the script ran without crashing. If you cannot verify the technology actually installed, do NOT mark it as ready.
 
 **On the length of the queue:**
 - It is expected that there may be dozens of test-pending technologies

@@ -26,14 +26,14 @@
   {
     "filename": "apt-transport-https.js",
     "name": "apt-transport-https",
-    "status": "ready",
+    "status": "test-pending",
     "environments": ["ubuntu", "debian", "wsl", "raspbian"],
     "depends_on": []
   },
   {
     "filename": "atomicparsley.js",
     "name": "AtomicParsley",
-    "status": "ready",
+    "status": "test-pending",
     "environments": ["macos", "ubuntu", "debian", "wsl", "raspbian", "amazon_linux", "rhel", "fedora", "windows", "gitbash"],
     "depends_on": [
       {
@@ -49,7 +49,7 @@
   {
     "filename": "aws-cli.js",
     "name": "AWS CLI",
-    "status": "ready",
+    "status": "test-pending",
     "environments": ["macos", "ubuntu", "debian", "raspbian", "amazon_linux", "rhel", "fedora", "wsl", "windows"],
     "depends_on": [
       {
@@ -73,7 +73,7 @@
   {
     "filename": "balena-etcher.js",
     "name": "Balena Etcher",
-    "status": "ready",
+    "status": "test-pending",
     "environments": ["macos", "ubuntu", "debian", "wsl", "raspbian", "amazon_linux", "fedora", "rhel", "windows", "gitbash"],
     "depends_on": [
       {
@@ -89,7 +89,7 @@
   {
     "filename": "bambu-studio.js",
     "name": "Bambu Studio",
-    "status": "ready",
+    "status": "test-pending",
     "environments": ["macos", "ubuntu", "debian", "wsl", "raspbian", "amazon_linux", "fedora", "rhel", "windows", "gitbash"],
     "depends_on": [
       {
@@ -105,7 +105,7 @@
   {
     "filename": "bash-completion.js",
     "name": "Bash Completion 2",
-    "status": "ready",
+    "status": "test-pending",
     "environments": ["macos", "ubuntu", "debian", "wsl", "raspbian", "amazon_linux", "rhel", "fedora"],
     "depends_on": [
       {
@@ -117,7 +117,7 @@
   {
     "filename": "bash.js",
     "name": "Bash",
-    "status": "ready",
+    "status": "test-pending",
     "environments": ["macos", "ubuntu", "debian", "wsl", "raspbian", "amazon_linux", "rhel", "fedora", "windows", "gitbash"],
     "depends_on": [
       {
