@@ -29,6 +29,13 @@ const apt = require('../utils/ubuntu/apt');
 const choco = require('../utils/windows/choco');
 
 /**
+ * Indicates whether this installer requires a desktop environment.
+ * Zoom is a GUI video conferencing application and requires a display.
+ * @type {boolean}
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Zoom on macOS.
  * This installs the full desktop application to /Applications.
  */
@@ -667,7 +674,19 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'].includes(platform.type);
+
+  // First check if the platform is supported
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+
+  // This installer requires a desktop environment
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -718,6 +737,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

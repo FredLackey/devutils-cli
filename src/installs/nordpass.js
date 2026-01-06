@@ -28,6 +28,12 @@ const apt = require('../utils/ubuntu/apt');
 const choco = require('../utils/windows/choco');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * NordPass is a GUI password manager application.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for NordPass on macOS.
  * This installs the full desktop application from Nord Security.
  */
@@ -628,7 +634,14 @@ async function isInstalled() {
 function isEligible() {
   const platform = os.detect();
   // NordPass is NOT available for Raspberry Pi or server Linux distributions
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -681,6 +694,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

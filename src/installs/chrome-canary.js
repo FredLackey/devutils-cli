@@ -29,6 +29,12 @@ const fs = require('fs');
 const path = require('path');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Chrome Canary is a GUI web browser.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Chrome Canary on macOS
  * @constant {string}
  */
@@ -412,7 +418,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -456,6 +469,7 @@ async function install() {
 }
 
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

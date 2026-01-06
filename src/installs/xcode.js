@@ -39,6 +39,12 @@ const brew = require('../utils/macos/brew');
 const fs = require('fs');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Xcode is a GUI integrated development environment (IDE).
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The path where Xcode is typically installed on macOS.
  * The standard location is /Applications/Xcode.app.
  */
@@ -474,7 +480,13 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return platform.type === 'macos';
+  if (platform.type !== 'macos') {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -527,6 +539,7 @@ async function install() {
 }
 
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

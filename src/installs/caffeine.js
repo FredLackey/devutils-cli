@@ -26,6 +26,12 @@ const apt = require('../utils/ubuntu/apt');
 const choco = require('../utils/windows/choco');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Caffeine is a GUI utility that prevents screen sleeping.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * Install Caffeine on macOS using Homebrew.
  *
  * Installs the Caffeine.app menu bar utility via Homebrew cask.
@@ -431,7 +437,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -473,6 +486,7 @@ async function install() {
 }
 
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

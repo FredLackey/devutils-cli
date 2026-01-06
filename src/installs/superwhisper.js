@@ -33,6 +33,12 @@ const brew = require('../utils/macos/brew');
 const macosApps = require('../utils/macos/apps');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Superwhisper is a GUI voice-to-text application.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Superwhisper on macOS.
  * This installs the full desktop application to /Applications.
  */
@@ -618,7 +624,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'wsl', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'wsl', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -671,6 +684,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

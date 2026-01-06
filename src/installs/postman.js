@@ -32,6 +32,13 @@ const snap = require('../utils/ubuntu/snap');
 const choco = require('../utils/windows/choco');
 
 /**
+ * Indicates whether this installer requires a desktop environment.
+ * Postman is a GUI API development tool and requires a display.
+ * @type {boolean}
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Postman on macOS.
  */
 const HOMEBREW_CASK_NAME = 'postman';
@@ -705,8 +712,20 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
+
+  // First check if the platform is supported
   // Postman is a GUI application, NOT available on headless server platforms
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+
+  // This installer requires a desktop environment
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -758,6 +777,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

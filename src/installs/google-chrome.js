@@ -30,6 +30,13 @@ const choco = require('../utils/windows/choco');
 const winget = require('../utils/windows/winget');
 
 /**
+ * Indicates whether this installer requires a desktop environment.
+ * Google Chrome is a GUI web browser and requires a display.
+ * @type {boolean}
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Google Chrome on macOS.
  * Using the cask (not formula) because Chrome is a GUI application.
  */
@@ -716,13 +723,28 @@ async function isInstalled() {
 
 /**
  * Check if this installer is supported on the current platform.
- * Google Chrome is NOT supported on ARM-based platforms (Raspberry Pi).
+ *
+ * Google Chrome is NOT supported on ARM-based platforms (Raspberry Pi)
+ * and requires a desktop environment since it is a GUI application.
+ *
  * @returns {boolean} True if installation is supported on this platform
  */
 function isEligible() {
   const platform = os.detect();
+
+  // First check if the platform is supported
   // Chrome is NOT available for Raspberry Pi (ARM architecture)
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+
+  // This installer requires a desktop environment
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -776,6 +798,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

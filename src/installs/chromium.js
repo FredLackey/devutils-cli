@@ -16,6 +16,12 @@ const shell = require('../utils/common/shell');
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * Whether this installer requires a desktop environment to function.
+ * Chromium is a GUI web browser.
+ */
+const REQUIRES_DESKTOP = true;
+
 // Platform-specific utilities are loaded dynamically to avoid loading
 // unnecessary modules on platforms where they are not needed
 
@@ -580,7 +586,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -628,6 +641,7 @@ async function install() {
 
 // Export all functions for testing and programmatic use
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

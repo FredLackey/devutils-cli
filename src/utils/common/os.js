@@ -190,6 +190,96 @@ function getTempDir() {
   return os.tmpdir();
 }
 
+/**
+ * Checks if a graphical desktop environment is available on the current system.
+ *
+ * This function determines whether GUI applications can be displayed:
+ * - macOS: Always returns true (Aqua/Quartz desktop is always available)
+ * - Windows (native): Always returns true (Windows Desktop is always available)
+ * - Git Bash: Always returns true (runs on Windows which has a desktop)
+ * - Linux: Checks for X11, Wayland, or installed desktop environment packages
+ * - WSL: Checks for WSLg or X server availability via DISPLAY/WAYLAND_DISPLAY
+ *
+ * Use this function before installing GUI applications to ensure the system
+ * can actually display them. Headless servers and containers typically
+ * return false.
+ *
+ * @returns {boolean} True if a desktop environment is available, false otherwise
+ *
+ * @example
+ * const os = require('../utils/common/os');
+ * if (!os.isDesktopAvailable()) {
+ *   console.log('This tool requires a desktop environment.');
+ *   return;
+ * }
+ */
+function isDesktopAvailable() {
+  const platform = detect();
+
+  // macOS always has a desktop environment (Aqua/Quartz)
+  if (platform.type === 'macos') {
+    return true;
+  }
+
+  // Windows (native) always has a desktop environment
+  if (platform.type === 'windows') {
+    return true;
+  }
+
+  // Git Bash runs on Windows, which has a desktop
+  if (platform.type === 'gitbash') {
+    return true;
+  }
+
+  // For Linux-based systems (including WSL), check for display availability
+  // This covers ubuntu, debian, raspbian, amazon_linux, rhel, fedora, wsl
+  if (platform.type === 'wsl' ||
+      platform.type === 'ubuntu' ||
+      platform.type === 'debian' ||
+      platform.type === 'raspbian' ||
+      platform.type === 'amazon_linux' ||
+      platform.type === 'rhel' ||
+      platform.type === 'fedora' ||
+      platform.type === 'linux') {
+
+    // Check for Wayland display (modern Linux desktops)
+    if (process.env.WAYLAND_DISPLAY) {
+      return true;
+    }
+
+    // Check for X11 display
+    if (process.env.DISPLAY) {
+      return true;
+    }
+
+    // Check XDG session type (set by display managers)
+    const sessionType = process.env.XDG_SESSION_TYPE;
+    if (sessionType === 'x11' || sessionType === 'wayland') {
+      return true;
+    }
+
+    // Check for desktop environment indicators
+    if (process.env.XDG_CURRENT_DESKTOP || process.env.DESKTOP_SESSION) {
+      return true;
+    }
+
+    // For WSL specifically, check for WSLg availability
+    // WSLg sets WAYLAND_DISPLAY or DISPLAY when available
+    if (platform.type === 'wsl') {
+      // WSLg creates /mnt/wslg directory when GUI support is available
+      if (fs.existsSync('/mnt/wslg')) {
+        return true;
+      }
+    }
+
+    // No desktop environment detected
+    return false;
+  }
+
+  // Unknown platform - assume no desktop available
+  return false;
+}
+
 module.exports = {
   detect,
   isWindows,
@@ -199,5 +289,6 @@ module.exports = {
   getArch,
   getDistro,
   getHomeDir,
-  getTempDir
+  getTempDir,
+  isDesktopAvailable
 };

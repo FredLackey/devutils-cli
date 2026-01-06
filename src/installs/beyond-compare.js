@@ -30,6 +30,12 @@ const apt = require('../utils/ubuntu/apt');
 const choco = require('../utils/windows/choco');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Beyond Compare is a GUI file and folder comparison utility.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The current version of Beyond Compare to install.
  * Update this when new versions are released.
  * @constant {string}
@@ -523,7 +529,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -563,6 +576,7 @@ async function install() {
 }
 
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isEligible,
   install_macos,

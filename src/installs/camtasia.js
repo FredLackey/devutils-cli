@@ -26,6 +26,12 @@ const windowsShell = require('../utils/windows/shell');
 const fs = require('fs');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Camtasia is a GUI screen recording and video editing application.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Camtasia.
  * This is used for both installation checks and the install command.
  */
@@ -506,7 +512,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'windows', 'wsl', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'windows', 'wsl', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -561,6 +574,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

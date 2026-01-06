@@ -29,6 +29,12 @@ const winget = require('../utils/windows/winget');
 const macosApps = require('../utils/macos/apps');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Balena Etcher is a GUI application for flashing OS images.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The current version of Balena Etcher to install when downloading directly.
  * Update this value when a new version is released.
  */
@@ -629,7 +635,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -669,6 +682,7 @@ async function install() {
 }
 
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isEligible,
   isInstalled,

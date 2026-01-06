@@ -29,6 +29,12 @@ const windowsShell = require('../utils/windows/shell');
 const fs = require('fs');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Snagit is a GUI screen capture and recording application.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Snagit.
  * This is used for both installation checks and the install command.
  */
@@ -495,7 +501,14 @@ async function isInstalled() {
 function isEligible() {
   const platform = os.detect();
   // Snagit is only available on macOS and Windows (TechSmith does not support Linux)
-  return ['macos', 'wsl', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'wsl', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -550,6 +563,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

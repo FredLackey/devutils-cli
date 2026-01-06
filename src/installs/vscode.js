@@ -39,6 +39,13 @@ const apt = require('../utils/ubuntu/apt');
 const choco = require('../utils/windows/choco');
 
 /**
+ * Indicates whether this installer requires a desktop environment.
+ * Visual Studio Code is a GUI application and requires a display.
+ * @type {boolean}
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Visual Studio Code on macOS.
  * This installs the full VS Code application to /Applications.
  */
@@ -740,12 +747,28 @@ async function isInstalled() {
 
 /**
  * Check if this installer is supported on the current platform.
- * VS Code is supported on all major platforms.
+ *
+ * VS Code is supported on all major platforms but requires a desktop
+ * environment since it is a GUI application. On headless servers or
+ * containers without a display, this function returns false.
+ *
  * @returns {boolean} True if installation is supported on this platform
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'].includes(platform.type);
+
+  // First check if the platform is supported
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+
+  // This installer requires a desktop environment
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -798,6 +821,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

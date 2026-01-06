@@ -32,6 +32,12 @@ const brew = require('../utils/macos/brew');
 const macosApps = require('../utils/macos/apps');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Safari Technology Preview is a GUI web browser.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Homebrew cask name for Safari Technology Preview.
  * This cask downloads the application directly from Apple's servers.
  */
@@ -289,7 +295,13 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return platform.type === 'macos';
+  if (platform.type !== 'macos') {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -340,6 +352,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

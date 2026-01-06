@@ -26,6 +26,12 @@ const winget = require('../utils/windows/winget');
 const macosApps = require('../utils/macos/apps');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Cursor is a GUI code editor.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The name of the Cursor application bundle on macOS
  * Used for checking if Cursor is already installed
  */
@@ -504,7 +510,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'rhel', 'fedora', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -545,6 +558,7 @@ async function install() {
 }
 
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

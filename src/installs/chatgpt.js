@@ -25,6 +25,12 @@ const snap = require('../utils/ubuntu/snap');
 const winget = require('../utils/windows/winget');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * ChatGPT desktop app is a GUI application.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The Microsoft Store ID for the official ChatGPT Windows app.
  * This ID is used to install and verify the app via winget.
  */
@@ -402,7 +408,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -442,6 +455,7 @@ async function install() {
 }
 
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

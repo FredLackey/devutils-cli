@@ -31,6 +31,12 @@ const choco = require('../utils/windows/choco');
 const macosApps = require('../utils/macos/apps');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Bambu Studio is a GUI 3D printing slicer requiring OpenGL 2.0+.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * The macOS application bundle name for Bambu Studio.
  * Used to verify installation via the standard /Applications directory.
  */
@@ -809,7 +815,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'raspbian', 'amazon_linux', 'fedora', 'rhel', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -860,6 +873,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

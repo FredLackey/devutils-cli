@@ -26,6 +26,12 @@ const windowsShell = require('../utils/windows/shell');
 const fs = require('fs');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * Microsoft Office is a GUI productivity suite.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * Application names to check for on macOS after installation.
  * Microsoft Office installs multiple applications to /Applications/.
  */
@@ -478,7 +484,14 @@ async function isInstalled() {
 function isEligible() {
   const platform = os.detect();
   // Microsoft Office is only available on macOS and Windows platforms
-  return ['macos', 'wsl', 'windows', 'gitbash'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'wsl', 'windows', 'gitbash'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -533,6 +546,7 @@ async function install() {
 
 // Export all functions for use as a module and for testing
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,

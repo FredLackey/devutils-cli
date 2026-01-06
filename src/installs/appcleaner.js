@@ -18,6 +18,12 @@ const winget = require('../utils/windows/winget');
 const choco = require('../utils/windows/choco');
 
 /**
+ * Whether this installer requires a desktop environment to function.
+ * AppCleaner is a GUI application uninstaller utility.
+ */
+const REQUIRES_DESKTOP = true;
+
+/**
  * Install AppCleaner on macOS using Homebrew.
  *
  * AppCleaner is installed as a Homebrew cask (GUI application) and will be
@@ -245,7 +251,14 @@ async function isInstalled() {
  */
 function isEligible() {
   const platform = os.detect();
-  return ['macos', 'windows'].includes(platform.type);
+  const supportedPlatforms = ['macos', 'windows'];
+  if (!supportedPlatforms.includes(platform.type)) {
+    return false;
+  }
+  if (REQUIRES_DESKTOP && !os.isDesktopAvailable()) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -287,6 +300,7 @@ async function install() {
 }
 
 module.exports = {
+  REQUIRES_DESKTOP,
   install,
   isInstalled,
   isEligible,
