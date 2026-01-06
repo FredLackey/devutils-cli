@@ -192,13 +192,6 @@ function hasDisplayEnvironment() {
  * @returns {Promise<boolean>} True if Flathub is available after this function
  */
 async function ensureFlathubConfigured() {
-  // Check if we're in a headless environment
-  if (!hasDisplayEnvironment()) {
-    console.log('Warning: No display environment detected (DISPLAY, WAYLAND_DISPLAY, or XDG_CURRENT_DESKTOP).');
-    console.log('Bambu Studio requires a desktop environment to run.');
-    console.log('Attempting to configure Flathub anyway...');
-  }
-
   // Check if Flathub is already configured
   const checkResult = await shell.exec('flatpak remote-list | grep -i flathub');
   if (checkResult.code === 0 && checkResult.stdout.includes('flathub')) {
@@ -335,6 +328,20 @@ async function install_ubuntu() {
   const alreadyInstalled = await isInstalledViaFlatpak();
   if (alreadyInstalled) {
     console.log('Bambu Studio is already installed.');
+    return;
+  }
+
+  // Check for display environment before proceeding (Bambu Studio requires GUI)
+  if (!hasDisplayEnvironment()) {
+    console.log('Bambu Studio is a GUI application and requires a desktop environment.');
+    console.log('No display environment detected (DISPLAY, WAYLAND_DISPLAY, or XDG_CURRENT_DESKTOP).');
+    console.log('');
+    console.log('This application cannot be installed on:');
+    console.log('  - Headless servers');
+    console.log('  - Docker containers without display forwarding');
+    console.log('  - SSH sessions without X11 forwarding');
+    console.log('');
+    console.log('Please run this installer on a system with a desktop environment.');
     return;
   }
 
@@ -509,6 +516,20 @@ async function install_amazon_linux() {
   console.log('a desktop environment with display capabilities.');
   console.log('');
 
+  // Check for display environment before proceeding (Bambu Studio requires GUI)
+  if (!hasDisplayEnvironment()) {
+    console.log('Bambu Studio is a GUI application and requires a desktop environment.');
+    console.log('No display environment detected (DISPLAY, WAYLAND_DISPLAY, or XDG_CURRENT_DESKTOP).');
+    console.log('');
+    console.log('This application cannot be installed on:');
+    console.log('  - Headless servers');
+    console.log('  - Docker containers without display forwarding');
+    console.log('  - SSH sessions without X11 forwarding');
+    console.log('');
+    console.log('Please run this installer on a system with a desktop environment.');
+    return;
+  }
+
   // Ensure Flatpak is installed
   const flatpakReady = await ensureFlatpakInstalledRHEL();
   if (!flatpakReady) {
@@ -638,6 +659,20 @@ async function install_ubuntu_wsl() {
   console.log('Note: Bambu Studio in WSL requires WSLg for GUI support.');
   console.log('If you encounter display issues, run "wsl --update" from Windows PowerShell.');
   console.log('');
+
+  // Check for display environment before proceeding (Bambu Studio requires GUI)
+  if (!hasDisplayEnvironment()) {
+    console.log('Bambu Studio is a GUI application and requires a desktop environment.');
+    console.log('No display environment detected (DISPLAY, WAYLAND_DISPLAY, or XDG_CURRENT_DESKTOP).');
+    console.log('');
+    console.log('WSLg is required for GUI applications in WSL. Ensure:');
+    console.log('  1. You are running Windows 10 Build 19044+ or Windows 11');
+    console.log('  2. WSL is up to date: wsl --update (from Windows PowerShell)');
+    console.log('  3. WSL 2 is being used: wsl --set-default-version 2');
+    console.log('');
+    console.log('After updating WSL, restart your WSL session and try again.');
+    return;
+  }
 
   // Ensure Flatpak is installed
   const flatpakReady = await ensureFlatpakInstalled();

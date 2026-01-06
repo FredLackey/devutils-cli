@@ -27,6 +27,7 @@ testing/
 ├── test.sh                      # Main test runner (host script)
 ├── docker-compose.yml           # Container orchestration
 ├── Dockerfile.ubuntu            # Ubuntu 22.04 test image
+├── Dockerfile.ubuntu-desktop    # Ubuntu 22.04 with full desktop environment
 ├── Dockerfile.debian            # Debian 12 test image
 ├── Dockerfile.amazonlinux       # Amazon Linux 2023 test image
 ├── Dockerfile.fedora            # Fedora 39 test image
@@ -88,12 +89,33 @@ testing/
 
 ## Platforms
 
-| Platform | Image | Package Manager |
-|----------|-------|-----------------|
-| Ubuntu 22.04 | `ubuntu:22.04` | APT |
-| Debian 12 | `debian:12` | APT |
-| Amazon Linux 2023 | `amazonlinux:2023` | DNF |
-| Fedora 39 | `fedora:39` | DNF |
+| Platform | Image | Package Manager | Notes |
+|----------|-------|-----------------|-------|
+| Ubuntu 22.04 | `ubuntu:22.04` | APT | Server/CLI only |
+| Ubuntu Desktop 22.04 | `ubuntu:22.04` | APT | Full GNOME desktop with Xvfb for GUI apps |
+| Debian 12 | `debian:12` | APT | Server/CLI only |
+| Amazon Linux 2023 | `amazonlinux:2023` | DNF | Server/CLI only |
+| Fedora 39 | `fedora:39` | DNF | Server/CLI only |
+
+### Ubuntu Desktop Environment
+
+The `ubuntu-desktop` platform includes a full desktop environment for testing GUI applications
+like VS Code, Bambu Studio, Balena Etcher, etc. It uses:
+
+- **ubuntu-desktop-minimal** - Lightweight GNOME desktop
+- **Xvfb** - Virtual framebuffer for headless GUI testing
+- **x11vnc** - VNC server (available for debugging)
+
+```bash
+# Run tests for GUI applications
+./testing/test.sh ubuntu-desktop
+
+# Interactive shell for debugging GUI apps
+./testing/test.sh --shell ubuntu-desktop
+
+# Inside container, the display is already configured:
+# DISPLAY=:99 with Xvfb running at 1920x1080x24
+```
 
 ## Fixtures
 

@@ -180,9 +180,11 @@ async function install_ubuntu() {
   // Ensure wget is available for downloading
   if (!shell.commandExists('wget')) {
     console.log('Installing wget (required for download)...');
-    const wgetResult = await apt.install('wget');
-    if (!wgetResult.success) {
-      console.error('Failed to install wget:', wgetResult.output);
+    // Update package lists first
+    await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update -y');
+    const wgetResult = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget');
+    if (wgetResult.code !== 0) {
+      console.error('Failed to install wget:', wgetResult.stderr);
       return;
     }
   }
@@ -506,9 +508,9 @@ async function install_ubuntu_wsl() {
     console.log('Installing wget (required for download)...');
     // Update apt cache first for WSL
     await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update -y');
-    const wgetResult = await apt.install('wget');
-    if (!wgetResult.success) {
-      console.error('Failed to install wget:', wgetResult.output);
+    const wgetResult = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget');
+    if (wgetResult.code !== 0) {
+      console.error('Failed to install wget:', wgetResult.stderr);
       return;
     }
   }

@@ -330,6 +330,10 @@ async function install_amazon_linux() {
     return;
   }
 
+  // Clean up any existing build directory to ensure idempotency
+  // This handles cases where a previous build was interrupted or failed
+  await shell.exec('rm -rf /tmp/atomicparsley');
+
   // Clone the repository to a temporary directory
   const cloneResult = await shell.exec('git clone https://github.com/wez/atomicparsley.git /tmp/atomicparsley');
   if (cloneResult.code !== 0) {

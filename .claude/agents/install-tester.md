@@ -50,11 +50,19 @@ Only report success when ALL supported platforms pass their tests.
 ## Platform Mapping
 
 The installer supports these platforms, map them to Docker test environments:
-- `ubuntu` → Ubuntu Docker image
-- `amazon_linux` → Amazon Linux Docker image  
+- `ubuntu` → Ubuntu Docker image (headless)
+- `ubuntu-desktop` → Ubuntu Desktop Docker image (Xvfb + GNOME for GUI apps)
+- `debian` → Debian Docker image (headless)
+- `amazon_linux` → Amazon Linux Docker image (headless)
+- `fedora` → Fedora Docker image (headless)
 - `raspbian` → Raspberry Pi OS Docker image (Debian-based ARM, may need special handling)
 
 Note: `macos`, `windows`, and `gitbash` cannot be tested in Docker - skip these.
+
+For desktop applications (`"desktop": true`):
+- Use `ubuntu-desktop` environment which provides Xvfb virtual display
+- Desktop apps should return `"not_eligible"` in headless environments
+- Desktop apps should return `"pass"` in `ubuntu-desktop`
 
 ## Critical Rules
 

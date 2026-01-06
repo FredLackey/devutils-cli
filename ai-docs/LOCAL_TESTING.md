@@ -19,9 +19,12 @@ devutils-cli/
 │   ├── README.md                  # Testing documentation
 │   ├── test.sh                    # Main test runner (host script)
 │   ├── docker-compose.yml         # Orchestration for all containers
-│   ├── Dockerfile.ubuntu          # Ubuntu 22.04 LTS test image
+│   ├── Dockerfile.ubuntu          # Ubuntu 22.04 LTS test image (headless)
+│   ├── Dockerfile.ubuntu-desktop  # Ubuntu 22.04 with Xvfb + GNOME desktop
+│   ├── Dockerfile.debian          # Debian 12 test image (headless)
+│   ├── Dockerfile.amazonlinux     # Amazon Linux 2023 test image (headless)
+│   ├── Dockerfile.fedora          # Fedora 39 test image (headless)
 │   ├── Dockerfile.raspbian        # Raspberry Pi OS test image
-│   ├── Dockerfile.amazonlinux     # Amazon Linux 2023 test image
 │   ├── scripts/
 │   │   ├── run-tests.sh           # Main test runner (container script)
 │   │   ├── test-cli.sh            # CLI command tests
@@ -41,11 +44,14 @@ devutils-cli/
 
 ## Platform Coverage
 
-| Platform | Container Image | Package Manager | Test Priority |
-|----------|-----------------|-----------------|---------------|
-| Ubuntu 22.04 | `ubuntu:22.04` | APT / Snap | High |
-| Raspberry Pi OS | `balenalib/raspberrypi3-debian` | APT / Snap | Medium |
-| Amazon Linux 2023 | `amazonlinux:2023` | DNF | Medium |
+| Platform | Container Image | Package Manager | Desktop | Test Priority |
+|----------|-----------------|-----------------|---------|---------------|
+| Ubuntu 22.04 | `ubuntu:22.04` | APT / Snap | No (headless) | High |
+| Ubuntu Desktop 22.04 | `ubuntu:22.04` | APT / Snap | Yes (Xvfb + GNOME) | High |
+| Debian 12 | `debian:12` | APT / Snap | No (headless) | High |
+| Fedora 39 | `fedora:39` | DNF | No (headless) | Medium |
+| Amazon Linux 2023 | `amazonlinux:2023` | DNF | No (headless) | Medium |
+| Raspberry Pi OS | `balenalib/raspberrypi3-debian` | APT / Snap | No | Medium |
 
 ### Platform Limitations
 
@@ -121,15 +127,29 @@ services:
       - TEST_PLATFORM=ubuntu
     command: ["./testing/scripts/run-tests.sh"]
 
-  raspbian:
+  ubuntu-desktop:
     build:
       context: ..
-      dockerfile: testing/Dockerfile.raspbian
+      dockerfile: testing/Dockerfile.ubuntu-desktop
     volumes:
       - ..:/app:ro
       - test-results:/results
     environment:
-      - TEST_PLATFORM=raspbian
+      - TEST_PLATFORM=ubuntu-desktop
+      - DISPLAY=:99
+      - XDG_RUNTIME_DIR=/tmp/runtime-testuser
+    # Start Xvfb virtual display before running tests
+    command: ["/bin/bash", "-c", "mkdir -p /tmp/runtime-testuser && chmod 700 /tmp/runtime-testuser && Xvfb :99 -screen 0 1920x1080x24 & sleep 2 && ./testing/scripts/run-tests.sh"]
+
+  debian:
+    build:
+      context: ..
+      dockerfile: testing/Dockerfile.debian
+    volumes:
+      - ..:/app:ro
+      - test-results:/results
+    environment:
+      - TEST_PLATFORM=debian
     command: ["./testing/scripts/run-tests.sh"]
 
   amazonlinux:
@@ -141,6 +161,28 @@ services:
       - test-results:/results
     environment:
       - TEST_PLATFORM=amazon_linux
+    command: ["./testing/scripts/run-tests.sh"]
+
+  fedora:
+    build:
+      context: ..
+      dockerfile: testing/Dockerfile.fedora
+    volumes:
+      - ..:/app:ro
+      - test-results:/results
+    environment:
+      - TEST_PLATFORM=fedora
+    command: ["./testing/scripts/run-tests.sh"]
+
+  raspbian:
+    build:
+      context: ..
+      dockerfile: testing/Dockerfile.raspbian
+    volumes:
+      - ..:/app:ro
+      - test-results:/results
+    environment:
+      - TEST_PLATFORM=raspbian
     command: ["./testing/scripts/run-tests.sh"]
 
 volumes:
@@ -364,7 +406,7 @@ dev --help
 #!/bin/bash
 # testing/scripts/run-all-platforms.sh
 
-PLATFORMS=(ubuntu raspbian amazonlinux)
+PLATFORMS=(ubuntu ubuntu-desktop debian amazonlinux fedora raspbian)
 RESULTS=()
 
 for platform in "${PLATFORMS[@]}"; do
@@ -522,6 +564,7 @@ USER testuser
 | Build all images | `docker compose -f testing/docker-compose.yml build` |
 | Run all tests | `docker compose -f testing/docker-compose.yml up` |
 | Test on Ubuntu only | `docker compose -f testing/docker-compose.yml run --rm ubuntu` |
+| Test desktop apps | `docker compose -f testing/docker-compose.yml run --rm ubuntu-desktop` |
 | Interactive shell | `docker run -it --rm -v $(pwd):/app ubuntu:22.04 bash` |
 | Clean up | `docker compose -f testing/docker-compose.yml down -v` |
 | View logs | `docker compose -f testing/docker-compose.yml logs` |
@@ -542,6 +585,25 @@ USER testuser
 - Node.js via NodeSource repository
 - Most straightforward testing environment
 - Can simulate WSL environment for testing `isWSL()` detection
+- **Headless only** — no GUI support, desktop apps return `"not_eligible"`
+
+### Ubuntu Desktop
+
+- Same as Ubuntu but with full GNOME desktop environment
+- Uses **Xvfb** (X virtual framebuffer) for headless GUI testing
+- Includes `ubuntu-desktop-minimal` package
+- Display configured at `:99` with resolution `1920x1080x24`
+- Use for testing desktop applications (VS Code, browsers, etc.)
+- Desktop apps should return `"pass"` in this environment
+- XDG directories properly configured for desktop integration
+
+```bash
+# Run tests for GUI applications
+docker compose -f testing/docker-compose.yml run --rm ubuntu-desktop
+
+# Interactive shell for debugging GUI apps
+./testing/test.sh --shell ubuntu-desktop
+```
 
 ### Raspberry Pi OS
 

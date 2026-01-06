@@ -12,6 +12,7 @@
 
 services:
   ubuntu:
+    platform: linux/amd64
     build:
       context: ..
       dockerfile: testing/Dockerfile.ubuntu
@@ -23,6 +24,7 @@ services:
     command: ["/app/testing/scripts/run-tests.sh"]
 
   debian:
+    platform: linux/amd64
     build:
       context: ..
       dockerfile: testing/Dockerfile.debian
@@ -34,6 +36,7 @@ services:
     command: ["/app/testing/scripts/run-tests.sh"]
 
   amazonlinux:
+    platform: linux/amd64
     build:
       context: ..
       dockerfile: testing/Dockerfile.amazonlinux
@@ -45,6 +48,7 @@ services:
     command: ["/app/testing/scripts/run-tests.sh"]
 
   fedora:
+    platform: linux/amd64
     build:
       context: ..
       dockerfile: testing/Dockerfile.fedora
@@ -55,8 +59,24 @@ services:
     working_dir: /app
     command: ["/app/testing/scripts/run-tests.sh"]
 
+  ubuntu-desktop:
+    platform: linux/amd64
+    build:
+      context: ..
+      dockerfile: testing/Dockerfile.ubuntu-desktop
+    volumes:
+      - test-tmp-ubuntu-desktop:/tmp
+    environment:
+      - TEST_PLATFORM=ubuntu-desktop
+      - DISPLAY=:99
+      - XDG_RUNTIME_DIR=/tmp/runtime-testuser
+    working_dir: /app
+    # Start Xvfb virtual display before running tests
+    command: ["/bin/bash", "-c", "mkdir -p /tmp/runtime-testuser && chmod 700 /tmp/runtime-testuser && Xvfb :99 -screen 0 1920x1080x24 & sleep 2 && /app/testing/scripts/run-tests.sh"]
+
 volumes:
   test-tmp-ubuntu:
   test-tmp-debian:
   test-tmp-amazonlinux:
   test-tmp-fedora:
+  test-tmp-ubuntu-desktop:
