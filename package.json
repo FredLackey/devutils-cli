@@ -1,6 +1,6 @@
 {
   "name": "@fredlackey/devutils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A globally-installable Node.js CLI toolkit for bootstrapping and configuring development environments across any machine.",
   "main": "src/index.js",
   "bin": {
