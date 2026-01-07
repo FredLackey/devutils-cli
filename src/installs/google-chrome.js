@@ -566,7 +566,8 @@ async function install_windows() {
     console.log('Installing Google Chrome via winget...');
 
     const result = await winget.install(WINGET_PACKAGE_ID, {
-      silent: true
+      silent: true,
+      source: 'winget'
     });
 
     if (result.success) {
