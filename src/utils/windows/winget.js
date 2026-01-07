@@ -24,6 +24,50 @@ const WINGET_KNOWN_PATH = path.join(
 );
 
 /**
+ * The WindowsApps directory containing Microsoft Store app aliases.
+ */
+const WINDOWS_APPS_DIR = path.join(
+  process.env.LOCALAPPDATA || '',
+  'Microsoft',
+  'WindowsApps'
+);
+
+/**
+ * Adds the WindowsApps directory to the current process's PATH.
+ *
+ * This ensures that winget and other Microsoft Store apps are accessible
+ * to child processes spawned by this Node.js process. Normally this directory
+ * is in PATH, but in some environments (like fresh installations or CI) it may
+ * not be.
+ *
+ * This function is idempotent - it won't add the path if it's already present.
+ *
+ * @returns {boolean} True if PATH was modified, false if already present
+ */
+function addBinToPath() {
+  if (!WINDOWS_APPS_DIR) {
+    return false;
+  }
+
+  const currentPath = process.env.PATH || '';
+  const pathSeparator = ';';
+
+  // Check if already in PATH (case-insensitive on Windows)
+  const paths = currentPath.split(pathSeparator);
+  const alreadyInPath = paths.some(p =>
+    p.toLowerCase() === WINDOWS_APPS_DIR.toLowerCase()
+  );
+
+  if (alreadyInPath) {
+    return false;
+  }
+
+  // Prepend WindowsApps directory to PATH
+  process.env.PATH = `${WINDOWS_APPS_DIR}${pathSeparator}${currentPath}`;
+  return true;
+}
+
+/**
  * Checks if winget is available.
  *
  * First checks PATH, then falls back to checking the well-known
@@ -429,6 +473,7 @@ async function updateSources() {
 module.exports = {
   isInstalled,
   getExecutablePath,
+  addBinToPath,
   getVersion,
   install,
   uninstall,

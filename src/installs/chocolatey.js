@@ -25,6 +25,7 @@
 const os = require('../utils/common/os');
 const shell = require('../utils/common/shell');
 const windowsShell = require('../utils/windows/shell');
+const choco = require('../utils/windows/choco');
 
 /**
  * The official Chocolatey installation script URL.
@@ -252,6 +253,10 @@ async function install_windows() {
     return;
   }
 
+  // Add Chocolatey's bin directory to the current process PATH so that
+  // subsequent choco commands work without requiring a terminal restart
+  choco.addBinToPath();
+
   console.log('Chocolatey installed successfully.');
   console.log('');
   console.log('IMPORTANT: Close and reopen your terminal for PATH changes to take effect.');
@@ -340,6 +345,10 @@ async function install_gitbash() {
     console.log('Please try installing manually from an Administrator PowerShell.');
     return;
   }
+
+  // Add Chocolatey's bin directory to the current process PATH so that
+  // subsequent choco commands work without requiring a terminal restart
+  choco.addBinToPath();
 
   console.log('Chocolatey installed successfully.');
   console.log('');

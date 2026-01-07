@@ -239,14 +239,19 @@ async function install_windows() {
     return;
   }
 
-  // Verify the installation succeeded by checking if the package is now installed
-  const verified = await choco.isPackageInstalled('wget');
+  // Verify the installation by checking if the binary exists in Chocolatey's bin directory
+  // This works even when PATH hasn't been updated in the current terminal session
+  const verified = choco.commandBinaryExists('wget');
   if (!verified) {
-    console.log('Installation may have failed: wget package not found after install.');
+    // Binary not found - this is unexpected since choco.install() succeeded
+    console.log('Warning: wget binary not found in Chocolatey bin directory.');
+    console.log('The package may use a different executable name.');
+    console.log('');
+    console.log('Try running in a new terminal: wget --version');
     return;
   }
 
-  console.log('wget installed successfully via Chocolatey.');
+  console.log('wget installed successfully.');
   console.log('');
   console.log('Note: In PowerShell, use "wget.exe" (with the extension) to run GNU wget,');
   console.log('as "wget" is an alias for Invoke-WebRequest.');

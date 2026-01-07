@@ -18,6 +18,43 @@ const fs = require('fs');
 const CHOCO_KNOWN_PATH = 'C:\\ProgramData\\chocolatey\\bin\\choco.exe';
 
 /**
+ * Well-known directory where Chocolatey installs command binaries.
+ * All Chocolatey-installed commands get shims placed here.
+ */
+const CHOCO_BIN_DIR = 'C:\\ProgramData\\chocolatey\\bin';
+
+/**
+ * Adds Chocolatey's bin directory to the current process's PATH.
+ *
+ * This is necessary after installing Chocolatey because the PATH environment
+ * variable in the current Node.js process won't be updated until a new terminal
+ * is opened. By manually adding the bin directory, subsequent child processes
+ * spawned by this process will be able to find Chocolatey-installed commands.
+ *
+ * This function is idempotent - it won't add the path if it's already present.
+ *
+ * @returns {boolean} True if PATH was modified, false if already present
+ */
+function addBinToPath() {
+  const currentPath = process.env.PATH || '';
+  const pathSeparator = ';';
+
+  // Check if already in PATH (case-insensitive on Windows)
+  const paths = currentPath.split(pathSeparator);
+  const alreadyInPath = paths.some(p =>
+    p.toLowerCase() === CHOCO_BIN_DIR.toLowerCase()
+  );
+
+  if (alreadyInPath) {
+    return false;
+  }
+
+  // Prepend Chocolatey bin directory to PATH
+  process.env.PATH = `${CHOCO_BIN_DIR}${pathSeparator}${currentPath}`;
+  return true;
+}
+
+/**
  * Checks if Chocolatey is installed.
  *
  * First checks PATH, then falls back to checking the well-known
@@ -54,6 +91,48 @@ function getExecutablePath() {
     }
   } catch {
     // Ignore errors checking the path
+  }
+
+  return null;
+}
+
+/**
+ * Checks if a command binary exists in Chocolatey's bin directory.
+ *
+ * This is useful for verifying installations when the PATH hasn't been
+ * updated yet. Chocolatey creates shims (small .exe files) in its bin
+ * directory for all installed commands.
+ *
+ * @param {string} commandName - The command name (without .exe extension)
+ * @returns {boolean} True if the binary exists in Chocolatey's bin directory
+ */
+function commandBinaryExists(commandName) {
+  const path = require('path');
+  const binaryPath = path.join(CHOCO_BIN_DIR, `${commandName}.exe`);
+
+  try {
+    return fs.existsSync(binaryPath);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Gets the full path to a command's binary in Chocolatey's bin directory.
+ *
+ * @param {string} commandName - The command name (without .exe extension)
+ * @returns {string|null} Full path to the binary, or null if not found
+ */
+function getCommandBinaryPath(commandName) {
+  const path = require('path');
+  const binaryPath = path.join(CHOCO_BIN_DIR, `${commandName}.exe`);
+
+  try {
+    if (fs.existsSync(binaryPath)) {
+      return binaryPath;
+    }
+  } catch {
+    // Ignore errors
   }
 
   return null;
@@ -368,6 +447,9 @@ async function unpin(packageName) {
 module.exports = {
   isInstalled,
   getExecutablePath,
+  addBinToPath,
+  commandBinaryExists,
+  getCommandBinaryPath,
   getVersion,
   install,
   uninstall,
