@@ -577,8 +577,20 @@ async function install_windows() {
       return;
     }
 
-    // winget failed, try Chocolatey as fallback
-    console.log('winget installation failed, trying Chocolatey...');
+    // winget failed - check if it's a "already installed" scenario
+    // winget returns non-zero even when the app is already installed
+    if (result.output && result.output.includes('already installed')) {
+      console.log('Google Chrome is already installed.');
+      return;
+    }
+
+    // winget failed, log the error and try Chocolatey as fallback
+    console.log('winget installation failed:');
+    if (result.output) {
+      console.log(result.output);
+    }
+    console.log('');
+    console.log('Trying Chocolatey as fallback...');
   }
 
   // Try Chocolatey if available
