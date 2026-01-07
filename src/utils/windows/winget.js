@@ -89,7 +89,8 @@ async function getVersion() {
  * @param {Object} [options] - Installation options
  * @param {boolean} [options.silent=true] - Silent installation
  * @param {string} [options.version] - Specific version to install
- * @param {string} [options.source] - Package source (winget, msstore)
+ * @param {string} [options.source='winget'] - Package source (winget, msstore). Defaults to 'winget'
+ *   to avoid issues with msstore certificate errors and source ambiguity.
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function install(packageName, options = {}) {
@@ -111,8 +112,11 @@ async function install(packageName, options = {}) {
     command += ` --version "${options.version}"`;
   }
 
-  if (options.source) {
-    command += ` --source ${options.source}`;
+  // Default to 'winget' source to avoid msstore certificate errors and
+  // source ambiguity when packages exist in multiple sources
+  const source = options.source !== undefined ? options.source : 'winget';
+  if (source) {
+    command += ` --source ${source}`;
   }
 
   const result = await shell.exec(command);
