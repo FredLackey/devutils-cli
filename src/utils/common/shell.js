@@ -124,11 +124,32 @@ function which(executable) {
 
 /**
  * Checks if a command is available in PATH
+ *
+ * On Windows, this also handles App Execution Aliases (used by winget, etc.)
+ * which are special reparse points that don't appear as regular files to
+ * fs.statSync().isFile(). We fall back to using the 'where' command for these.
+ *
  * @param {string} command - The command to check
  * @returns {boolean}
  */
 function commandExists(command) {
-  return which(command) !== null;
+  // First try the file-based check (works for regular executables)
+  if (which(command) !== null) {
+    return true;
+  }
+
+  // On Windows, App Execution Aliases (like winget) don't appear as regular
+  // files to fs.statSync(). Use 'where' command as a fallback.
+  if (process.platform === 'win32') {
+    try {
+      cpExecSync(`where ${command}`, { stdio: 'ignore' });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  return false;
 }
 
 /**
