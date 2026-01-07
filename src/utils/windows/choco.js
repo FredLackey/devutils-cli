@@ -7,13 +7,56 @@
  */
 
 const shell = require('../common/shell');
+const fs = require('fs');
 
 /**
- * Checks if Chocolatey is installed
+ * Well-known path where Chocolatey is typically installed on Windows.
+ * This path is used as a fallback when choco is not found in PATH,
+ * which can happen when Chocolatey was just installed and the current
+ * process still has the old PATH environment variable.
+ */
+const CHOCO_KNOWN_PATH = 'C:\\ProgramData\\chocolatey\\bin\\choco.exe';
+
+/**
+ * Checks if Chocolatey is installed.
+ *
+ * First checks PATH, then falls back to checking the well-known
+ * installation path. This handles the case where Chocolatey was just
+ * installed and PATH hasn't been updated in the current process.
+ *
  * @returns {boolean}
  */
 function isInstalled() {
-  return shell.commandExists('choco');
+  return getExecutablePath() !== null;
+}
+
+/**
+ * Gets the path to the Chocolatey executable.
+ *
+ * First checks if choco is in PATH, then falls back to the well-known
+ * installation path. This handles the case where Chocolatey was just
+ * installed and PATH hasn't been updated in the current process.
+ *
+ * @returns {string|null} The path to choco executable, or null if not found
+ */
+function getExecutablePath() {
+  // First check if choco is in PATH
+  if (shell.commandExists('choco')) {
+    return 'choco';
+  }
+
+  // Fall back to checking the well-known installation path
+  // This handles cases where Chocolatey was just installed and PATH
+  // hasn't been updated in the current Node.js process
+  try {
+    if (fs.existsSync(CHOCO_KNOWN_PATH)) {
+      return CHOCO_KNOWN_PATH;
+    }
+  } catch {
+    // Ignore errors checking the path
+  }
+
+  return null;
 }
 
 /**
@@ -21,11 +64,12 @@ function isInstalled() {
  * @returns {Promise<string|null>}
  */
 async function getVersion() {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return null;
   }
 
-  const result = await shell.exec('choco --version');
+  const result = await shell.exec(`"${chocoPath}" --version`);
   if (result.code === 0) {
     return result.stdout.trim();
   }
@@ -41,14 +85,15 @@ async function getVersion() {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function install(packageName, options = {}) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return {
       success: false,
       output: 'Chocolatey is not installed'
     };
   }
 
-  let command = `choco install ${packageName} -y`;
+  let command = `"${chocoPath}" install ${packageName} -y`;
 
   if (options.force) {
     command += ' --force';
@@ -71,14 +116,15 @@ async function install(packageName, options = {}) {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function uninstall(packageName) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return {
       success: false,
       output: 'Chocolatey is not installed'
     };
   }
 
-  const result = await shell.exec(`choco uninstall ${packageName} -y`);
+  const result = await shell.exec(`"${chocoPath}" uninstall ${packageName} -y`);
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -91,11 +137,12 @@ async function uninstall(packageName) {
  * @returns {Promise<boolean>}
  */
 async function isPackageInstalled(packageName) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return false;
   }
 
-  const result = await shell.exec(`choco list --local-only --exact ${packageName}`);
+  const result = await shell.exec(`"${chocoPath}" list --local-only --exact ${packageName}`);
   // Output contains the package name if installed
   return result.code === 0 && result.stdout.toLowerCase().includes(packageName.toLowerCase());
 }
@@ -106,11 +153,12 @@ async function isPackageInstalled(packageName) {
  * @returns {Promise<string|null>}
  */
 async function getPackageVersion(packageName) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return null;
   }
 
-  const result = await shell.exec(`choco list --local-only --exact ${packageName}`);
+  const result = await shell.exec(`"${chocoPath}" list --local-only --exact ${packageName}`);
   if (result.code !== 0) {
     return null;
   }
@@ -133,7 +181,8 @@ async function getPackageVersion(packageName) {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function upgrade(packageName) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return {
       success: false,
       output: 'Chocolatey is not installed'
@@ -141,7 +190,7 @@ async function upgrade(packageName) {
   }
 
   const target = packageName || 'all';
-  const result = await shell.exec(`choco upgrade ${target} -y`);
+  const result = await shell.exec(`"${chocoPath}" upgrade ${target} -y`);
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -154,11 +203,12 @@ async function upgrade(packageName) {
  * @returns {Promise<Array<{ name: string, version: string }>>}
  */
 async function search(query) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return [];
   }
 
-  const result = await shell.exec(`choco search "${query}"`);
+  const result = await shell.exec(`"${chocoPath}" search "${query}"`);
   if (result.code !== 0) {
     return [];
   }
@@ -190,11 +240,12 @@ async function search(query) {
  * @returns {Promise<string|null>}
  */
 async function info(packageName) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return null;
   }
 
-  const result = await shell.exec(`choco info ${packageName}`);
+  const result = await shell.exec(`"${chocoPath}" info ${packageName}`);
   if (result.code === 0) {
     return result.stdout;
   }
@@ -206,11 +257,12 @@ async function info(packageName) {
  * @returns {Promise<Array<{ name: string, version: string }>>}
  */
 async function listInstalled() {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return [];
   }
 
-  const result = await shell.exec('choco list --local-only');
+  const result = await shell.exec(`"${chocoPath}" list --local-only`);
   if (result.code !== 0) {
     return [];
   }
@@ -241,11 +293,12 @@ async function listInstalled() {
  * @returns {Promise<Array<{ name: string, currentVersion: string, availableVersion: string }>>}
  */
 async function listOutdated() {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return [];
   }
 
-  const result = await shell.exec('choco outdated');
+  const result = await shell.exec(`"${chocoPath}" outdated`);
   if (result.code !== 0) {
     return [];
   }
@@ -276,14 +329,15 @@ async function listOutdated() {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function pin(packageName) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return {
       success: false,
       output: 'Chocolatey is not installed'
     };
   }
 
-  const result = await shell.exec(`choco pin add -n="${packageName}"`);
+  const result = await shell.exec(`"${chocoPath}" pin add -n="${packageName}"`);
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -296,14 +350,15 @@ async function pin(packageName) {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function unpin(packageName) {
-  if (!isInstalled()) {
+  const chocoPath = getExecutablePath();
+  if (!chocoPath) {
     return {
       success: false,
       output: 'Chocolatey is not installed'
     };
   }
 
-  const result = await shell.exec(`choco pin remove -n="${packageName}"`);
+  const result = await shell.exec(`"${chocoPath}" pin remove -n="${packageName}"`);
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -312,6 +367,7 @@ async function unpin(packageName) {
 
 module.exports = {
   isInstalled,
+  getExecutablePath,
   getVersion,
   install,
   uninstall,

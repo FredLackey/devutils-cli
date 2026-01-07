@@ -7,13 +7,62 @@
  */
 
 const shell = require('../common/shell');
+const fs = require('fs');
+const path = require('path');
 
 /**
- * Checks if winget is available
+ * Well-known path where winget is typically installed on Windows.
+ * This path is used as a fallback when winget is not found in PATH,
+ * which can happen when winget was just installed and the current
+ * process still has the old PATH environment variable.
+ */
+const WINGET_KNOWN_PATH = path.join(
+  process.env.LOCALAPPDATA || '',
+  'Microsoft',
+  'WindowsApps',
+  'winget.exe'
+);
+
+/**
+ * Checks if winget is available.
+ *
+ * First checks PATH, then falls back to checking the well-known
+ * installation path. This handles the case where winget was just
+ * installed and PATH hasn't been updated in the current process.
+ *
  * @returns {boolean}
  */
 function isInstalled() {
-  return shell.commandExists('winget');
+  return getExecutablePath() !== null;
+}
+
+/**
+ * Gets the path to the winget executable.
+ *
+ * First checks if winget is in PATH, then falls back to the well-known
+ * installation path. This handles the case where winget was just
+ * installed and PATH hasn't been updated in the current process.
+ *
+ * @returns {string|null} The path to winget executable, or null if not found
+ */
+function getExecutablePath() {
+  // First check if winget is in PATH
+  if (shell.commandExists('winget')) {
+    return 'winget';
+  }
+
+  // Fall back to checking the well-known installation path
+  // This handles cases where winget was just installed and PATH
+  // hasn't been updated in the current Node.js process
+  try {
+    if (WINGET_KNOWN_PATH && fs.existsSync(WINGET_KNOWN_PATH)) {
+      return WINGET_KNOWN_PATH;
+    }
+  } catch {
+    // Ignore errors checking the path
+  }
+
+  return null;
 }
 
 /**
@@ -21,11 +70,12 @@ function isInstalled() {
  * @returns {Promise<string|null>}
  */
 async function getVersion() {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return null;
   }
 
-  const result = await shell.exec('winget --version');
+  const result = await shell.exec(`"${wingetPath}" --version`);
   if (result.code === 0) {
     // Output: "v1.6.2771"
     return result.stdout.trim().replace(/^v/, '');
@@ -43,14 +93,15 @@ async function getVersion() {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function install(packageName, options = {}) {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return {
       success: false,
       output: 'winget is not available'
     };
   }
 
-  let command = `winget install "${packageName}" --accept-package-agreements --accept-source-agreements`;
+  let command = `"${wingetPath}" install "${packageName}" --accept-package-agreements --accept-source-agreements`;
 
   if (options.silent !== false) {
     command += ' --silent';
@@ -79,14 +130,15 @@ async function install(packageName, options = {}) {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function uninstall(packageName, options = {}) {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return {
       success: false,
       output: 'winget is not available'
     };
   }
 
-  let command = `winget uninstall "${packageName}"`;
+  let command = `"${wingetPath}" uninstall "${packageName}"`;
 
   if (options.silent !== false) {
     command += ' --silent';
@@ -105,18 +157,19 @@ async function uninstall(packageName, options = {}) {
  * @returns {Promise<boolean>}
  */
 async function isPackageInstalled(packageName) {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return false;
   }
 
-  const result = await shell.exec(`winget list --exact --id "${packageName}"`);
+  const result = await shell.exec(`"${wingetPath}" list --exact --id "${packageName}"`);
   // Check if the output contains the package
   if (result.code === 0 && result.stdout.includes(packageName)) {
     return true;
   }
 
   // Try by name if ID didn't match
-  const nameResult = await shell.exec(`winget list --exact --name "${packageName}"`);
+  const nameResult = await shell.exec(`"${wingetPath}" list --exact --name "${packageName}"`);
   return nameResult.code === 0 && nameResult.stdout.includes(packageName);
 }
 
@@ -126,11 +179,12 @@ async function isPackageInstalled(packageName) {
  * @returns {Promise<string|null>}
  */
 async function getPackageVersion(packageName) {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return null;
   }
 
-  const result = await shell.exec(`winget list --exact --id "${packageName}"`);
+  const result = await shell.exec(`"${wingetPath}" list --exact --id "${packageName}"`);
   if (result.code !== 0) {
     return null;
   }
@@ -159,14 +213,15 @@ async function getPackageVersion(packageName) {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function upgrade(packageName, options = {}) {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return {
       success: false,
       output: 'winget is not available'
     };
   }
 
-  let command = `winget upgrade "${packageName}" --accept-package-agreements --accept-source-agreements`;
+  let command = `"${wingetPath}" upgrade "${packageName}" --accept-package-agreements --accept-source-agreements`;
 
   if (options.silent !== false) {
     command += ' --silent';
@@ -184,14 +239,15 @@ async function upgrade(packageName, options = {}) {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function upgradeAll() {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return {
       success: false,
       output: 'winget is not available'
     };
   }
 
-  const result = await shell.exec('winget upgrade --all --accept-package-agreements --accept-source-agreements');
+  const result = await shell.exec(`"${wingetPath}" upgrade --all --accept-package-agreements --accept-source-agreements`);
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -204,11 +260,12 @@ async function upgradeAll() {
  * @returns {Promise<Array<{ name: string, id: string, version: string }>>}
  */
 async function search(query) {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return [];
   }
 
-  const result = await shell.exec(`winget search "${query}"`);
+  const result = await shell.exec(`"${wingetPath}" search "${query}"`);
   if (result.code !== 0) {
     return [];
   }
@@ -246,11 +303,12 @@ async function search(query) {
  * @returns {Promise<Array<{ name: string, id: string, version: string }>>}
  */
 async function list() {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return [];
   }
 
-  const result = await shell.exec('winget list');
+  const result = await shell.exec(`"${wingetPath}" list`);
   if (result.code !== 0) {
     return [];
   }
@@ -286,11 +344,12 @@ async function list() {
  * @returns {Promise<string|null>}
  */
 async function info(packageName) {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return null;
   }
 
-  const result = await shell.exec(`winget show "${packageName}"`);
+  const result = await shell.exec(`"${wingetPath}" show "${packageName}"`);
   if (result.code === 0) {
     return result.stdout;
   }
@@ -302,11 +361,12 @@ async function info(packageName) {
  * @returns {Promise<Array<{ name: string, id: string, currentVersion: string, availableVersion: string }>>}
  */
 async function listUpgradable() {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return [];
   }
 
-  const result = await shell.exec('winget upgrade');
+  const result = await shell.exec(`"${wingetPath}" upgrade`);
   if (result.code !== 0) {
     return [];
   }
@@ -347,14 +407,15 @@ async function listUpgradable() {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function updateSources() {
-  if (!isInstalled()) {
+  const wingetPath = getExecutablePath();
+  if (!wingetPath) {
     return {
       success: false,
       output: 'winget is not available'
     };
   }
 
-  const result = await shell.exec('winget source update');
+  const result = await shell.exec(`"${wingetPath}" source update`);
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -363,6 +424,7 @@ async function updateSources() {
 
 module.exports = {
   isInstalled,
+  getExecutablePath,
   getVersion,
   install,
   uninstall,
