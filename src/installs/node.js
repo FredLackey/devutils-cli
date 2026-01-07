@@ -527,17 +527,27 @@ async function install_amazon_linux() {
 
   console.log(`Detected package manager: ${packageManager}`);
 
-  // Different installation methods for AL2023 vs AL2
+  // Different installation methods for AL2023 vs AL2 vs Fedora/RHEL
   if (hasDnf) {
-    // Amazon Linux 2023 - use namespaced packages
-    console.log('Installing Node.js on Amazon Linux 2023...');
-    console.log('');
+    // Detect if this is Fedora/RHEL vs Amazon Linux
+    const platform = os.detect();
+    const isFedoraRHEL = platform.type === 'fedora' || platform.type === 'rhel';
+
+    if (isFedoraRHEL) {
+      // Fedora/RHEL - use namespaced packages with symlink approach
+      console.log(`Installing Node.js on ${platform.type}...`);
+      console.log('');
+    } else {
+      // Amazon Linux 2023 - use namespaced packages with alternatives
+      console.log('Installing Node.js on Amazon Linux 2023...');
+      console.log('');
+    }
 
     // Update system packages first
     console.log('Updating system packages...');
     await shell.exec('sudo dnf update -y');
 
-    // Install Node.js 22 and npm from Amazon's repository
+    // Install Node.js 22 and npm from repository
     console.log(`Installing nodejs${NODESOURCE_LTS_VERSION} and npm...`);
     const installResult = await shell.exec(
       `sudo dnf install -y nodejs${NODESOURCE_LTS_VERSION} nodejs${NODESOURCE_LTS_VERSION}-npm`
@@ -553,14 +563,28 @@ async function install_amazon_linux() {
       return;
     }
 
-    // Set Node.js 22 as the active version using alternatives
-    console.log('Setting Node.js as the active version...');
-    const alternativesResult = await shell.exec(
-      `sudo alternatives --set node /usr/bin/node-${NODESOURCE_LTS_VERSION}`
-    );
-    if (alternativesResult.code !== 0) {
-      console.log('Warning: Could not set node alternative. The node command may not be available.');
-      console.log('You may need to use the full path: /usr/bin/node-22');
+    // Set Node.js 22 as the active version
+    // Fedora/RHEL use symlinks, Amazon Linux uses alternatives
+    if (isFedoraRHEL) {
+      console.log('Setting Node.js as the active version...');
+      // On Fedora/RHEL, /usr/bin/node is a symlink to node-20 by default
+      // We need to update it to point to node-22
+      const symlinkResult = await shell.exec(
+        `sudo rm -f /usr/bin/node && sudo ln -s /usr/bin/node-${NODESOURCE_LTS_VERSION} /usr/bin/node`
+      );
+      if (symlinkResult.code !== 0) {
+        console.log('Warning: Could not update node symlink. The node command may point to an older version.');
+        console.log(`You may need to manually run: sudo ln -sf /usr/bin/node-${NODESOURCE_LTS_VERSION} /usr/bin/node`);
+      }
+    } else {
+      console.log('Setting Node.js as the active version...');
+      const alternativesResult = await shell.exec(
+        `sudo alternatives --set node /usr/bin/node-${NODESOURCE_LTS_VERSION}`
+      );
+      if (alternativesResult.code !== 0) {
+        console.log('Warning: Could not set node alternative. The node command may not be available.');
+        console.log('You may need to use the full path: /usr/bin/node-22');
+      }
     }
   } else {
     // Amazon Linux 2 - use NodeSource repository
@@ -599,9 +623,16 @@ async function install_amazon_linux() {
   if (!nodeVersion) {
     console.log('Installation may have failed: node command not found after install.');
     if (hasDnf) {
+      const platform = os.detect();
+      const isFedoraRHEL = platform.type === 'fedora' || platform.type === 'rhel';
       console.log('');
-      console.log('For Amazon Linux 2023, try running:');
-      console.log(`  sudo alternatives --set node /usr/bin/node-${NODESOURCE_LTS_VERSION}`);
+      if (isFedoraRHEL) {
+        console.log('For Fedora/RHEL, try running:');
+        console.log(`  sudo ln -sf /usr/bin/node-${NODESOURCE_LTS_VERSION} /usr/bin/node`);
+      } else {
+        console.log('For Amazon Linux 2023, try running:');
+        console.log(`  sudo alternatives --set node /usr/bin/node-${NODESOURCE_LTS_VERSION}`);
+      }
     }
     return;
   }

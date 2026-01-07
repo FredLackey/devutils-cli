@@ -35,26 +35,21 @@ function isWoff2Installed() {
 }
 
 /**
- * Get the installed woff2 version by running woff2_compress --version.
+ * Get the installed woff2 version or confirmation message.
  *
- * The version output format is typically: "woff2_compress 1.0.2"
+ * NOTE: woff2 command-line tools do not support a --version flag.
+ * This function returns "installed" if the command exists, or null if not found.
  *
- * @returns {Promise<string|null>} The version string if installed, null otherwise
+ * @returns {Promise<string|null>} "installed" if woff2 is present, null otherwise
  */
 async function getWoff2Version() {
-  // First check if the command exists to avoid unnecessary process spawning
+  // Check if the command exists
   if (!isWoff2Installed()) {
     return null;
   }
 
-  // Execute woff2_compress --version to get version information
-  const result = await shell.exec('woff2_compress --version');
-  if (result.code === 0 && result.stdout) {
-    // Parse version from output like: "woff2_compress 1.0.2"
-    const match = result.stdout.match(/woff2_compress\s+([^\s]+)/);
-    return match ? match[1] : result.stdout.split('\n')[0].trim();
-  }
-  return null;
+  // woff2 tools don't have a --version flag, so we just confirm existence
+  return "installed";
 }
 
 /**
@@ -76,7 +71,7 @@ async function install_macos() {
   // Check if woff2 is already installed by verifying the command exists
   const existingVersion = await getWoff2Version();
   if (existingVersion) {
-    console.log(`woff2 ${existingVersion} is already installed, skipping installation.`);
+    console.log('woff2 is already installed, skipping installation.');
     return;
   }
 
@@ -120,14 +115,12 @@ async function install_macos() {
     return;
   }
 
-  console.log(`woff2 ${version} installed successfully.`);
+  console.log('woff2 installed successfully.');
   console.log('');
   console.log('Installed tools:');
   console.log('  - woff2_compress: Convert TTF/OTF to WOFF2');
   console.log('  - woff2_decompress: Convert WOFF2 back to TTF');
   console.log('  - woff2_info: Display WOFF2 file information');
-  console.log('');
-  console.log('Verify installation with: woff2_compress --version');
 }
 
 /**
@@ -150,7 +143,7 @@ async function install_ubuntu() {
   // Check if woff2 is already installed by looking for the command
   const existingVersion = await getWoff2Version();
   if (existingVersion) {
-    console.log(`woff2 ${existingVersion} is already installed, skipping installation.`);
+    console.log('woff2 is already installed, skipping installation.');
     return;
   }
 
@@ -184,14 +177,12 @@ async function install_ubuntu() {
     return;
   }
 
-  console.log(`woff2 ${version} installed successfully.`);
+  console.log('woff2 installed successfully.');
   console.log('');
   console.log('Installed tools:');
   console.log('  - woff2_compress: Convert TTF/OTF to WOFF2');
   console.log('  - woff2_decompress: Convert WOFF2 back to TTF');
   console.log('  - woff2_info: Display WOFF2 file information');
-  console.log('');
-  console.log('Verify installation with: woff2_compress --version');
 }
 
 /**
@@ -242,7 +233,7 @@ async function install_raspbian() {
   // Check if woff2 is already installed by looking for the command
   const existingVersion = await getWoff2Version();
   if (existingVersion) {
-    console.log(`woff2 ${existingVersion} is already installed, skipping installation.`);
+    console.log('woff2 is already installed, skipping installation.');
     return;
   }
 
@@ -309,7 +300,7 @@ async function install_amazon_linux() {
   // Check if woff2 is already installed by looking for the command
   const existingVersion = await getWoff2Version();
   if (existingVersion) {
-    console.log(`woff2 ${existingVersion} is already installed, skipping installation.`);
+    console.log('woff2 is already installed, skipping installation.');
     return;
   }
 
@@ -362,20 +353,32 @@ async function install_amazon_linux() {
     return;
   }
 
-  // Step 4: Install the binaries to /usr/local/bin
-  console.log('Installing woff2 binaries...');
-  const installResult = await shell.exec('cd /tmp/woff2/out && sudo make install');
-  if (installResult.code !== 0) {
-    console.log('Failed to install woff2 binaries.');
-    console.log(installResult.stderr || installResult.stdout);
+  // Step 4: Install the libraries using make install
+  // Note: woff2's CMake only installs binaries when BUILD_SHARED_LIBS=OFF,
+  // so we install libraries via make and copy binaries manually
+  console.log('Installing woff2 libraries...');
+  const installLibsResult = await shell.exec('cd /tmp/woff2/out && sudo make install');
+  if (installLibsResult.code !== 0) {
+    console.log('Failed to install woff2 libraries.');
+    console.log(installLibsResult.stderr || installLibsResult.stdout);
     return;
   }
 
-  // Step 5: Update the library cache so the shared libraries are found
+  // Step 5: Manually install the binaries to /usr/local/bin
+  // The CMake install target only installs libraries by default (when BUILD_SHARED_LIBS=ON)
+  console.log('Installing woff2 binaries...');
+  const installBinResult = await shell.exec('cd /tmp/woff2/out && sudo cp woff2_compress woff2_decompress woff2_info /usr/local/bin/');
+  if (installBinResult.code !== 0) {
+    console.log('Failed to copy woff2 binaries.');
+    console.log(installBinResult.stderr || installBinResult.stdout);
+    return;
+  }
+
+  // Step 6: Update the library cache so the shared libraries are found
   console.log('Updating library cache...');
   await shell.exec('sudo ldconfig');
 
-  // Step 6: Clean up the source directory
+  // Step 7: Clean up the source directory
   console.log('Cleaning up build files...');
   await shell.exec('rm -rf /tmp/woff2');
 
@@ -392,7 +395,7 @@ async function install_amazon_linux() {
     return;
   }
 
-  console.log(`woff2 ${version} installed successfully.`);
+  console.log('woff2 installed successfully.');
   console.log('');
   console.log('Installation location: /usr/local/bin/');
   console.log('');
@@ -400,8 +403,6 @@ async function install_amazon_linux() {
   console.log('  - woff2_compress: Convert TTF/OTF to WOFF2');
   console.log('  - woff2_decompress: Convert WOFF2 back to TTF');
   console.log('  - woff2_info: Display WOFF2 file information');
-  console.log('');
-  console.log('Verify installation with: woff2_compress --version');
 }
 
 /**

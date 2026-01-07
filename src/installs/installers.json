@@ -51,7 +51,7 @@
   {
     "filename": "atomicparsley.js",
     "name": "AtomicParsley",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -79,7 +79,7 @@
   {
     "filename": "aws-cli.js",
     "name": "AWS CLI",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -174,7 +174,7 @@
   {
     "filename": "bash-completion.js",
     "name": "Bash Completion 2",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -196,7 +196,7 @@
   {
     "filename": "bash.js",
     "name": "Bash",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -249,7 +249,7 @@
   {
     "filename": "build-essential.js",
     "name": "build-essential",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -267,7 +267,7 @@
   {
     "filename": "ca-certificates.js",
     "name": "ca-certificates",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -424,7 +424,7 @@
   {
     "filename": "claude-code.js",
     "name": "Claude Code",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -448,7 +448,7 @@
   {
     "filename": "curl.js",
     "name": "cURL",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -536,7 +536,7 @@
   {
     "filename": "development-tools.js",
     "name": "Development Tools",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -554,7 +554,7 @@
   {
     "filename": "docker.js",
     "name": "Docker",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -640,7 +640,7 @@
   {
     "filename": "ffmpeg.js",
     "name": "FFmpeg",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -688,7 +688,7 @@
   {
     "filename": "file.js",
     "name": "file",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -707,7 +707,7 @@
   {
     "filename": "gemini-cli.js",
     "name": "Gemini CLI",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -731,7 +731,7 @@
   {
     "filename": "git.js",
     "name": "Git",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -763,7 +763,7 @@
   {
     "filename": "gitego.js",
     "name": "gitego",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -787,7 +787,7 @@
   {
     "filename": "go.js",
     "name": "Go",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -848,7 +848,7 @@
   {
     "filename": "gpg.js",
     "name": "GPG",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -880,7 +880,7 @@
   {
     "filename": "homebrew.js",
     "name": "Homebrew",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -952,7 +952,7 @@
   {
     "filename": "jq.js",
     "name": "jq",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1003,7 +1003,7 @@
   {
     "filename": "latex.js",
     "name": "LaTeX",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1031,7 +1031,7 @@
   {
     "filename": "lftp.js",
     "name": "LFTP",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1058,7 +1058,7 @@
   {
     "filename": "lsb-release.js",
     "name": "lsb-release",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "ubuntu",
       "debian",
@@ -1154,7 +1154,7 @@
   {
     "filename": "node.js",
     "name": "Node.js",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1220,7 +1220,7 @@
   {
     "filename": "nvm.js",
     "name": "nvm",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1260,7 +1260,7 @@
   {
     "filename": "openssh.js",
     "name": "OpenSSH",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1288,7 +1288,7 @@
   {
     "filename": "pandoc.js",
     "name": "Pandoc",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1316,7 +1316,7 @@
   {
     "filename": "pinentry.js",
     "name": "pinentry",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1397,7 +1397,7 @@
   {
     "filename": "procps.js",
     "name": "procps",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "ubuntu",
       "debian",
@@ -1429,7 +1429,7 @@
   {
     "filename": "sfnt2woff.js",
     "name": "sfnt2woff",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1453,7 +1453,7 @@
   {
     "filename": "shellcheck.js",
     "name": "ShellCheck",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1533,7 +1533,7 @@
   {
     "filename": "software-properties-common.js",
     "name": "software-properties-common",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "ubuntu",
       "debian",
@@ -1654,7 +1654,7 @@
   {
     "filename": "tailscale.js",
     "name": "Tailscale",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1686,7 +1686,7 @@
   {
     "filename": "tar.js",
     "name": "tar",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1734,7 +1734,7 @@
   {
     "filename": "terraform.js",
     "name": "Terraform",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1819,7 +1819,7 @@
   {
     "filename": "tmux.js",
     "name": "tmux",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1845,7 +1845,7 @@
   {
     "filename": "tree.js",
     "name": "Tree",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1868,12 +1868,45 @@
         "priority": 0
       }
     ],
-    "test_results": []
+    "test_results": [
+      {
+        "date": "2026-01-06",
+        "platform": "ubuntu",
+        "version": "22.04",
+        "status": "pass",
+        "tree_version": "v2.0.2",
+        "notes": "Installed via APT to /usr/bin/tree. Idempotency verified."
+      },
+      {
+        "date": "2026-01-06",
+        "platform": "debian",
+        "version": "12",
+        "status": "pass",
+        "tree_version": "v2.1.0",
+        "notes": "Installed via APT to /usr/bin/tree. Idempotency verified."
+      },
+      {
+        "date": "2026-01-06",
+        "platform": "amazonlinux",
+        "version": "2023",
+        "status": "pass",
+        "tree_version": "v1.8.0",
+        "notes": "Installed via DNF to /usr/bin/tree. Idempotency verified."
+      },
+      {
+        "date": "2026-01-06",
+        "platform": "fedora",
+        "version": "39",
+        "status": "pass",
+        "tree_version": "v2.1.0",
+        "notes": "Installed via DNF to /usr/bin/tree. Idempotency verified."
+      }
+    ]
   },
   {
     "filename": "unzip.js",
     "name": "unzip",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1892,7 +1925,7 @@
   {
     "filename": "vim.js",
     "name": "Vim",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -1996,7 +2029,7 @@
   {
     "filename": "wget.js",
     "name": "wget",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -2064,7 +2097,7 @@
   {
     "filename": "woff2.js",
     "name": "woff2",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -2123,7 +2156,7 @@
   {
     "filename": "yarn.js",
     "name": "Yarn",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -2167,7 +2200,7 @@
   {
     "filename": "yq.js",
     "name": "yq",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -2195,7 +2228,7 @@
   {
     "filename": "yt-dlp.js",
     "name": "yt-dlp",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "macos",
       "ubuntu",
@@ -2223,7 +2256,7 @@
   {
     "filename": "yum-utils.js",
     "name": "yum-utils",
-    "status": "test-pending",
+    "status": "ready",
     "environments": [
       "amazon_linux",
       "fedora",

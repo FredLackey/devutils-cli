@@ -391,6 +391,96 @@ async function install_raspbian() {
 }
 
 /**
+ * Install Terraform on Fedora using manual binary installation
+ *
+ * This function:
+ * 1. Checks if Terraform is already installed (idempotency)
+ * 2. Downloads the appropriate AMD64 binary from HashiCorp releases
+ * 3. Extracts and installs the binary to /usr/local/bin
+ * 4. Verifies the installation succeeded
+ *
+ * Prerequisites:
+ * - Fedora 37 or later (64-bit)
+ * - sudo privileges
+ *
+ * IMPORTANT: HashiCorp's RPM repositories do not consistently support all Fedora
+ * versions. While Fedora 41+ may have repository support, older versions like
+ * Fedora 39 do not. Manual binary installation ensures compatibility across
+ * all Fedora versions.
+ *
+ * @returns {Promise<void>}
+ */
+async function install_fedora() {
+  // Check if Terraform is already installed (idempotency check)
+  if (isTerraformInstalled()) {
+    const version = await getTerraformVersion();
+    console.log(`Terraform is already installed (version ${version}), skipping...`);
+    return;
+  }
+
+  // Install prerequisite packages (wget and unzip) if not present
+  const needsWget = !shell.commandExists('wget');
+  const needsUnzip = !shell.commandExists('unzip');
+
+  if (needsWget || needsUnzip) {
+    console.log('Installing prerequisite packages...');
+    const packages = [];
+    if (needsWget) packages.push('wget');
+    if (needsUnzip) packages.push('unzip');
+
+    const prereqResult = await shell.exec(`sudo dnf install -y ${packages.join(' ')}`);
+    if (prereqResult.code !== 0) {
+      console.log('Failed to install prerequisite packages.');
+      console.log(prereqResult.stderr || prereqResult.stdout);
+      return;
+    }
+  }
+
+  // Download the Terraform binary from HashiCorp releases
+  const downloadUrl = `https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip`;
+  console.log(`Downloading Terraform ${TERRAFORM_VERSION}...`);
+  const downloadResult = await shell.exec(`wget -q "${downloadUrl}" -O /tmp/terraform.zip`);
+  if (downloadResult.code !== 0) {
+    console.log('Failed to download Terraform binary.');
+    console.log(downloadResult.stderr || downloadResult.stdout);
+    return;
+  }
+
+  // Extract the binary to /tmp
+  console.log('Extracting Terraform...');
+  const extractResult = await shell.exec('unzip -o -q /tmp/terraform.zip -d /tmp');
+  if (extractResult.code !== 0) {
+    console.log('Failed to extract Terraform binary.');
+    console.log(extractResult.stderr || extractResult.stdout);
+    await shell.exec('rm -f /tmp/terraform.zip');
+    return;
+  }
+
+  // Move the binary to /usr/local/bin and set executable permissions
+  console.log('Installing Terraform to /usr/local/bin...');
+  const installResult = await shell.exec('sudo mv /tmp/terraform /usr/local/bin/ && sudo chmod +x /usr/local/bin/terraform');
+  if (installResult.code !== 0) {
+    console.log('Failed to install Terraform binary.');
+    console.log(installResult.stderr || installResult.stdout);
+    await shell.exec('rm -f /tmp/terraform.zip /tmp/terraform');
+    return;
+  }
+
+  // Clean up downloaded files
+  await shell.exec('rm -f /tmp/terraform.zip');
+
+  // Verify the installation succeeded
+  if (isTerraformInstalled()) {
+    const version = await getTerraformVersion();
+    console.log(`Terraform installed successfully (version ${version}).`);
+  } else {
+    console.log('Installation completed but Terraform command not found.');
+    console.log('Ensure /usr/local/bin is in your PATH:');
+    console.log('echo \'export PATH=$PATH:/usr/local/bin\' >> ~/.bashrc && source ~/.bashrc');
+  }
+}
+
+/**
  * Install Terraform on Amazon Linux/RHEL using YUM with the official HashiCorp repository
  *
  * This function:
@@ -621,7 +711,7 @@ function isEligible() {
  * - raspbian: Uses manual binary installation (ARM)
  * - amazon_linux: Uses YUM with HashiCorp repository
  * - rhel: Uses YUM with HashiCorp repository (same as amazon_linux)
- * - fedora: Uses YUM/DNF with HashiCorp repository
+ * - fedora: Uses manual binary installation (due to inconsistent repository support)
  * - windows: Uses Chocolatey
  * - gitbash: Uses Windows Chocolatey via Git Bash
  *
@@ -643,7 +733,7 @@ async function install() {
     'raspbian': install_raspbian,
     'amazon_linux': install_amazon_linux,
     'rhel': install_amazon_linux,
-    'fedora': install_amazon_linux,
+    'fedora': install_fedora,
     'windows': install_windows,
     'gitbash': install_gitbash,
   };
@@ -671,6 +761,7 @@ module.exports = {
   install_ubuntu,
   install_ubuntu_wsl,
   install_raspbian,
+  install_fedora,
   install_amazon_linux,
   install_windows,
   install_gitbash,

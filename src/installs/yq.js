@@ -160,17 +160,49 @@ async function install_ubuntu() {
   }
 
   // Check if Snap is available on the system
+  // If Snap is not available, fall back to direct binary download instead of installing snapd
+  // This is more reliable in Docker containers and other restricted environments
   if (!snap.isInstalled()) {
-    console.log('Snap is not available. Installing snapd...');
-    const snapdResult = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y snapd');
-    if (snapdResult.code !== 0) {
-      console.log('Failed to install snapd.');
-      console.log(snapdResult.stderr || snapdResult.stdout);
-      console.log('');
-      console.log('You may need to reboot after installing snapd, then try again.');
+    console.log('Snap is not available. Using direct binary download instead...');
+
+    // Detect the system architecture to download the correct binary
+    const archResult = await shell.exec('uname -m');
+    const arch = archResult.stdout.trim();
+
+    // Determine the correct binary URL based on architecture
+    let binaryUrl;
+    if (arch === 'x86_64') {
+      binaryUrl = 'https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64';
+    } else if (arch === 'aarch64') {
+      binaryUrl = 'https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64';
+    } else {
+      console.log(`Unsupported architecture: ${arch}`);
+      console.log('yq is available for x86_64 (AMD64) and aarch64 (ARM64) architectures.');
       return;
     }
-    console.log('snapd installed. You may need to reboot and run this installer again.');
+
+    console.log(`Detected architecture: ${arch}`);
+    console.log('Downloading yq from GitHub releases...');
+
+    const downloadCommand = `sudo curl -L -o /usr/local/bin/yq "${binaryUrl}" && sudo chmod +x /usr/local/bin/yq`;
+    const result = await shell.exec(downloadCommand);
+
+    if (result.code !== 0) {
+      console.log('Failed to download yq binary.');
+      console.log(result.stderr || result.stdout);
+      return;
+    }
+
+    // Verify the installation succeeded by checking if the command now exists
+    if (isYqInstalled()) {
+      const version = await getYqVersion();
+      console.log(`yq installed successfully (version ${version}).`);
+    } else {
+      console.log('Installation completed but yq command not found.');
+      console.log('');
+      console.log('/usr/local/bin should be in PATH by default. If not, add it:');
+      console.log('echo \'export PATH="/usr/local/bin:$PATH"\' >> ~/.bashrc && source ~/.bashrc');
+    }
     return;
   }
 

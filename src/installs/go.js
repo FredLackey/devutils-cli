@@ -73,19 +73,34 @@ function isGoCommandAvailable() {
  * Executes 'go version' to determine the currently installed version.
  * Returns the version string (e.g., "1.25.5") if successful.
  *
+ * This function checks both:
+ * 1. The 'go' command in PATH (for convenience)
+ * 2. The standard installation location /usr/local/go/bin/go (for Linux)
+ *
+ * This ensures idempotency works correctly even when the shell profile
+ * hasn't been sourced yet in the current session.
+ *
  * @returns {Promise<string|null>} Go version string, or null if not installed
  */
 async function getGoVersion() {
-  if (!isGoCommandAvailable()) {
-    return null;
+  // First try the go command if it's in PATH
+  if (isGoCommandAvailable()) {
+    const result = await shell.exec('go version');
+    if (result.code === 0 && result.stdout) {
+      // Output format: "go version go1.25.5 darwin/arm64"
+      const match = result.stdout.match(/go version go([\d.]+)/);
+      return match ? match[1] : result.stdout.trim();
+    }
   }
 
-  const result = await shell.exec('go version');
+  // If not in PATH, check the standard Linux installation location
+  // This is important for idempotency in the same session before profile is sourced
+  const result = await shell.exec('/usr/local/go/bin/go version 2>/dev/null');
   if (result.code === 0 && result.stdout) {
-    // Output format: "go version go1.25.5 darwin/arm64"
     const match = result.stdout.match(/go version go([\d.]+)/);
     return match ? match[1] : result.stdout.trim();
   }
+
   return null;
 }
 

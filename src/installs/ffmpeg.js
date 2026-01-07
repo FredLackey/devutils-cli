@@ -379,6 +379,23 @@ async function install_amazon_linux() {
     );
   }
 
+  // Ensure xz utilities are installed (required to extract .tar.xz files)
+  console.log('Ensuring xz utilities are installed...');
+  const xzCheckResult = await shell.exec('command -v xz');
+  if (xzCheckResult.code !== 0) {
+    console.log('Installing xz utilities...');
+    const xzInstallResult = await shell.exec('sudo dnf install -y xz || sudo yum install -y xz');
+    if (xzInstallResult.code !== 0) {
+      throw new Error(
+        `Failed to install xz utilities (required to extract FFmpeg).\n` +
+        `Output: ${xzInstallResult.stderr}\n\n` +
+        `Troubleshooting:\n` +
+        `  1. Ensure you have sudo privileges\n` +
+        `  2. Try manually: sudo dnf install -y xz`
+      );
+    }
+  }
+
   // Ensure /opt directory exists
   console.log('Preparing installation directory...');
   const mkdirResult = await shell.exec('sudo mkdir -p /opt');

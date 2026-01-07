@@ -61,13 +61,16 @@ async function doesDebianCertBundleExist() {
 
 /**
  * Checks if the certificate bundle file exists on RHEL-based systems.
- * The bundle file at /etc/pki/tls/certs/ca-bundle.crt contains all
- * trusted CA certificates for Red Hat-based distributions.
+ * The actual bundle file is at /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+ * (with a symlink at /etc/pki/tls/certs/ca-bundle.crt for compatibility).
+ * We check the actual file location since the symlink may be missing even when
+ * the bundle exists.
  *
  * @returns {Promise<boolean>} True if the certificate bundle file exists
  */
 async function doesRhelCertBundleExist() {
-  const result = await shell.exec('test -f /etc/pki/tls/certs/ca-bundle.crt');
+  // Check the actual bundle file location, not the symlink
+  const result = await shell.exec('test -f /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem');
   return result.code === 0;
 }
 
@@ -275,7 +278,8 @@ async function install_raspbian() {
  *
  * Note: Unlike Debian-based systems that use update-ca-certificates, Red Hat-based
  * systems (including Amazon Linux) use update-ca-trust to manage the certificate
- * trust store. The bundle is located at /etc/pki/tls/certs/ca-bundle.crt.
+ * trust store. The bundle is located at /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+ * (with a symlink at /etc/pki/tls/certs/ca-bundle.crt for compatibility).
  *
  * Amazon Linux 2023 uses dnf as the package manager, while Amazon Linux 2 uses yum.
  * This function automatically detects which package manager is available.
@@ -317,7 +321,7 @@ async function install_amazon_linux() {
 
   // Regenerate the certificate bundle using update-ca-trust
   // This command reads certificates from /etc/pki/ca-trust/source/anchors/
-  // and generates the unified bundle at /etc/pki/tls/certs/ca-bundle.crt
+  // and generates the unified bundle at /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
   console.log('Regenerating certificate trust store...');
   const updateTrustResult = await shell.exec('sudo update-ca-trust');
 

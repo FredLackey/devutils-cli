@@ -279,6 +279,23 @@ async function install_ubuntu() {
     // Go version in APT is often outdated, so we download directly from go.dev
     console.log('Installing Go from official source...');
 
+    // Ensure wget is available (needed for downloading Go)
+    if (!shell.commandExists('wget')) {
+      console.log('Installing wget...');
+      // Update package lists first (required for fresh containers)
+      const updateResult = await apt.update();
+      if (!updateResult.success) {
+        console.log('Warning: Failed to update package lists.');
+        console.log(updateResult.output);
+      }
+      const wgetResult = await apt.install('wget');
+      if (!wgetResult.success) {
+        console.log('Failed to install wget.');
+        console.log(wgetResult.output);
+        return;
+      }
+    }
+
     // Download Go tarball
     const downloadResult = await shell.exec(
       'wget -q https://go.dev/dl/go1.24.0.linux-amd64.tar.gz -O /tmp/go.tar.gz'
@@ -431,6 +448,23 @@ async function install_raspbian() {
 
   if (!goStatus.installed || !goStatus.meetsMinimum) {
     console.log(`Installing Go for ${goArch} from official source...`);
+
+    // Ensure wget is available (needed for downloading Go)
+    if (!shell.commandExists('wget')) {
+      console.log('Installing wget...');
+      // Update package lists first (required for fresh containers)
+      const updateResult = await apt.update();
+      if (!updateResult.success) {
+        console.log('Warning: Failed to update package lists.');
+        console.log(updateResult.output);
+      }
+      const wgetResult = await apt.install('wget');
+      if (!wgetResult.success) {
+        console.log('Failed to install wget.');
+        console.log(wgetResult.output);
+        return;
+      }
+    }
 
     // Download Go tarball for the appropriate ARM architecture
     const downloadResult = await shell.exec(

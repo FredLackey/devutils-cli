@@ -49,10 +49,31 @@ const HOMEBREW_CASK_NAME = 'mactex-no-gui';
 const CHOCO_PACKAGE_NAME = 'texlive';
 
 /**
- * The APT package name for TeX Live on Ubuntu/Debian/Raspberry Pi OS.
- * texlive-full provides the complete distribution.
+ * The APT package names for TeX Live on Ubuntu/Debian/Raspberry Pi OS.
+ * Using a curated set of packages instead of texlive-full to avoid the
+ * problematic ConTeXt package which can hang during postinst format building.
+ * This provides comprehensive LaTeX functionality for most users while avoiding
+ * installation issues. Users who need ConTeXt or other specialized packages
+ * can install them separately using: sudo apt-get install context
  */
-const APT_PACKAGE_NAME = 'texlive-full';
+const APT_PACKAGES = [
+  'texlive-latex-base',      // Core LaTeX files
+  'texlive-latex-recommended', // Recommended LaTeX packages
+  'texlive-latex-extra',      // Additional LaTeX packages
+  'texlive-fonts-recommended', // Recommended fonts
+  'texlive-fonts-extra',      // Extra fonts
+  'texlive-science',          // Scientific packages (math, algorithms, etc.)
+  'texlive-bibtex-extra',     // Additional BibTeX styles
+  'texlive-publishers',       // Publisher-specific packages
+  'texlive-pstricks',         // PSTricks for graphics
+  'texlive-pictures',         // Picture drawing packages
+  'texlive-luatex',           // LuaTeX engine
+  'texlive-xetex',            // XeTeX engine for Unicode support
+  'latexmk',                  // Build automation tool
+];
+
+// Legacy constant for backward compatibility - maps to the package list
+const APT_PACKAGE_NAME = APT_PACKAGES.join(' ');
 
 /**
  * The DNF/YUM package name for TeX Live on Amazon Linux/RHEL.
@@ -226,8 +247,9 @@ async function install_ubuntu() {
 
   console.log('Installing TeX Live via APT...');
   console.log('');
-  console.log('NOTE: This is a large installation (several GB download, ~6 GB installed).');
-  console.log('The installation may take 30-60 minutes depending on your network speed.');
+  console.log('NOTE: This is a large installation (several GB download).');
+  console.log('The installation may take 10-30 minutes depending on your network speed.');
+  console.log('Installing comprehensive LaTeX packages (excludes ConTeXt to avoid installation issues).');
   console.log('');
 
   // Update package lists before installing to ensure we get the correct packages
@@ -243,9 +265,18 @@ async function install_ubuntu() {
     `sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ${APT_PACKAGE_NAME}`
   );
 
-  if (result.code !== 0) {
+  // Check if the installation succeeded by verifying the latex command exists
+  // We do this check even if APT returned an error code, because some packages
+  // may have configuration issues but core LaTeX still installs successfully
+  const verified = isLatexCommandAvailable();
+
+  if (!verified) {
     console.log('Failed to install TeX Live via APT.');
-    console.log(result.stderr || result.stdout);
+    if (result.code !== 0) {
+      console.log(result.stderr || result.stdout);
+    }
+    console.log('');
+    console.log('The latex command was not found after installation.');
     console.log('');
     console.log('Troubleshooting:');
     console.log('  1. Ensure you have enough disk space (6+ GB required)');
@@ -255,11 +286,13 @@ async function install_ubuntu() {
     return;
   }
 
-  // Verify the installation succeeded by checking if the command exists
-  const verified = isLatexCommandAvailable();
-  if (!verified) {
-    console.log('Installation may have failed: latex command not found after install.');
-    return;
+  // If there was an APT error but latex is available, log a warning but continue
+  if (result.code !== 0) {
+    console.log('');
+    console.log('Warning: Some LaTeX packages failed to configure, but core LaTeX is installed.');
+    console.log('You may need to manually fix package configuration issues:');
+    console.log('  sudo dpkg --configure -a');
+    console.log('');
   }
 
   // Get the installed version for confirmation
@@ -339,9 +372,10 @@ async function install_raspbian() {
 
   console.log('Installing TeX Live via APT...');
   console.log('');
-  console.log('NOTE: This is a large installation (several GB download, ~6 GB installed).');
-  console.log('On Raspberry Pi, this may take 1-2 hours depending on your SD card speed.');
+  console.log('NOTE: This is a large installation (several GB download).');
+  console.log('On Raspberry Pi, this may take 30-90 minutes depending on your SD card speed.');
   console.log('Using a high-quality SD card (Class 10 or faster) or SSD will improve performance.');
+  console.log('Installing comprehensive LaTeX packages (excludes ConTeXt to avoid installation issues).');
   console.log('');
 
   // Update package lists before installing
@@ -357,9 +391,18 @@ async function install_raspbian() {
     `sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ${APT_PACKAGE_NAME}`
   );
 
-  if (result.code !== 0) {
+  // Check if the installation succeeded by verifying the latex command exists
+  // We do this check even if APT returned an error code, because some packages
+  // may have configuration issues but core LaTeX still installs successfully
+  const verified = isLatexCommandAvailable();
+
+  if (!verified) {
     console.log('Failed to install TeX Live via APT.');
-    console.log(result.stderr || result.stdout);
+    if (result.code !== 0) {
+      console.log(result.stderr || result.stdout);
+    }
+    console.log('');
+    console.log('The latex command was not found after installation.');
     console.log('');
     console.log('Troubleshooting:');
     console.log('  1. Ensure you have enough disk space: df -h /');
@@ -369,11 +412,13 @@ async function install_raspbian() {
     return;
   }
 
-  // Verify the installation succeeded
-  const verified = isLatexCommandAvailable();
-  if (!verified) {
-    console.log('Installation may have failed: latex command not found after install.');
-    return;
+  // If there was an APT error but latex is available, log a warning but continue
+  if (result.code !== 0) {
+    console.log('');
+    console.log('Warning: Some LaTeX packages failed to configure, but core LaTeX is installed.');
+    console.log('You may need to manually fix package configuration issues:');
+    console.log('  sudo dpkg --configure -a');
+    console.log('');
   }
 
   // Get the installed version for confirmation

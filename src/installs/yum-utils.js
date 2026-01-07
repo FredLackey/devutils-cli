@@ -115,13 +115,14 @@ async function install_amazon_linux() {
 
   // Check if the package is already installed using rpm query
   // We check for both package names since they provide the same tools
+  // Note: rpm -q returns non-zero exit code if ANY package is not found,
+  // so we must check the output text rather than relying on exit code
   const checkResult = await shell.exec('rpm -q yum-utils dnf-utils 2>/dev/null');
 
-  // If either package is installed (exit code 0 for at least one), skip installation
-  // The rpm -q command returns 0 if any of the queried packages are installed
-  if (checkResult.code === 0 && checkResult.stdout.trim()) {
-    // Check if the output indicates at least one package is installed
-    // rpm -q returns "package X is not installed" for missing packages
+  // Check if the output indicates at least one package is installed
+  // rpm -q returns "package X is not installed" for missing packages
+  // and returns the package version (e.g., "dnf-utils-4.3.0-13.amzn2023.0.5.noarch") for installed ones
+  if (checkResult.stdout.trim()) {
     const installedPackages = checkResult.stdout
       .split('\n')
       .filter(line => !line.includes('is not installed') && line.trim());
@@ -199,8 +200,10 @@ async function isInstalled() {
   const platform = os.detect();
   if (['amazon_linux', 'fedora', 'rhel'].includes(platform.type)) {
     // Check if either yum-utils or dnf-utils is installed
+    // Note: rpm -q returns non-zero exit code if ANY package is not found,
+    // so we check the output text rather than the exit code
     const checkResult = await shell.exec('rpm -q yum-utils dnf-utils 2>/dev/null');
-    if (checkResult.code === 0 && checkResult.stdout.trim()) {
+    if (checkResult.stdout.trim()) {
       const installedPackages = checkResult.stdout
         .split('\n')
         .filter(line => !line.includes('is not installed') && line.trim());

@@ -427,7 +427,15 @@ async function install_ubuntu() {
   await removeConflictingPackages();
 
   // Set up Docker's APT repository
-  await setupDockerAptRepositoryUbuntu();
+  // Detect if we're on Ubuntu or Debian and use the appropriate repository
+  const platform = os.detect();
+  if (platform.type === 'debian') {
+    // Debian uses the Debian-specific repository
+    await setupDockerAptRepositoryDebian(false);
+  } else {
+    // Ubuntu uses the Ubuntu-specific repository
+    await setupDockerAptRepositoryUbuntu();
+  }
 
   // Install Docker Engine
   await installDockerEngineApt();

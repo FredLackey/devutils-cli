@@ -32,7 +32,8 @@ async function install(packageName, options = {}) {
   }
 
   const autoConfirm = options.autoConfirm !== false ? '-y' : '';
-  const result = await shell.exec(`sudo apt-get install ${autoConfirm} ${packageName}`);
+  // Use DEBIAN_FRONTEND=noninteractive to avoid prompts during installation
+  const result = await shell.exec(`sudo DEBIAN_FRONTEND=noninteractive apt-get install ${autoConfirm} ${packageName}`);
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -55,7 +56,8 @@ async function remove(packageName, options = {}) {
   }
 
   const command = options.purge ? 'purge' : 'remove';
-  const result = await shell.exec(`sudo apt-get ${command} -y ${packageName}`);
+  // Use DEBIAN_FRONTEND=noninteractive to avoid prompts during removal
+  const result = await shell.exec(`sudo DEBIAN_FRONTEND=noninteractive apt-get ${command} -y ${packageName}`);
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -74,7 +76,8 @@ async function update() {
     };
   }
 
-  const result = await shell.exec('sudo apt-get update');
+  // Use DEBIAN_FRONTEND=noninteractive to avoid prompts during update
+  const result = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update');
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
@@ -94,9 +97,10 @@ async function upgrade(packageName) {
     };
   }
 
+  // Use DEBIAN_FRONTEND=noninteractive to avoid prompts during upgrade
   const command = packageName
-    ? `sudo apt-get install -y --only-upgrade ${packageName}`
-    : 'sudo apt-get upgrade -y';
+    ? `sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --only-upgrade ${packageName}`
+    : 'sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y';
 
   const result = await shell.exec(command);
   return {
@@ -138,7 +142,8 @@ async function getPackageVersion(packageName) {
 async function addRepository(repo) {
   if (!shell.commandExists('add-apt-repository')) {
     // Try to install software-properties-common first
-    const installResult = await shell.exec('sudo apt-get install -y software-properties-common');
+    // Use DEBIAN_FRONTEND=noninteractive to avoid prompts
+    const installResult = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common');
     if (installResult.code !== 0) {
       return {
         success: false,
@@ -275,7 +280,8 @@ async function listInstalled() {
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 async function clean() {
-  const result = await shell.exec('sudo apt-get clean && sudo apt-get autoremove -y');
+  // Use DEBIAN_FRONTEND=noninteractive to avoid prompts
+  const result = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get clean && sudo DEBIAN_FRONTEND=noninteractive apt-get autoremove -y');
   return {
     success: result.code === 0,
     output: result.stdout || result.stderr
