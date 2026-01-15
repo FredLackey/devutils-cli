@@ -19,6 +19,7 @@ const { Command } = require('commander');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const os = require('../utils/common/os');
 
 const INSTALLS_DIR = path.join(__dirname, '..', 'installs');
 const INSTALLERS_JSON = path.join(INSTALLS_DIR, 'installers.json');
@@ -244,9 +245,23 @@ async function resolveDependencies(name, visited = new Set(), installing = new S
   // Sort dependencies by priority (lower priority = install first)
   const sortedDeps = [...dependencies].sort((a, b) => (a.priority || 0) - (b.priority || 0));
 
+  // Get current platform for filtering platform-specific dependencies
+  const currentPlatform = os.detect().type;
+
   // Process each dependency
   for (const dep of sortedDeps) {
     const depName = dep.name.replace('.js', '');
+
+    // Check if dependency is platform-specific and applies to current platform
+    // If 'platforms' is not specified, the dependency applies to all platforms
+    if (dep.platforms && dep.platforms.length > 0) {
+      if (!dep.platforms.includes(currentPlatform)) {
+        if (options.verbose) {
+          console.log(`  [Skipping ${depName}: not needed on ${currentPlatform}]`);
+        }
+        continue;
+      }
+    }
 
     // Check if dependency is eligible for this platform
     if (!checkIsEligible(depName)) {

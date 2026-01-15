@@ -464,11 +464,13 @@
     "depends_on": [
       {
         "name": "homebrew.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["macos"]
       },
       {
         "name": "chocolatey.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["windows", "gitbash"]
       }
     ],
     "test_results": []
@@ -570,23 +572,28 @@
     "depends_on": [
       {
         "name": "curl.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["ubuntu", "debian", "wsl", "raspbian", "amazon_linux", "rhel", "fedora"]
       },
       {
         "name": "ca-certificates.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["ubuntu", "debian", "wsl", "raspbian", "amazon_linux", "rhel", "fedora"]
       },
       {
         "name": "homebrew.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["macos"]
       },
       {
         "name": "chocolatey.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["windows", "gitbash"]
       },
       {
         "name": "wsl.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["windows"]
       }
     ],
     "test_results": []
@@ -747,15 +754,18 @@
     "depends_on": [
       {
         "name": "homebrew.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["macos"]
       },
       {
         "name": "chocolatey.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["windows", "gitbash"]
       },
       {
         "name": "software-properties-common.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["ubuntu", "debian", "wsl", "raspbian"]
       }
     ],
     "test_results": []
@@ -864,15 +874,18 @@
     "depends_on": [
       {
         "name": "homebrew.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["macos"]
       },
       {
         "name": "chocolatey.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["windows", "gitbash"]
       },
       {
         "name": "pinentry.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["macos"]
       }
     ],
     "test_results": []
@@ -1170,23 +1183,28 @@
     "depends_on": [
       {
         "name": "curl.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["ubuntu", "debian", "wsl", "raspbian"]
       },
       {
         "name": "ca-certificates.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["ubuntu", "debian", "wsl", "raspbian"]
       },
       {
         "name": "gpg.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["ubuntu", "debian", "wsl", "raspbian"]
       },
       {
         "name": "homebrew.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["macos"]
       },
       {
         "name": "chocolatey.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["windows", "gitbash"]
       }
     ],
     "test_results": []
@@ -1332,11 +1350,13 @@
     "depends_on": [
       {
         "name": "homebrew.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["macos"]
       },
       {
         "name": "chocolatey.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["windows", "gitbash"]
       }
     ],
     "test_results": []
@@ -2045,11 +2065,13 @@
     "depends_on": [
       {
         "name": "homebrew.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["macos"]
       },
       {
         "name": "chocolatey.js",
-        "priority": 0
+        "priority": 0,
+        "platforms": ["windows", "gitbash"]
       }
     ],
     "test_results": []

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * mkd - Create a new directory and display navigation instructions
+ * mkd - Create a new directory and change into it
  *
  * Migrated from legacy dotfiles function.
  * Original:
@@ -9,15 +9,20 @@
  *       mkdir -p "$@" && cd "$@"
  *   }
  *
- * This script creates a new directory (including all necessary parent directories)
- * and outputs instructions for navigating into it. The original shell function could
- * change the working directory directly, but since Node.js scripts run in a subprocess,
- * they cannot modify the parent shell's working directory.
+ * This script creates a new directory (including all necessary parent directories).
+ * Since Node.js scripts run in a subprocess, they cannot directly change the parent
+ * shell's working directory. To get the original "mkdir and cd" behavior, use the
+ * --print flag with command substitution:
  *
  * Usage:
- *   mkd my-project                    # Creates ./my-project
+ *   cd $(mkd -p my-project)           # Create and cd into directory (RECOMMENDED)
+ *   cd $(mkd --print my-project)      # Same as above, long form
+ *   mkd my-project                    # Just creates directory, shows instructions
  *   mkd path/to/nested/directory      # Creates all parent directories as needed
  *   mkd ~/projects/new-app            # Works with home directory paths
+ *
+ * Shell alias (add to .bashrc/.zshrc for seamless experience):
+ *   alias mkd='_mkd() { cd "$(command mkd -p "$1")"; }; _mkd'
  *
  * @module scripts/mkd
  */
@@ -56,19 +61,27 @@ function expandTilde(inputPath) {
  *
  * @param {string[]} args - Command line arguments
  * @param {string} args.0 - Directory path to create
+ * @param {Object} options - Options
+ * @param {boolean} options.printOnly - If true, only output the path (for command substitution)
  * @returns {Promise<void>}
  */
-async function do_mkd_nodejs(args) {
+async function do_mkd_nodejs(args, options = {}) {
+  const { printOnly = false } = options;
+
   // Validate arguments
   if (args.length === 0) {
-    console.error('Usage: mkd <directory>');
+    console.error('Usage: mkd [options] <directory>');
     console.error('');
     console.error('Creates a new directory, including parent directories if needed.');
     console.error('');
+    console.error('Options:');
+    console.error('  -p, --print    Output only the path (for use with cd)');
+    console.error('');
     console.error('Examples:');
-    console.error('  mkd my-project');
-    console.error('  mkd path/to/nested/directory');
-    console.error('  mkd ~/projects/new-app');
+    console.error('  mkd my-project                    # Create and show instructions');
+    console.error('  cd $(mkd -p my-project)           # Create and cd into it');
+    console.error('  mkd path/to/nested/directory      # Creates parent dirs as needed');
+    console.error('  mkd ~/projects/new-app            # Works with ~ paths');
     process.exit(1);
   }
 
@@ -89,9 +102,14 @@ async function do_mkd_nodejs(args) {
     const stats = fs.statSync(absolutePath);
     if (stats.isDirectory()) {
       // Directory already exists - this is fine (idempotent behavior)
-      console.log(`Directory already exists: ${absolutePath}`);
-      console.log('');
-      console.log(`To navigate there, run: cd "${absolutePath}"`);
+      if (printOnly) {
+        // In print mode, just output the path for command substitution
+        console.log(absolutePath);
+      } else {
+        console.log(`Directory already exists: ${absolutePath}`);
+        console.log('');
+        console.log(`To navigate there, run: cd "${absolutePath}"`);
+      }
       return;
     } else {
       // A file with the same name exists - this is an error
@@ -127,11 +145,23 @@ async function do_mkd_nodejs(args) {
   }
 
   // Success! Print the result
-  // Note: Unlike the original shell function, we cannot change the parent shell's
-  // working directory. We provide instructions instead.
-  console.log(`Created directory: ${absolutePath}`);
-  console.log('');
-  console.log(`To navigate there, run: cd "${absolutePath}"`);
+  if (printOnly) {
+    // In print mode, just output the path for command substitution
+    // This enables: cd $(mkd -p my-project)
+    console.log(absolutePath);
+  } else {
+    console.log(`Created directory: ${absolutePath}`);
+    console.log('');
+    console.log(`To navigate there, run: cd "${absolutePath}"`);
+    console.log('');
+    // Show platform-appropriate tip for command substitution
+    if (process.platform === 'win32') {
+      console.log('Tip (PowerShell): cd (mkd -p <dir>)');
+      console.log('Tip (Git Bash):   cd $(mkd -p <dir>)');
+    } else {
+      console.log('Tip: Use cd $(mkd -p <dir>) to create and cd in one step.');
+    }
+  }
 }
 
 /**
@@ -141,10 +171,11 @@ async function do_mkd_nodejs(args) {
  * identically on macOS as on other platforms.
  *
  * @param {string[]} args - Command line arguments
+ * @param {Object} options - Options passed through to do_mkd_nodejs
  * @returns {Promise<void>}
  */
-async function do_mkd_macos(args) {
-  return do_mkd_nodejs(args);
+async function do_mkd_macos(args, options) {
+  return do_mkd_nodejs(args, options);
 }
 
 /**
@@ -154,10 +185,11 @@ async function do_mkd_macos(args) {
  * identically on Linux as on other platforms.
  *
  * @param {string[]} args - Command line arguments
+ * @param {Object} options - Options passed through to do_mkd_nodejs
  * @returns {Promise<void>}
  */
-async function do_mkd_ubuntu(args) {
-  return do_mkd_nodejs(args);
+async function do_mkd_ubuntu(args, options) {
+  return do_mkd_nodejs(args, options);
 }
 
 /**
@@ -167,10 +199,11 @@ async function do_mkd_ubuntu(args) {
  * identically on Raspberry Pi OS as on other platforms.
  *
  * @param {string[]} args - Command line arguments
+ * @param {Object} options - Options passed through to do_mkd_nodejs
  * @returns {Promise<void>}
  */
-async function do_mkd_raspbian(args) {
-  return do_mkd_nodejs(args);
+async function do_mkd_raspbian(args, options) {
+  return do_mkd_nodejs(args, options);
 }
 
 /**
@@ -180,10 +213,11 @@ async function do_mkd_raspbian(args) {
  * identically on Amazon Linux as on other platforms.
  *
  * @param {string[]} args - Command line arguments
+ * @param {Object} options - Options passed through to do_mkd_nodejs
  * @returns {Promise<void>}
  */
-async function do_mkd_amazon_linux(args) {
-  return do_mkd_nodejs(args);
+async function do_mkd_amazon_linux(args, options) {
+  return do_mkd_nodejs(args, options);
 }
 
 /**
@@ -194,10 +228,11 @@ async function do_mkd_amazon_linux(args) {
  * handles Windows path separators automatically.
  *
  * @param {string[]} args - Command line arguments
+ * @param {Object} options - Options passed through to do_mkd_nodejs
  * @returns {Promise<void>}
  */
-async function do_mkd_cmd(args) {
-  return do_mkd_nodejs(args);
+async function do_mkd_cmd(args, options) {
+  return do_mkd_nodejs(args, options);
 }
 
 /**
@@ -207,10 +242,11 @@ async function do_mkd_cmd(args) {
  * identically across all platforms and shells.
  *
  * @param {string[]} args - Command line arguments
+ * @param {Object} options - Options passed through to do_mkd_nodejs
  * @returns {Promise<void>}
  */
-async function do_mkd_powershell(args) {
-  return do_mkd_nodejs(args);
+async function do_mkd_powershell(args, options) {
+  return do_mkd_nodejs(args, options);
 }
 
 /**
@@ -220,10 +256,11 @@ async function do_mkd_powershell(args) {
  * Unix-style and Windows-style paths, and Node.js handles the conversion.
  *
  * @param {string[]} args - Command line arguments
+ * @param {Object} options - Options passed through to do_mkd_nodejs
  * @returns {Promise<void>}
  */
-async function do_mkd_gitbash(args) {
-  return do_mkd_nodejs(args);
+async function do_mkd_gitbash(args, options) {
+  return do_mkd_nodejs(args, options);
 }
 
 /**
@@ -231,27 +268,37 @@ async function do_mkd_gitbash(args) {
  *
  * The "mkd" (make directory) command is a developer convenience tool that:
  * 1. Creates a new directory, including all parent directories if needed
- * 2. Provides the cd command to navigate to the new directory
+ * 2. Outputs the path (with -p flag) for use with cd command substitution
  *
  * This replicates the shell function pattern of creating a directory and
  * immediately entering it, common in developer workflows when starting
  * new projects or organizing files.
  *
- * Note: Unlike the original shell function, this script cannot change the
- * parent shell's working directory. Node.js scripts run in a subprocess and
- * cannot affect the parent process's environment. The script outputs the
- * cd command for the user to run.
- *
- * For a true "mkdir and cd" experience, users can use a shell alias:
- *   alias mkd='function _mkd(){ mkd "$1" && cd "$1"; }; _mkd'
- * Or use command substitution:
- *   cd $(mkd --quiet my-dir)  # If --quiet flag were implemented
+ * Usage patterns:
+ *   mkd my-dir              # Creates dir, shows instructions
+ *   cd $(mkd -p my-dir)     # Creates dir and cd into it (RECOMMENDED)
  *
  * @param {string[]} args - Command line arguments
- * @param {string} args.0 - Directory path to create
+ * @param {string} args.0 - Directory path to create (or -p/--print flag)
  * @returns {Promise<void>}
  */
 async function do_mkd(args) {
+  // Parse options
+  const options = { printOnly: false };
+  const remainingArgs = [];
+
+  for (const arg of args) {
+    if (arg === '-p' || arg === '--print') {
+      options.printOnly = true;
+    } else if (arg === '-h' || arg === '--help') {
+      // Show help by calling with empty args
+      remainingArgs.length = 0;
+      break;
+    } else {
+      remainingArgs.push(arg);
+    }
+  }
+
   const platform = os.detect();
 
   const handlers = {
@@ -283,7 +330,7 @@ async function do_mkd(args) {
     process.exit(1);
   }
 
-  await handler(args);
+  await handler(remainingArgs, options);
 }
 
 module.exports = {
