@@ -1532,6 +1532,36 @@
     "test_results": []
   },
   {
+    "filename": "ohmyzsh.js",
+    "name": "Oh My Zsh",
+    "status": "test-pending",
+    "environments": [
+      "macos",
+      "ubuntu",
+      "debian",
+      "wsl",
+      "raspbian",
+      "amazon_linux",
+      "rhel",
+      "fedora"
+    ],
+    "depends_on": [
+      {
+        "name": "zsh.js",
+        "priority": 0
+      },
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "git.js",
+        "priority": 0
+      }
+    ],
+    "test_results": []
+  },
+  {
     "filename": "openssh.js",
     "name": "OpenSSH",
     "status": "ready",
@@ -2754,6 +2784,31 @@
       "rhel"
     ],
     "depends_on": [],
+    "test_results": []
+  },
+  {
+    "filename": "zsh.js",
+    "name": "Zsh",
+    "status": "test-pending",
+    "environments": [
+      "macos",
+      "ubuntu",
+      "debian",
+      "wsl",
+      "raspbian",
+      "amazon_linux",
+      "rhel",
+      "fedora"
+    ],
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0,
+        "platforms": [
+          "macos"
+        ]
+      }
+    ],
     "test_results": []
   },
   {

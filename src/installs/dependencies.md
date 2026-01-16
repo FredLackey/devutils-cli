@@ -1,10 +1,10 @@
 # Dependency Analysis Summary
 
-**Last Updated:** 2026-01-04
-**Total Test-Pending Technologies:** 86
-**Already Documented (Skipped):** 85
-**Analyzed This Run:** 1
-**Successful:** 86
+**Last Updated:** 2026-01-16
+**Total Test-Pending Technologies:** 43
+**Already Documented (Skipped):** 43
+**Analyzed This Run:** 0
+**Successful:** 43
 **Failed:** 0
 
 ## Results
@@ -96,6 +96,8 @@
 | yq | src/installs/yq.js | src/installs/yq.md | Complete - has dependencies |
 | yt-dlp | src/installs/yt-dlp.js | src/installs/yt-dlp.md | Complete - has dependencies |
 | yum-utils | src/installs/yum-utils.js | src/installs/yum-utils.md | Skipped - already documented |
+| Zsh | src/installs/zsh.js | src/installs/zsh.md | Skipped - already documented |
+| Oh My Zsh | src/installs/ohmyzsh.js | src/installs/ohmyzsh.md | Skipped - already documented |
 | Zoom | src/installs/zoom.js | src/installs/zoom.md | Complete - has dependencies |
 
 ## Status Key
@@ -309,6 +311,13 @@ Group package for RHEL/Amazon Linux providing compilation tools.
 
 **Used by:**
 - homebrew
+
+### Zsh
+
+Z Shell, a powerful Unix shell that extends Bash capabilities.
+
+**Used by:**
+- ohmyzsh
 
 ---
 
