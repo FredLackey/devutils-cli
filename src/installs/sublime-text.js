@@ -128,9 +128,14 @@ async function setupSublimeAptRepository() {
 
   // Add the Sublime Text repository using the modern DEB822 format
   console.log('Adding Sublime Text repository...');
-  const repoContent = "Types: deb\\nURIs: https://download.sublimetext.com/\\nSuites: apt/stable/\\nSigned-By: /etc/apt/keyrings/sublimehq-pub.asc";
+  // Use cat with heredoc to create the DEB822 sources file for better reliability
   const repoResult = await shell.exec(
-    `echo -e '${repoContent}' | sudo tee /etc/apt/sources.list.d/sublime-text.sources`
+    `cat <<'SUBLREPO' | sudo tee /etc/apt/sources.list.d/sublime-text.sources
+Types: deb
+URIs: https://download.sublimetext.com/
+Suites: apt/stable/
+Signed-By: /etc/apt/keyrings/sublimehq-pub.asc
+SUBLREPO`
   );
   if (repoResult.code !== 0) {
     throw new Error(`Failed to add Sublime Text repository: ${repoResult.stderr}`);

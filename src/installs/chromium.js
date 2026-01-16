@@ -122,7 +122,11 @@ async function install_ubuntu() {
     const aptResult = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y snapd');
 
     if (aptResult.code !== 0 || !snap.isInstalled()) {
-      console.log('Failed to install snapd. Please install it manually.');
+      console.log('Failed to install snapd.');
+      console.log('Note: If running in a Docker container, snapd requires systemd which is');
+      console.log('not available in standard Docker containers. Chromium installation via');
+      console.log('Snap requires a system with systemd init. For Docker testing, use a');
+      console.log('container with systemd support or test on a real Ubuntu system.');
       return;
     }
   }

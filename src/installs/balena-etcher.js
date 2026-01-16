@@ -203,6 +203,10 @@ async function install_ubuntu() {
 
   console.log('Installing Balena Etcher...');
 
+  // Update package lists first to ensure dependencies can be resolved
+  // This is important for fresh systems where package lists may be stale
+  await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update -y');
+
   // Install the .deb package using apt-get
   // DEBIAN_FRONTEND=noninteractive ensures no interactive prompts
   const installResult = await shell.exec(

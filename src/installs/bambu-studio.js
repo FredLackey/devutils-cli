@@ -49,8 +49,24 @@ const HOMEBREW_CASK_NAME = 'bambu-studio';
 
 /**
  * The Flatpak application ID for Bambu Studio on Flathub.
+ * Note: AppImage is now preferred over Flatpak for Linux installations.
  */
 const FLATPAK_APP_ID = 'com.bambulab.BambuStudio';
+
+/**
+ * The GitHub repository for Bambu Studio releases.
+ */
+const GITHUB_REPO = 'bambulab/BambuStudio';
+
+/**
+ * The installation directory for AppImage executables.
+ */
+const APPIMAGE_INSTALL_DIR = '/usr/local/bin';
+
+/**
+ * The desktop entry installation directory.
+ */
+const DESKTOP_ENTRY_DIR = '/usr/share/applications';
 
 /**
  * The Chocolatey package name for Bambu Studio on Windows.
@@ -73,6 +89,30 @@ function isInstalledOnMacOS() {
 }
 
 /**
+ * Checks if Bambu Studio AppImage is installed in the system.
+ * Looks for the executable in common installation paths.
+ *
+ * @returns {boolean} True if Bambu Studio AppImage is installed
+ */
+function isAppImageInstalled() {
+  // Check common installation paths
+  const commonPaths = [
+    '/usr/local/bin/bambu-studio',
+    '/usr/local/bin/BambuStudio',
+    '/opt/bambu-studio/bambu-studio'
+  ];
+
+  for (const path of commonPaths) {
+    if (fs.existsSync(path)) {
+      return true;
+    }
+  }
+
+  // Check if bambu-studio or BambuStudio command exists in PATH
+  return shell.commandExists('bambu-studio') || shell.commandExists('BambuStudio');
+}
+
+/**
  * Checks if Flatpak is available on the system.
  * Flatpak is required for Linux installations (Ubuntu, WSL, Amazon Linux).
  *
@@ -85,6 +125,7 @@ function isFlatpakAvailable() {
 /**
  * Checks if Bambu Studio is installed via Flatpak.
  * Queries the Flatpak list for the Bambu Studio application ID.
+ * Checks both system-level and user-level installations.
  *
  * @returns {Promise<boolean>} True if Bambu Studio is installed via Flatpak
  */
@@ -93,8 +134,14 @@ async function isInstalledViaFlatpak() {
     return false;
   }
 
-  // Check if the Flatpak app is installed by looking for it in the list
-  const result = await shell.exec(`flatpak list --app | grep -i "${FLATPAK_APP_ID}"`);
+  // Check system-level installation
+  let result = await shell.exec(`flatpak list --app | grep -i "${FLATPAK_APP_ID}"`);
+  if (result.code === 0 && result.stdout.includes(FLATPAK_APP_ID)) {
+    return true;
+  }
+
+  // Check user-level installation
+  result = await shell.exec(`flatpak list --app --user | grep -i "${FLATPAK_APP_ID}"`);
   return result.code === 0 && result.stdout.includes(FLATPAK_APP_ID);
 }
 
@@ -138,6 +185,191 @@ async function isInstalledOnRaspbian() {
   }
 
   return false;
+}
+
+/**
+ * Gets the latest AppImage download URL from GitHub releases.
+ * Detects the system architecture and chooses the appropriate AppImage variant.
+ *
+ * @returns {Promise<{url: string, filename: string} | null>} Download URL and filename, or null if not found
+ */
+async function getLatestAppImageUrl() {
+  try {
+    // Fetch the latest release info from GitHub API
+    const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
+    const result = await shell.exec(`curl -s "${apiUrl}"`);
+
+    if (result.code !== 0 || !result.stdout) {
+      console.error('Failed to fetch latest release information from GitHub.');
+      return null;
+    }
+
+    const release = JSON.parse(result.stdout);
+    const assets = release.assets || [];
+
+    // Determine which AppImage to download based on Ubuntu version or distribution
+    // Prefer ubuntu-22.04 for broader compatibility, unless on a newer system
+    let preferredVariant = 'ubuntu-22.04';
+
+    // Check if running Ubuntu 24.04 or newer
+    if (fs.existsSync('/etc/os-release')) {
+      const osReleaseResult = await shell.exec('cat /etc/os-release | grep VERSION_ID');
+      if (osReleaseResult.code === 0 && osReleaseResult.stdout.includes('24.04')) {
+        preferredVariant = 'ubuntu-24.04';
+      }
+    }
+
+    // Look for AppImage assets (prioritize preferred variant, then Fedora, then any Ubuntu)
+    let selectedAsset = null;
+
+    // First try: preferred Ubuntu variant
+    selectedAsset = assets.find(asset =>
+      asset.name.endsWith('.AppImage') &&
+      asset.name.includes(preferredVariant)
+    );
+
+    // Second try: Fedora variant (good for RHEL-based systems)
+    if (!selectedAsset) {
+      selectedAsset = assets.find(asset =>
+        asset.name.endsWith('.AppImage') &&
+        asset.name.includes('fedora')
+      );
+    }
+
+    // Third try: any Ubuntu variant
+    if (!selectedAsset) {
+      selectedAsset = assets.find(asset =>
+        asset.name.endsWith('.AppImage') &&
+        asset.name.includes('ubuntu')
+      );
+    }
+
+    // Last resort: any AppImage
+    if (!selectedAsset) {
+      selectedAsset = assets.find(asset => asset.name.endsWith('.AppImage'));
+    }
+
+    if (!selectedAsset) {
+      console.error('No AppImage found in the latest release.');
+      return null;
+    }
+
+    return {
+      url: selectedAsset.browser_download_url,
+      filename: selectedAsset.name
+    };
+  } catch (error) {
+    console.error('Error fetching AppImage URL:', error.message);
+    return null;
+  }
+}
+
+/**
+ * Creates a desktop entry file for Bambu Studio AppImage.
+ * This allows the application to appear in desktop menus.
+ *
+ * @param {string} execPath - The full path to the AppImage executable
+ * @returns {Promise<boolean>} True if desktop entry was created successfully
+ */
+async function createDesktopEntry(execPath) {
+  const desktopEntry = `[Desktop Entry]
+Name=Bambu Studio
+Comment=3D printing slicer for Bambu Lab printers
+Exec=${execPath}
+Icon=bambu-studio
+Terminal=false
+Type=Application
+Categories=Graphics;3DGraphics;Engineering;
+MimeType=model/stl;application/x-3mf;model/x.stl-binary;model/x.stl-ascii;application/sla;
+`;
+
+  const desktopFilePath = path.join(DESKTOP_ENTRY_DIR, 'bambu-studio.desktop');
+
+  try {
+    // Create desktop entry directory if it doesn't exist
+    await shell.exec(`sudo mkdir -p ${DESKTOP_ENTRY_DIR}`);
+
+    // Write desktop entry file
+    const tempFile = `/tmp/bambu-studio.desktop`;
+    fs.writeFileSync(tempFile, desktopEntry);
+
+    const copyResult = await shell.exec(`sudo mv ${tempFile} ${desktopFilePath}`);
+    if (copyResult.code !== 0) {
+      console.error('Failed to create desktop entry:', copyResult.stderr);
+      return false;
+    }
+
+    // Make desktop entry executable
+    await shell.exec(`sudo chmod 644 ${desktopFilePath}`);
+
+    // Update desktop database
+    await shell.exec('sudo update-desktop-database 2>/dev/null || true');
+
+    return true;
+  } catch (error) {
+    console.error('Error creating desktop entry:', error.message);
+    return false;
+  }
+}
+
+/**
+ * Downloads and installs Bambu Studio AppImage.
+ * AppImages are self-contained executables that work across Linux distributions.
+ *
+ * @returns {Promise<boolean>} True if installation succeeded
+ */
+async function installAppImage() {
+  console.log('Fetching latest Bambu Studio AppImage from GitHub...');
+
+  // Get the download URL
+  const downloadInfo = await getLatestAppImageUrl();
+  if (!downloadInfo) {
+    console.error('Could not determine AppImage download URL.');
+    return false;
+  }
+
+  console.log(`Found AppImage: ${downloadInfo.filename}`);
+  console.log('Downloading Bambu Studio AppImage...');
+  console.log('Note: This may take several minutes depending on your connection.');
+
+  // Download the AppImage to /tmp
+  const tempPath = `/tmp/${downloadInfo.filename}`;
+  const downloadResult = await shell.exec(`curl -L -o "${tempPath}" "${downloadInfo.url}"`);
+
+  if (downloadResult.code !== 0) {
+    console.error('Failed to download AppImage:', downloadResult.stderr);
+    return false;
+  }
+
+  console.log('AppImage downloaded successfully.');
+
+  // Make the AppImage executable
+  console.log('Installing AppImage...');
+  const chmodResult = await shell.exec(`chmod +x "${tempPath}"`);
+  if (chmodResult.code !== 0) {
+    console.error('Failed to make AppImage executable:', chmodResult.stderr);
+    return false;
+  }
+
+  // Install to /usr/local/bin with a simplified name
+  const installPath = `${APPIMAGE_INSTALL_DIR}/bambu-studio`;
+  const installResult = await shell.exec(`sudo mv "${tempPath}" "${installPath}"`);
+
+  if (installResult.code !== 0) {
+    console.error('Failed to install AppImage:', installResult.stderr);
+    return false;
+  }
+
+  console.log(`Bambu Studio installed to ${installPath}`);
+
+  // Create desktop entry
+  console.log('Creating desktop entry...');
+  const desktopCreated = await createDesktopEntry(installPath);
+  if (!desktopCreated) {
+    console.log('Warning: Desktop entry creation failed. You can still launch from command line.');
+  }
+
+  return true;
 }
 
 /**
@@ -189,43 +421,59 @@ function hasDisplayEnvironment() {
  * Adds the Flathub repository if not already configured.
  * Flathub is the source for the Bambu Studio Flatpak package.
  *
- * @returns {Promise<boolean>} True if Flathub is available after this function
+ * Tries system-level installation first, falls back to user-level if system bus unavailable.
+ * This enables installation in Docker/containerized environments with limited D-Bus access.
+ *
+ * @returns {Promise<{success: boolean, userLevel: boolean}>} Result object with success status and whether user-level was used
  */
 async function ensureFlathubConfigured() {
-  // Check if Flathub is already configured
-  const checkResult = await shell.exec('flatpak remote-list | grep -i flathub');
+  // Check if Flathub is already configured (system-level)
+  let checkResult = await shell.exec('flatpak remote-list | grep -i flathub');
   if (checkResult.code === 0 && checkResult.stdout.includes('flathub')) {
-    return true;
+    return { success: true, userLevel: false };
+  }
+
+  // Check if Flathub is already configured (user-level)
+  checkResult = await shell.exec('flatpak remote-list --user | grep -i flathub');
+  if (checkResult.code === 0 && checkResult.stdout.includes('flathub')) {
+    return { success: true, userLevel: true };
   }
 
   console.log('Adding Flathub repository...');
 
-  // Add Flathub repository (--if-not-exists prevents errors if already added)
-  const addResult = await shell.exec(
+  // Try system-level first (preferred for desktop systems)
+  let addResult = await shell.exec(
     'flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo'
   );
 
-  if (addResult.code !== 0) {
-    console.error('Failed to add Flathub repository:', addResult.stderr);
-
-    // Provide helpful context if this is likely a headless/Docker environment
-    if (addResult.stderr.includes('system bus') || addResult.stderr.includes('D-Bus')) {
-      console.log('');
-      console.log('This error typically occurs in headless or containerized environments.');
-      console.log('Bambu Studio is a GUI application and requires:');
-      console.log('  1. A desktop environment (GNOME, KDE, XFCE, etc.)');
-      console.log('  2. X11 or Wayland display server');
-      console.log('  3. D-Bus system bus');
-      console.log('');
-      console.log('If you are in a Docker container or headless server, Bambu Studio');
-      console.log('cannot be installed or run. Use a desktop Linux system instead.');
-    }
-
-    return false;
+  if (addResult.code === 0) {
+    console.log('Flathub repository added successfully.');
+    return { success: true, userLevel: false };
   }
 
-  console.log('Flathub repository added successfully.');
-  return true;
+  // If system-level fails due to D-Bus issues, try user-level installation
+  if (addResult.stderr.includes('system bus') || addResult.stderr.includes('D-Bus')) {
+    console.log('System-level Flatpak unavailable (no system D-Bus). Trying user-level installation...');
+
+    addResult = await shell.exec(
+      'flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo'
+    );
+
+    if (addResult.code === 0) {
+      console.log('Flathub repository added successfully (user-level).');
+      return { success: true, userLevel: true };
+    }
+  }
+
+  // Both system and user-level failed
+  console.error('Failed to add Flathub repository:', addResult.stderr);
+  console.log('');
+  console.log('Troubleshooting:');
+  console.log('  1. Ensure D-Bus is running (for GUI applications)');
+  console.log('  2. Try manually: flatpak remote-add --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo');
+  console.log('  3. If in Docker, ensure the container has proper D-Bus configuration');
+
+  return { success: false, userLevel: false };
 }
 
 /**
@@ -308,25 +556,23 @@ async function install_macos() {
 }
 
 /**
- * Install Bambu Studio on Ubuntu/Debian using Flatpak from Flathub.
+ * Install Bambu Studio on Ubuntu/Debian using AppImage from GitHub.
  *
- * IMPORTANT: There is no official APT or Snap package for Bambu Studio.
- * Flatpak from Flathub is the recommended installation method for Linux.
+ * IMPORTANT: AppImage is now the preferred installation method for Linux.
+ * AppImages are self-contained executables that work in Docker containers
+ * and don't require user namespaces or D-Bus configuration.
  *
  * Prerequisites:
  * - Ubuntu 20.04+ or Debian 11+ (64-bit)
- * - X11 or Wayland display server
+ * - X11 or Wayland display server (for GUI applications)
  * - sudo privileges
- *
- * NOTE: A system restart (or logout/login) may be required after installing
- * Flatpak for the first time before Bambu Studio can be launched.
+ * - curl installed
  *
  * @returns {Promise<void>}
  */
 async function install_ubuntu() {
-  // Check if already installed via Flatpak (idempotency check)
-  const alreadyInstalled = await isInstalledViaFlatpak();
-  if (alreadyInstalled) {
+  // Check if already installed via AppImage (idempotency check)
+  if (isAppImageInstalled()) {
     console.log('Bambu Studio is already installed.');
     return;
   }
@@ -345,53 +591,29 @@ async function install_ubuntu() {
     return;
   }
 
-  // Ensure Flatpak is installed (required for Bambu Studio on Linux)
-  const flatpakReady = await ensureFlatpakInstalled();
-  if (!flatpakReady) {
-    console.error('Could not install Flatpak. Please install it manually:');
-    console.log('  sudo apt-get update && sudo apt-get install -y flatpak');
-    return;
-  }
+  // Install using AppImage
+  console.log('Installing Bambu Studio via AppImage from GitHub...');
+  const success = await installAppImage();
 
-  // Ensure Flathub repository is configured
-  const flathubReady = await ensureFlathubConfigured();
-  if (!flathubReady) {
-    console.error('Could not configure Flathub repository. Please add it manually:');
-    console.log('  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo');
-    return;
-  }
-
-  console.log('Installing Bambu Studio via Flatpak...');
-  console.log('Note: This may take several minutes on first install.');
-
-  // Install Bambu Studio from Flathub
-  // The -y flag automatically confirms the installation
-  const installResult = await shell.exec(`flatpak install -y flathub ${FLATPAK_APP_ID}`);
-
-  if (installResult.code !== 0) {
-    console.error('Failed to install Bambu Studio:', installResult.stderr);
+  if (!success) {
+    console.error('Failed to install Bambu Studio AppImage.');
     console.log('');
     console.log('Troubleshooting:');
-    console.log('  1. Try restarting your system and running the install again');
-    console.log('  2. Run: flatpak update -y');
-    console.log('  3. If Flathub fails, try re-adding it:');
-    console.log('     flatpak remote-delete flathub');
-    console.log('     flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo');
+    console.log('  1. Ensure curl is installed: sudo apt-get install -y curl');
+    console.log('  2. Check your internet connection');
+    console.log('  3. Visit https://github.com/bambulab/BambuStudio/releases for manual download');
     return;
   }
 
   // Verify installation succeeded
-  const verifyInstalled = await isInstalledViaFlatpak();
-  if (verifyInstalled) {
+  if (isAppImageInstalled()) {
+    console.log('');
     console.log('Bambu Studio installed successfully.');
     console.log('');
-    console.log('Launch with: flatpak run com.bambulab.BambuStudio');
-    console.log('');
-    console.log('Note: If this is your first Flatpak installation, you may need to');
-    console.log('restart your system or log out/in for the app to appear in menus.');
+    console.log('Launch with: bambu-studio');
+    console.log('Location: /usr/local/bin/bambu-studio');
   } else {
     console.error('Installation completed but Bambu Studio was not found.');
-    console.log('Try running: flatpak list | grep -i bambu');
   }
 }
 
@@ -490,7 +712,7 @@ async function install_raspbian() {
 }
 
 /**
- * Install Bambu Studio on Amazon Linux/RHEL using Flatpak.
+ * Install Bambu Studio on Amazon Linux/RHEL using AppImage.
  *
  * IMPORTANT: Amazon Linux is primarily a server OS without a desktop environment.
  * Bambu Studio is a GUI application and requires a display. This platform is
@@ -499,15 +721,14 @@ async function install_raspbian() {
  * Prerequisites:
  * - Amazon Linux 2023, Amazon Linux 2, RHEL 8+, or Fedora 35+
  * - Desktop environment with X11/Wayland support
- * - Flatpak package manager
  * - sudo privileges
+ * - curl installed
  *
  * @returns {Promise<void>}
  */
 async function install_amazon_linux() {
-  // Check if already installed via Flatpak (idempotency check)
-  const alreadyInstalled = await isInstalledViaFlatpak();
-  if (alreadyInstalled) {
+  // Check if already installed via AppImage (idempotency check)
+  if (isAppImageInstalled()) {
     console.log('Bambu Studio is already installed.');
     return;
   }
@@ -530,44 +751,29 @@ async function install_amazon_linux() {
     return;
   }
 
-  // Ensure Flatpak is installed
-  const flatpakReady = await ensureFlatpakInstalledRHEL();
-  if (!flatpakReady) {
-    console.error('Could not install Flatpak. Please install it manually:');
-    console.log('  sudo dnf install -y flatpak');
-    return;
-  }
+  // Install using AppImage
+  console.log('Installing Bambu Studio via AppImage from GitHub...');
+  const success = await installAppImage();
 
-  // Ensure Flathub repository is configured
-  const flathubReady = await ensureFlathubConfigured();
-  if (!flathubReady) {
-    console.error('Could not configure Flathub repository. Please add it manually:');
-    console.log('  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo');
-    return;
-  }
-
-  console.log('Installing Bambu Studio via Flatpak...');
-
-  // Install Bambu Studio from Flathub
-  const installResult = await shell.exec(`flatpak install -y flathub ${FLATPAK_APP_ID}`);
-
-  if (installResult.code !== 0) {
-    console.error('Failed to install Bambu Studio:', installResult.stderr);
+  if (!success) {
+    console.error('Failed to install Bambu Studio AppImage.');
     console.log('');
     console.log('Troubleshooting:');
-    console.log('  1. Ensure you have a desktop environment installed:');
+    console.log('  1. Ensure curl is installed: sudo dnf install -y curl');
+    console.log('  2. Check your internet connection');
+    console.log('  3. Ensure you have a desktop environment installed:');
     console.log('     sudo dnf groupinstall -y "GNOME Desktop Environment"');
-    console.log('  2. Install required graphics drivers:');
-    console.log('     sudo dnf install -y mesa-libGL mesa-libGLU mesa-dri-drivers');
+    console.log('  4. Visit https://github.com/bambulab/BambuStudio/releases for manual download');
     return;
   }
 
   // Verify installation succeeded
-  const verifyInstalled = await isInstalledViaFlatpak();
-  if (verifyInstalled) {
+  if (isAppImageInstalled()) {
+    console.log('');
     console.log('Bambu Studio installed successfully.');
     console.log('');
-    console.log('Launch with: flatpak run com.bambulab.BambuStudio');
+    console.log('Launch with: bambu-studio');
+    console.log('Location: /usr/local/bin/bambu-studio');
   } else {
     console.error('Installation completed but Bambu Studio was not found.');
   }
@@ -683,8 +889,8 @@ async function install_ubuntu_wsl() {
   }
 
   // Ensure Flathub repository is configured
-  const flathubReady = await ensureFlathubConfigured();
-  if (!flathubReady) {
+  const flathubResult = await ensureFlathubConfigured();
+  if (!flathubResult.success) {
     console.error('Could not configure Flathub repository. Please add it manually:');
     console.log('  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo');
     return;
@@ -694,7 +900,9 @@ async function install_ubuntu_wsl() {
   console.log('Note: This may take several minutes on first install.');
 
   // Install Bambu Studio from Flathub
-  const installResult = await shell.exec(`flatpak install -y flathub ${FLATPAK_APP_ID}`);
+  // Use --user flag if we're using user-level Flatpak (no system D-Bus)
+  const userFlag = flathubResult.userLevel ? '--user' : '';
+  const installResult = await shell.exec(`flatpak install -y ${userFlag} flathub ${FLATPAK_APP_ID}`);
 
   if (installResult.code !== 0) {
     console.error('Failed to install Bambu Studio:', installResult.stderr);
@@ -826,8 +1034,13 @@ async function isInstalled() {
     return await isInstalledOnRaspbian();
   }
 
-  // Linux platforms (Ubuntu, Debian, WSL, Amazon Linux, Fedora, RHEL): Check Flatpak
+  // Linux platforms (Ubuntu, Debian, WSL, Amazon Linux, Fedora, RHEL): Check AppImage first, then Flatpak
   if (['ubuntu', 'debian', 'wsl', 'amazon_linux', 'fedora', 'rhel'].includes(platform.type)) {
+    // Check AppImage installation (preferred)
+    if (isAppImageInstalled()) {
+      return true;
+    }
+    // Fallback to Flatpak check (for legacy installations)
     return await isInstalledViaFlatpak();
   }
 

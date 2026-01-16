@@ -9,11 +9,53 @@
 const shell = require('../common/shell');
 
 /**
- * Checks if snapd is installed and running
- * @returns {boolean}
+ * Checks if snapd is installed and the daemon is accessible.
+ *
+ * This function verifies both that the snap command exists AND that
+ * the snapd daemon is running and can be communicated with. This is
+ * important because in some environments (like Docker containers),
+ * the snap command may be installed but the daemon cannot run.
+ *
+ * @returns {boolean} True if snap command exists AND daemon is accessible
  */
 function isInstalled() {
-  return shell.commandExists('snap');
+  // First check if snap command exists
+  if (!shell.commandExists('snap')) {
+    return false;
+  }
+
+  // Check if snapd daemon is accessible by checking snap version output
+  // Using syncExec for immediate result without spawning async process
+  const { execSync } = require('child_process');
+  try {
+    // Try to get snap version info with a short timeout
+    // In Docker without systemd, this may timeout or return "snapd   unavailable"
+    const output = execSync('snap version 2>/dev/null', {
+      stdio: 'pipe',
+      timeout: 1000,
+      encoding: 'utf8'
+    });
+
+    // Check if snapd is listed as unavailable
+    // When snapd daemon is not running, snap version shows:
+    // snap    2.73+ubuntu22.04
+    // snapd   unavailable
+    // series  -
+    if (output.includes('snapd   unavailable') || output.includes('snapd unavailable')) {
+      return false;
+    }
+
+    // Also check for empty or malformed output
+    if (!output || output.trim().length === 0) {
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    // If snap version command fails (timeout, error), daemon is not accessible
+    // This handles the Docker case where snap command hangs trying to reach daemon
+    return false;
+  }
 }
 
 /**

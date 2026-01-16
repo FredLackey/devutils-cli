@@ -255,9 +255,10 @@ async function install_ubuntu() {
   }
 
   // Step 3: Run the installer in quiet/non-interactive mode
+  // Note: The -dir parameter is required to specify installation directory
   console.log('Running installer (this may take a moment)...');
   const installResult = await shell.exec(
-    'sudo /tmp/studio-3t-linux-x64.sh -q'
+    `sudo /tmp/studio-3t-linux-x64.sh -q -dir ${LINUX_INSTALL_DIR}`
   );
 
   if (installResult.code !== 0) {
@@ -266,7 +267,7 @@ async function install_ubuntu() {
       `Error: ${installResult.stderr}\n\n` +
       `Troubleshooting:\n` +
       `  1. Ensure you have sudo privileges\n` +
-      `  2. Try running manually: sudo /tmp/studio-3t-linux-x64.sh -q`
+      `  2. Try running manually: sudo /tmp/studio-3t-linux-x64.sh -q -dir ${LINUX_INSTALL_DIR}`
     );
   }
 
@@ -410,7 +411,7 @@ async function install_amazon_linux() {
       `Error: ${installResult.stderr}\n\n` +
       `Troubleshooting:\n` +
       `  1. Ensure you have sudo privileges\n` +
-      `  2. Try running manually: sudo /tmp/studio-3t-linux-x64.sh -q`
+      `  2. Try running manually: sudo /tmp/studio-3t-linux-x64.sh -q -dir ${LINUX_INSTALL_DIR}`
     );
   }
 
@@ -597,9 +598,10 @@ async function install_ubuntu_wsl() {
   }
 
   // Step 3: Run the installer in quiet/non-interactive mode
+  // Note: The -dir parameter is required to specify installation directory
   console.log('Running installer (this may take a moment)...');
   const installResult = await shell.exec(
-    'sudo /tmp/studio-3t-linux-x64.sh -q'
+    `sudo /tmp/studio-3t-linux-x64.sh -q -dir ${LINUX_INSTALL_DIR}`
   );
 
   if (installResult.code !== 0) {
@@ -608,7 +610,7 @@ async function install_ubuntu_wsl() {
       `Error: ${installResult.stderr}\n\n` +
       `Troubleshooting:\n` +
       `  1. Ensure you have sudo privileges\n` +
-      `  2. Try running manually: sudo /tmp/studio-3t-linux-x64.sh -q`
+      `  2. Try running manually: sudo /tmp/studio-3t-linux-x64.sh -q -dir ${LINUX_INSTALL_DIR}`
     );
   }
 

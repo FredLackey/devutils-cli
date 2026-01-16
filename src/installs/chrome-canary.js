@@ -134,109 +134,37 @@ async function install_macos() {
 }
 
 /**
- * Install Google Chrome Canary on Ubuntu/Debian using APT.
+ * Handle the unsupported Ubuntu/Debian platform.
  *
- * This function performs the following steps:
- * 1. Checks if Chrome Canary is already installed
- * 2. Installs required dependencies (wget, gnupg)
- * 3. Adds Google's GPG signing key
- * 4. Adds the Google Chrome APT repository
- * 5. Updates package lists and installs Chrome Canary
+ * Google Chrome Canary is NOT officially available for Linux distributions.
+ * Google only provides Stable, Beta, and Unstable (Dev) channels via their
+ * APT repository. The google-chrome-canary package does not exist for Linux.
  *
  * @returns {Promise<void>}
  */
 async function install_ubuntu() {
-  // Check if Chrome Canary is already installed by looking for the command
-  const isInstalled = shell.commandExists(LINUX_COMMAND_NAME);
-
-  if (isInstalled) {
-    console.log('Google Chrome Canary is already installed, skipping...');
-    return;
-  }
-
-  // Verify that APT is available
-  if (!apt.isInstalled()) {
-    console.log('APT package manager is not available on this system.');
-    return;
-  }
-
-  console.log('Installing Google Chrome Canary via APT...');
-
-  // Step 1: Install required dependencies for adding the repository
-  console.log('Installing required dependencies (wget, gnupg)...');
-  const depsResult = await shell.exec('sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget gnupg');
-
-  if (depsResult.code !== 0) {
-    console.log(`Failed to install dependencies: ${depsResult.stderr || depsResult.stdout}`);
-    return;
-  }
-
-  // Step 2: Create the keyrings directory if it does not exist
-  // This directory is the modern location for APT repository keys (Ubuntu 22.04+)
-  const keyringDirResult = await shell.exec('sudo mkdir -p /etc/apt/keyrings');
-
-  if (keyringDirResult.code !== 0) {
-    console.log(`Failed to create keyrings directory: ${keyringDirResult.stderr}`);
-    return;
-  }
-
-  // Step 3: Download and install Google's GPG signing key
-  // Using the dearmor method which is the modern, recommended approach
-  console.log('Adding Google signing key...');
-  const keyResult = await shell.exec(`wget -qO - ${GOOGLE_GPG_KEY_URL} | sudo gpg --dearmor -o ${GOOGLE_KEYRING_PATH}`);
-
-  // Note: gpg --dearmor may return non-zero if the key already exists, so we check if the file exists
-  if (!fs.existsSync(GOOGLE_KEYRING_PATH)) {
-    // Try an alternative approach if the first method failed
-    const altKeyResult = await shell.exec(`wget -qO - ${GOOGLE_GPG_KEY_URL} | sudo gpg --yes --dearmor -o ${GOOGLE_KEYRING_PATH}`);
-    if (altKeyResult.code !== 0 && !fs.existsSync(GOOGLE_KEYRING_PATH)) {
-      console.log(`Failed to add Google signing key: ${altKeyResult.stderr || keyResult.stderr}`);
-      return;
-    }
-  }
-
-  // Step 4: Add the Google Chrome APT repository
-  console.log('Adding Google Chrome repository...');
-  const repoResult = await shell.exec(`echo "${GOOGLE_APT_REPO}" | sudo tee ${GOOGLE_APT_SOURCES_PATH} > /dev/null`);
-
-  if (repoResult.code !== 0) {
-    console.log(`Failed to add repository: ${repoResult.stderr || repoResult.stdout}`);
-    return;
-  }
-
-  // Step 5: Update package lists and install Chrome Canary
-  console.log('Installing Google Chrome Canary package...');
-  const installResult = await shell.exec(`sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ${UBUNTU_PACKAGE_NAME}`);
-
-  if (installResult.code !== 0) {
-    console.log(`Installation failed: ${installResult.stderr || installResult.stdout}`);
-    return;
-  }
-
-  // Verify the installation succeeded
-  const verified = shell.commandExists(LINUX_COMMAND_NAME);
-
-  if (!verified) {
-    console.log('Installation may have failed: google-chrome-canary command not found');
-    return;
-  }
-
-  console.log('Google Chrome Canary installed successfully.');
+  // Chrome Canary is not available for Ubuntu/Debian/Linux
+  // Return gracefully without throwing an error
+  console.log('Google Chrome Canary is not available for Ubuntu/Debian.');
+  console.log('Consider using google-chrome-unstable (Dev channel) as an alternative.');
+  return;
 }
 
 /**
- * Install Google Chrome Canary on Ubuntu running in WSL.
+ * Handle the unsupported WSL (Ubuntu) platform.
  *
- * WSL (Windows Subsystem for Linux) with Ubuntu follows the same installation
- * process as native Ubuntu, using Google's APT repository. Chrome Canary will
- * run as a GUI application if WSLg (Windows 11) or an X server is configured.
+ * Google Chrome Canary is NOT officially available for Linux distributions,
+ * including Ubuntu running in WSL. Google only provides Stable, Beta, and
+ * Unstable (Dev) channels for Linux.
  *
  * @returns {Promise<void>}
  */
 async function install_ubuntu_wsl() {
-  // WSL Ubuntu uses the same installation method as native Ubuntu
-  // The APT repository and package are identical
-  await install_ubuntu();
+  // Chrome Canary is not available for WSL/Ubuntu
+  // Return gracefully without throwing an error
+  console.log('Google Chrome Canary is not available for WSL/Ubuntu.');
+  console.log('Consider using google-chrome-unstable (Dev channel) as an alternative.');
+  return;
 }
 
 /**
@@ -362,7 +290,7 @@ async function install_gitbash() {
  * is already installed:
  * - macOS: Checks for Google Chrome Canary.app in /Applications
  * - Windows: Checks for Chocolatey package or executable in AppData
- * - Ubuntu/Debian/WSL: Checks for google-chrome-canary command
+ * - Linux (Ubuntu/Debian/WSL): Always returns false (not available on Linux)
  *
  * @returns {Promise<boolean>} True if Chrome Canary is installed
  */
@@ -392,9 +320,9 @@ async function isInstalled() {
     return false;
   }
 
-  // Ubuntu/Debian/WSL: Check for the command
+  // Ubuntu/Debian/WSL: Chrome Canary is not available for Linux
   if (['ubuntu', 'debian', 'wsl'].includes(platform.type)) {
-    return shell.commandExists(LINUX_COMMAND_NAME);
+    return false;
   }
 
   // Unsupported platforms
@@ -406,19 +334,20 @@ async function isInstalled() {
  *
  * Google Chrome Canary can be installed on:
  * - macOS (via Homebrew cask)
- * - Ubuntu/Debian (via Google's APT repository)
- * - WSL (via Google's APT repository)
  * - Windows (via Chocolatey)
  * - Git Bash (via Windows Chocolatey)
  *
- * Note: Raspberry Pi (ARM architecture) and Amazon Linux/RHEL (no RPM packages)
- * are NOT supported.
+ * Note: Chrome Canary is NOT officially available for Linux (Ubuntu/Debian/WSL).
+ * Google only provides Stable, Beta, and Unstable (Dev) channels for Linux.
+ * Raspberry Pi (ARM architecture) and Amazon Linux/RHEL are also NOT supported.
  *
  * @returns {boolean} True if installation is supported on this platform
  */
 function isEligible() {
   const platform = os.detect();
-  const supportedPlatforms = ['macos', 'ubuntu', 'debian', 'wsl', 'windows', 'gitbash'];
+  // Chrome Canary is only available on macOS and Windows
+  // It is NOT available for any Linux distributions including Ubuntu/Debian/WSL
+  const supportedPlatforms = ['macos', 'windows', 'gitbash'];
   if (!supportedPlatforms.includes(platform.type)) {
     return false;
   }
