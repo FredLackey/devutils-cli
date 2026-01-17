@@ -1,10 +1,10 @@
 # Dependency Analysis Summary
 
-**Last Updated:** 2026-01-16
-**Total Test-Pending Technologies:** 43
-**Already Documented (Skipped):** 43
+**Last Updated:** 2026-01-17
+**Total Test-Pending Technologies:** 1
+**Already Documented (Skipped):** 1
 **Analyzed This Run:** 0
-**Successful:** 43
+**Successful:** 1
 **Failed:** 0
 
 ## Results
@@ -21,6 +21,7 @@
 | Bash Completion 2 | src/installs/bash-completion.js | src/installs/bash-completion.md | Complete - has dependencies |
 | Bash | src/installs/bash.js | src/installs/bash.md | Complete - has dependencies |
 | Beyond Compare | src/installs/beyond-compare.js | src/installs/beyond-compare.md | Complete - has dependencies |
+| Brave Browser | src/installs/brave-browser.js | src/installs/brave-browser.md | Skipped - already documented |
 | build-essential | src/installs/build-essential.js | src/installs/build-essential.md | Skipped - already documented |
 | ca-certificates | src/installs/ca-certificates.js | src/installs/ca-certificates.md | Skipped - already documented |
 | Caffeine | src/installs/caffeine.js | src/installs/caffeine.md | Complete - has dependencies |
@@ -344,7 +345,7 @@ Most macOS installers require Homebrew. If Homebrew is not installed:
 
 **Installers that exit if Homebrew is missing:**
 - adobe-creative-cloud, appcleaner, atomicparsley, aws-cli, balena-etcher, bambu-studio
-- bash, bash-completion, beyond-compare, caffeine, camtasia, chatgpt
+- bash, bash-completion, beyond-compare, brave-browser, caffeine, camtasia, chatgpt
 - chrome-canary, chromium, cursor, dbschema, docker, drawio
 - elmedia-player, ffmpeg, git, go, google-chrome, gpg, imageoptim
 - jq, keyboard-maestro, latex, lftp, messenger, microsoft-office
@@ -365,7 +366,7 @@ Most Windows installers require Chocolatey. If Chocolatey is not installed:
 - Installation does **NOT** proceed automatically
 
 **Installers that exit if Chocolatey is missing:**
-- atomicparsley, aws-cli, balena-etcher, bambu-studio, beyond-compare
+- atomicparsley, aws-cli, balena-etcher, bambu-studio, beyond-compare, brave-browser
 - camtasia, chrome-canary, chromium, curl, cursor, dbschema, docker
 - drawio, ffmpeg, git, go, google-chrome, gpg, jq, latex, lftp
 - messenger, microsoft-office, microsoft-teams, node, nordpass, nvm

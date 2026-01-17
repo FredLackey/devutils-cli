@@ -359,6 +359,71 @@
     ]
   },
   {
+    "filename": "brave-browser.js",
+    "name": "Brave Browser",
+    "status": "ready",
+    "environments": [
+      "macos",
+      "ubuntu",
+      "ubuntu-desktop",
+      "debian",
+      "amazon_linux",
+      "rhel",
+      "fedora",
+      "windows"
+    ],
+    "desktop": true,
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0,
+        "platforms": [
+          "macos"
+        ]
+      },
+      {
+        "name": "chocolatey.js",
+        "priority": 0,
+        "platforms": [
+          "windows"
+        ]
+      },
+      {
+        "name": "curl.js",
+        "priority": 0,
+        "platforms": [
+          "ubuntu",
+          "debian",
+          "amazon_linux",
+          "rhel",
+          "fedora"
+        ]
+      }
+    ],
+    "test_results": [
+      {
+        "environment": "ubuntu",
+        "result": "not_eligible"
+      },
+      {
+        "environment": "ubuntu-desktop",
+        "result": "pass"
+      },
+      {
+        "environment": "debian",
+        "result": "not_eligible"
+      },
+      {
+        "environment": "amazonlinux",
+        "result": "not_eligible"
+      },
+      {
+        "environment": "fedora",
+        "result": "not_eligible"
+      }
+    ]
+  },
+  {
     "filename": "build-essential.js",
     "name": "build-essential",
     "status": "ready",
