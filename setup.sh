@@ -1233,7 +1233,11 @@ main() {
 # ─────────────────────────────────────────────────────────────────────────────
 # Only run main() if this script is being executed directly (not sourced)
 # This allows the script to be sourced for testing individual functions
+#
+# Note: When run via `bash -c "$(curl ...)"`, BASH_SOURCE is empty/unset.
+# We use ${BASH_SOURCE[0]:-} to provide a default empty value, and also
+# check if it's empty (which means we're being piped to bash).
 
-if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+if [[ -z "${BASH_SOURCE[0]:-}" ]] || [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   main "$@"
 fi
