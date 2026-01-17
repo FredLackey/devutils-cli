@@ -11,8 +11,8 @@ const readline = require('readline');
 const shell = require('../utils/common/shell');
 const osUtils = require('../utils/common/os');
 
-// Essential tools that DevUtils CLI requires
-const ESSENTIAL_TOOLS = [
+// Essential tools that DevUtils CLI requires (shared across all platforms)
+const CORE_TOOLS = [
   {
     name: 'git',
     command: 'git',
@@ -38,6 +38,31 @@ const ESSENTIAL_TOOLS = [
     install: 'curl'
   }
 ];
+
+// Homebrew is required on macOS before installing other tools
+const HOMEBREW_TOOL = {
+  name: 'brew',
+  command: 'brew',
+  description: 'Package manager (required)',
+  install: 'homebrew'
+};
+
+/**
+ * Get the list of essential tools for the current platform.
+ * On macOS, Homebrew is included first since other tools depend on it.
+ * @returns {Array<object>} Array of tool definitions
+ */
+function getEssentialTools() {
+  const platform = osUtils.detect();
+
+  // On macOS, Homebrew must be installed first since all other tools use it
+  if (platform.type === 'macos') {
+    return [HOMEBREW_TOOL, ...CORE_TOOLS];
+  }
+
+  // On other platforms, just use the core tools
+  return CORE_TOOLS;
+}
 
 /**
  * Create readline interface for prompts
@@ -69,8 +94,9 @@ function confirm(rl, question) {
  * @returns {Array<object>} Array of missing tools
  */
 function checkMissingTools() {
+  const tools = getEssentialTools();
   const missing = [];
-  for (const tool of ESSENTIAL_TOOLS) {
+  for (const tool of tools) {
     if (!shell.commandExists(tool.command)) {
       missing.push(tool);
     }
@@ -83,7 +109,8 @@ function checkMissingTools() {
  * @returns {Array<{ tool: object, installed: boolean }>}
  */
 function getToolStatuses() {
-  return ESSENTIAL_TOOLS.map(tool => ({
+  const tools = getEssentialTools();
+  return tools.map(tool => ({
     tool,
     installed: shell.commandExists(tool.command)
   }));
@@ -97,11 +124,18 @@ function getToolStatuses() {
 async function installTool(tool) {
   try {
     const installer = require(`../installs/${tool.install}`);
-    if (typeof installer.install === 'function') {
-      return await installer.install();
+    if (typeof installer.install !== 'function') {
+      console.error(`  No install function found for ${tool.name}`);
+      return false;
     }
-    console.error(`  No install function found for ${tool.name}`);
-    return false;
+
+    // Run the installer
+    await installer.install();
+
+    // Verify installation by checking if the command now exists
+    // This is more reliable than trusting return values from installers
+    const isNowInstalled = shell.commandExists(tool.command);
+    return isNowInstalled;
   } catch (err) {
     console.error(`  Failed to install ${tool.name}: ${err.message}`);
     return false;

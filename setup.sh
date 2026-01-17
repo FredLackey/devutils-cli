@@ -696,24 +696,45 @@ install_xcode_cli_tools() {
   fi
 
   # ─────────────────────────────────────────────────────────────────────────
-  # PHASE 2: EXECUTE — Trigger the installation
+  # PHASE 2: EXECUTE — Install via softwareupdate (headless, no GUI)
+  # ─────────────────────────────────────────────────────────────────────────
+  # Instead of using `xcode-select --install` which triggers a GUI dialog,
+  # we use `softwareupdate` to install directly from the command line.
+  # This approach is fully scriptable and works in --no-prompt mode.
+  #
+  # The marker file tells macOS to include Command Line Tools in the
+  # softwareupdate list, even though they're not a regular software update.
   # ─────────────────────────────────────────────────────────────────────────
   print_info "Installing Xcode Command Line Tools..."
 
-  # This command triggers a macOS GUI dialog
-  xcode-select --install 2>/dev/null || true
+  local marker_file="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
+
+  # Create marker file to make CLI tools appear in softwareupdate
+  verbose "Creating marker file: $marker_file"
+  touch "$marker_file"
+
+  # Find the Command Line Tools package name
+  # The package name varies by macOS version (e.g., "Command Line Tools for Xcode-15.0")
+  verbose "Searching for Command Line Tools package..."
+  local package_name
+  package_name=$(softwareupdate -l 2>/dev/null | grep -o '.*Command Line Tools.*' | head -n 1 | sed 's/^[* ]*//')
+
+  if [ -z "$package_name" ]; then
+    rm -f "$marker_file"
+    print_error "Could not find Command Line Tools package in softwareupdate list." 3
+  fi
+
+  verbose "Found package: $package_name"
+  print_info "Downloading and installing: $package_name"
+
+  # Install the package (this may take several minutes)
+  softwareupdate -i "$package_name" --verbose
 
   # ─────────────────────────────────────────────────────────────────────────
-  # PHASE 3: WAIT — Wait for the GUI installation to complete
+  # PHASE 3: CLEANUP — Remove the marker file
   # ─────────────────────────────────────────────────────────────────────────
-  # The xcode-select --install command returns immediately after triggering
-  # the GUI dialog. We must wait for the user to complete the installation.
-  echo ""
-  echo "  A dialog box should appear asking to install the Command Line Tools."
-  echo "  Click 'Install' and wait for it to complete."
-  echo ""
-  echo "  Press Enter after the installation finishes..."
-  read -r
+  verbose "Removing marker file"
+  rm -f "$marker_file"
 
   # ─────────────────────────────────────────────────────────────────────────
   # PHASE 4: VERIFY — Confirm the installation succeeded
