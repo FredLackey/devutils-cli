@@ -277,21 +277,20 @@ async function install_macos() {
   console.log('  - Xcode Command Line Tools (if not already installed)');
   console.log('');
 
-  // Run the official Homebrew installer in non-interactive mode
-  // NONINTERACTIVE=1 prevents prompts for confirmation
+  // Run the official Homebrew installer with interactive terminal support
+  // This allows the installer to prompt for sudo password when needed
   console.log('Downloading and running the Homebrew installer...');
   console.log('This may take several minutes...');
+  console.log('You may be prompted for your password to complete the installation.');
   console.log('');
 
-  const installResult = await shell.exec(
-    `NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`,
-    { timeout: 600000 } // 10 minute timeout for slow connections
+  const exitCode = await shell.spawnInteractive(
+    `/bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`
   );
 
-  if (installResult.code !== 0) {
+  if (exitCode !== 0) {
     throw new Error(
-      `Failed to install Homebrew.\n` +
-      `Output: ${installResult.stderr || installResult.stdout}\n\n` +
+      `Failed to install Homebrew (exit code: ${exitCode}).\n\n` +
       `Troubleshooting:\n` +
       `  1. If Xcode Command Line Tools installation hung, run:\n` +
       `     xcode-select --install\n` +
@@ -419,18 +418,17 @@ async function install_ubuntu() {
   console.log('');
   console.log('Downloading and running the Homebrew installer...');
   console.log('This may take several minutes...');
+  console.log('You may be prompted for your password to complete the installation.');
   console.log('');
 
-  // Run the official Homebrew installer in non-interactive mode
-  const installResult = await shell.exec(
-    `NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`,
-    { timeout: 600000 } // 10 minute timeout
+  // Run the official Homebrew installer with interactive terminal support
+  const exitCode = await shell.spawnInteractive(
+    `/bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`
   );
 
-  if (installResult.code !== 0) {
+  if (exitCode !== 0) {
     throw new Error(
-      `Failed to install Homebrew.\n` +
-      `Output: ${installResult.stderr || installResult.stdout}\n\n` +
+      `Failed to install Homebrew (exit code: ${exitCode}).\n\n` +
       `Troubleshooting:\n` +
       `  1. Ensure all dependencies are installed:\n` +
       `     sudo apt-get install -y build-essential procps curl file git\n` +
@@ -548,18 +546,17 @@ async function install_raspbian() {
   console.log('');
   console.log('Downloading and running the Homebrew installer...');
   console.log('This may take several minutes (or longer on slower hardware)...');
+  console.log('You may be prompted for your password to complete the installation.');
   console.log('');
 
-  // Run the official Homebrew installer in non-interactive mode
-  const installResult = await shell.exec(
-    `NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`,
-    { timeout: 1200000 } // 20 minute timeout for slower Raspberry Pi hardware
+  // Run the official Homebrew installer with interactive terminal support
+  const exitCode = await shell.spawnInteractive(
+    `/bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`
   );
 
-  if (installResult.code !== 0) {
+  if (exitCode !== 0) {
     throw new Error(
-      `Failed to install Homebrew.\n` +
-      `Output: ${installResult.stderr || installResult.stdout}\n\n` +
+      `Failed to install Homebrew (exit code: ${exitCode}).\n\n` +
       `Troubleshooting:\n` +
       `  1. Ensure all dependencies are installed:\n` +
       `     sudo apt-get install -y build-essential procps curl file git\n` +
@@ -706,18 +703,17 @@ async function install_amazon_linux() {
   console.log('');
   console.log('Downloading and running the Homebrew installer...');
   console.log('This may take several minutes...');
+  console.log('You may be prompted for your password to complete the installation.');
   console.log('');
 
-  // Run the official Homebrew installer in non-interactive mode
-  const installResult = await shell.exec(
-    `NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`,
-    { timeout: 600000 } // 10 minute timeout
+  // Run the official Homebrew installer with interactive terminal support
+  const exitCode = await shell.spawnInteractive(
+    `/bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`
   );
 
-  if (installResult.code !== 0) {
+  if (exitCode !== 0) {
     throw new Error(
-      `Failed to install Homebrew.\n` +
-      `Output: ${installResult.stderr || installResult.stdout}\n\n` +
+      `Failed to install Homebrew (exit code: ${exitCode}).\n\n` +
       `Troubleshooting:\n` +
       `  1. Ensure Development Tools are installed:\n` +
       `     sudo dnf groupinstall -y "Development Tools"  # Amazon Linux 2023\n` +
@@ -835,18 +831,17 @@ async function install_ubuntu_wsl() {
   console.log('');
   console.log('Downloading and running the Homebrew installer...');
   console.log('This may take several minutes...');
+  console.log('You may be prompted for your password to complete the installation.');
   console.log('');
 
-  // Run the official Homebrew installer in non-interactive mode
-  const installResult = await shell.exec(
-    `NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`,
-    { timeout: 600000 } // 10 minute timeout
+  // Run the official Homebrew installer with interactive terminal support
+  const exitCode = await shell.spawnInteractive(
+    `/bin/bash -c "$(curl -fsSL ${HOMEBREW_INSTALL_URL})"`
   );
 
-  if (installResult.code !== 0) {
+  if (exitCode !== 0) {
     throw new Error(
-      `Failed to install Homebrew in WSL.\n` +
-      `Output: ${installResult.stderr || installResult.stdout}\n\n` +
+      `Failed to install Homebrew in WSL (exit code: ${exitCode}).\n\n` +
       `Troubleshooting:\n` +
       `  1. Ensure WSL 2 is being used (WSL 1 has known issues):\n` +
       `     Run in PowerShell: wsl --set-version Ubuntu 2\n` +

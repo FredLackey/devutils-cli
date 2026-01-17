@@ -207,10 +207,55 @@ async function spawnAsync(command, args = [], options = {}) {
   });
 }
 
+/**
+ * Spawns an interactive command with terminal passthrough.
+ *
+ * Use this function for commands that need user interaction, such as:
+ * - Commands that prompt for sudo password
+ * - Interactive installers that ask questions
+ * - Commands that show progress with cursor movement
+ *
+ * Unlike exec() or spawnAsync(), this function connects the child process
+ * directly to the parent's terminal (stdin, stdout, stderr), allowing the
+ * user to interact with the command as if they ran it directly.
+ *
+ * @param {string} command - The command to run (passed to shell)
+ * @param {Object} [options] - Options
+ * @param {string} [options.cwd] - Working directory for the command
+ * @param {Object} [options.env] - Environment variables (defaults to process.env)
+ * @returns {Promise<number>} Exit code (0 = success, non-zero = failure)
+ *
+ * @example
+ * // Run an installer that needs sudo password
+ * const exitCode = await spawnInteractive('/bin/bash -c "$(curl -fsSL https://example.com/install.sh)"');
+ * if (exitCode !== 0) {
+ *   console.error('Installation failed');
+ * }
+ */
+async function spawnInteractive(command, options = {}) {
+  return new Promise((resolve) => {
+    const child = spawn(command, [], {
+      stdio: 'inherit',  // Connect to parent's terminal
+      shell: true,       // Run through shell to support complex commands
+      cwd: options.cwd,
+      env: options.env || process.env
+    });
+
+    child.on('close', (code) => {
+      resolve(code || 0);
+    });
+
+    child.on('error', () => {
+      resolve(1);
+    });
+  });
+}
+
 module.exports = {
   exec,
   execSync,
   which,
   commandExists,
-  spawnAsync
+  spawnAsync,
+  spawnInteractive
 };
