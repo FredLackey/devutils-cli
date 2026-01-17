@@ -384,43 +384,16 @@ check_sudo_access() {
   fi
 
   # ─────────────────────────────────────────────────────────────────────────
-  # macOS: Homebrew requires the user to be an Administrator with sudo access
+  # macOS: This bootstrap script does not require sudo
+  # ─────────────────────────────────────────────────────────────────────────
+  # The bootstrap installs: Xcode CLI Tools (via softwareupdate), nvm, Node.js,
+  # and DevUtils CLI — none of which require elevated privileges.
+  # Homebrew installation happens later via `dev install <tool>`, not here.
   # ─────────────────────────────────────────────────────────────────────────
   if [ "$OS_DISTRO" = "macos" ]; then
-    # Homebrew installer uses sudo internally, so we need to verify and cache credentials
-    if [ "$DRY_RUN" = true ]; then
-      verbose "Dry run: would prompt for sudo password on macOS"
-      return 0
-    fi
-
-    echo ""
-    echo "Homebrew requires administrator privileges to install."
-    echo "You may be prompted for your password."
-    echo ""
-
-    # Try to get sudo credentials - this will prompt for password if needed
-    if sudo -v 2>/dev/null; then
-      verbose "User has sudo access on macOS"
-      # Keep sudo credentials fresh in background during installation
-      (while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done) &
-      return 0
-    fi
-
-    # sudo failed - user is not an Administrator
-    echo ""
-    echo "Error: Homebrew requires your user account to be an Administrator."
-    echo ""
-    echo "Your current user '$(whoami)' is not in the admin group."
-    echo ""
-    echo "To fix this:"
-    echo "  1. Open System Settings → Users & Groups"
-    echo "  2. Click the lock icon to make changes"
-    echo "  3. Select your user account"
-    echo "  4. Enable 'Allow user to administer this computer'"
-    echo "  5. Log out and log back in"
-    echo "  6. Run this script again"
-    echo ""
-    exit 3
+    verbose "macOS bootstrap does not require sudo"
+    SUDO=""
+    return 0
   fi
 
   # ─────────────────────────────────────────────────────────────────────────
@@ -1357,14 +1330,15 @@ main() {
   # Step 3: Verify the OS is supported
   check_os_supported
 
-  # Step 4: Check sudo access (prompts for password if needed)
-  check_sudo_access
-
-  # Step 5: Run pre-flight checks to determine what needs to be installed
+  # Step 4: Run pre-flight checks to determine what needs to be installed
   run_preflight_checks
 
-  # Step 6: Show confirmation prompt (or skip if --no-prompt)
+  # Step 5: Show confirmation prompt (or skip if --no-prompt)
   show_confirmation_prompt
+
+  # Step 6: Check sudo access (prompts for password if needed)
+  # This happens AFTER confirmation so user sees what will be installed first
+  check_sudo_access
 
   # Step 7: Install OS-specific dependencies
   install_os_dependencies
