@@ -1,0 +1,34 @@
+# ##############################################################################
+# AMAZON LINUX 2023 BOOTSTRAP TEST ENVIRONMENT
+# A minimal Amazon Linux image WITHOUT Node.js to test the setup.sh bootstrap script
+# ##############################################################################
+
+FROM amazonlinux:2023
+
+# Install only minimal dependencies (NO Node.js!)
+# This simulates a fresh Amazon Linux server
+# Use --allowerasing to handle curl-minimal conflict
+# shadow-utils provides useradd command
+RUN dnf install -y --allowerasing \
+    curl \
+    sudo \
+    ca-certificates \
+    tar \
+    gzip \
+    which \
+    shadow-utils \
+    && dnf clean all
+
+# Create non-root test user (simulates real usage)
+RUN useradd -m -s /bin/bash testuser \
+    && echo "testuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Switch to test user
+USER testuser
+
+# Set environment variables
+ENV HOME=/home/testuser
+WORKDIR /home/testuser
+
+# Default command
+CMD ["/bin/bash"]

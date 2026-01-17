@@ -1,0 +1,32 @@
+# ##############################################################################
+# UBUNTU 22.04 BOOTSTRAP TEST ENVIRONMENT
+# A minimal Ubuntu image WITHOUT Node.js to test the setup.sh bootstrap script
+# ##############################################################################
+
+FROM ubuntu:22.04
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install only minimal dependencies (NO Node.js!)
+# This simulates a fresh Ubuntu server
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    sudo \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root test user (simulates real usage)
+RUN useradd -m -s /bin/bash testuser \
+    && echo "testuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Switch to test user
+USER testuser
+
+# Set environment variables
+ENV HOME=/home/testuser
+WORKDIR /home/testuser
+
+# Default command
+CMD ["/bin/bash"]
