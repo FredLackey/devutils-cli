@@ -715,9 +715,11 @@ install_xcode_cli_tools() {
 
   # Find the Command Line Tools package name
   # The package name varies by macOS version (e.g., "Command Line Tools for Xcode-15.0")
+  # The softwareupdate output format is: "* Label: Command Line Tools for Xcode-15.0"
+  # We need to extract just the package name after "Label: "
   verbose "Searching for Command Line Tools package..."
   local package_name
-  package_name=$(softwareupdate -l 2>/dev/null | grep -o '.*Command Line Tools.*' | head -n 1 | sed 's/^[* ]*//')
+  package_name=$(softwareupdate -l 2>/dev/null | grep 'Command Line Tools' | head -n 1 | sed 's/^.*Label: //' | sed 's/[[:space:]]*$//')
 
   if [ -z "$package_name" ]; then
     rm -f "$marker_file"
