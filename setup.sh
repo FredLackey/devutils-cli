@@ -1184,6 +1184,11 @@ show_completion_message() {
   echo "DevUtils CLI is ready to use. Run:"
   echo "  dev setup"
   echo ""
+
+  # Start a new login shell so nvm and dev are in PATH immediately.
+  # This replaces the current subshell with a fresh shell that sources
+  # the user's profile (~/.zshrc, ~/.bashrc, etc.).
+  exec "$SHELL" -l
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
