@@ -1024,6 +1024,83 @@ install_yum_packages() {
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
+# SHELL CONFIG HELPERS
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Get the user's login shell config file (not the current shell, which may be
+# different when running via `bash -c "$(curl ...)"`)
+get_user_shell_config() {
+  # Get the user's configured login shell from /etc/passwd or $SHELL
+  # On macOS, dscl is more reliable than /etc/passwd
+  local login_shell
+  if [ "$OS_DISTRO" = "macos" ]; then
+    login_shell="$(dscl . -read /Users/"$(whoami)" UserShell 2>/dev/null | awk '{print $2}')"
+  fi
+
+  # Fallback to $SHELL if dscl didn't work
+  if [ -z "$login_shell" ]; then
+    login_shell="$SHELL"
+  fi
+
+  # Return the appropriate config file based on the shell
+  case "$login_shell" in
+    */zsh)
+      echo "$HOME/.zshrc"
+      ;;
+    */bash)
+      # On macOS, bash uses .bash_profile for login shells
+      # On Linux, it uses .bashrc
+      if [ "$OS_DISTRO" = "macos" ]; then
+        echo "$HOME/.bash_profile"
+      else
+        echo "$HOME/.bashrc"
+      fi
+      ;;
+    *)
+      # Default to .profile for unknown shells
+      echo "$HOME/.profile"
+      ;;
+  esac
+}
+
+# Ensure NVM initialization lines are in the user's shell config file
+# This is needed because the nvm install script may not detect the correct
+# config file when run via `bash -c "$(curl ...)"`
+ensure_nvm_in_shell_config() {
+  local shell_config
+  shell_config="$(get_user_shell_config)"
+
+  verbose "Checking shell config: $shell_config"
+
+  # The NVM initialization lines we need
+  local nvm_lines='export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion'
+
+  # Check if NVM_DIR is already in the config file
+  if [ -f "$shell_config" ] && grep -q 'NVM_DIR' "$shell_config"; then
+    verbose "NVM initialization already present in $shell_config"
+    return 0
+  fi
+
+  # Create the config file if it doesn't exist
+  if [ ! -f "$shell_config" ]; then
+    verbose "Creating $shell_config"
+    touch "$shell_config"
+  fi
+
+  # Add NVM initialization lines
+  print_info "Adding NVM initialization to $shell_config"
+  {
+    echo ""
+    echo "# NVM (Node Version Manager)"
+    echo "$nvm_lines"
+  } >> "$shell_config"
+
+  print_success "NVM initialization added to $shell_config"
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
 # NVM INSTALLATION
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -1068,6 +1145,15 @@ install_nvm() {
   export NVM_DIR="$HOME/.nvm"
   # shellcheck source=/dev/null
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # PHASE 3b: ENSURE SHELL CONFIG — Add NVM lines to shell config if missing
+  # ─────────────────────────────────────────────────────────────────────────
+  # The nvm install script tries to add these lines automatically, but it may
+  # fail to detect the correct shell config file when run via `bash -c "$(curl ...)"`
+  # because the current shell is bash even if the user's login shell is zsh.
+  # We explicitly check and add the lines to ensure they're present.
+  ensure_nvm_in_shell_config
 
   # ─────────────────────────────────────────────────────────────────────────
   # PHASE 4: VERIFY — Confirm nvm is installed and working
