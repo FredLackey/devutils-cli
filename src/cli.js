@@ -13,6 +13,8 @@ const statusCommand = require('./commands/status');
 const identityCommand = require('./commands/identity');
 const ignoreCommand = require('./commands/ignore');
 const installCommand = require('./commands/install');
+const versionCommand = require('./commands/version');
+const updateCommand = require('./commands/update');
 const { installCompletion, uninstallCompletion } = require('./completion');
 
 /**
@@ -36,6 +38,8 @@ function run() {
   program.addCommand(identityCommand);
   program.addCommand(ignoreCommand);
   program.addCommand(installCommand);
+  program.addCommand(versionCommand);
+  program.addCommand(updateCommand);
 
   // Setup command - install essential tools
   const setupCommand = require('./commands/setup');
