@@ -344,6 +344,13 @@ is_root() {
   [ "$(id -u)" -eq 0 ]
 }
 
+# Check if the current user is a macOS Administrator
+# Homebrew requires admin privileges to install to /opt/homebrew
+is_macos_admin() {
+  # Check if user is in the admin group
+  groups "$(whoami)" 2>/dev/null | grep -q -w "admin"
+}
+
 # Check if sudo is available and the user has sudo privileges
 can_sudo() {
   # First check if sudo command exists
@@ -370,24 +377,59 @@ can_sudo() {
 # Check and configure sudo access
 # This should be called early, so password is entered before installation starts
 check_sudo_access() {
-  # Skip check on macOS if only installing Xcode CLI tools (doesn't need sudo)
-  # But we'll check anyway for consistency
-
   if is_root; then
     verbose "Running as root user — no sudo needed"
     SUDO=""
     return 0
   fi
 
-  # Check if this distro needs sudo for package installation
+  # ─────────────────────────────────────────────────────────────────────────
+  # macOS: Homebrew requires the user to be an Administrator with sudo access
+  # ─────────────────────────────────────────────────────────────────────────
+  if [ "$OS_DISTRO" = "macos" ]; then
+    # Homebrew installer uses sudo internally, so we need to verify and cache credentials
+    if [ "$DRY_RUN" = true ]; then
+      verbose "Dry run: would prompt for sudo password on macOS"
+      return 0
+    fi
+
+    echo ""
+    echo "Homebrew requires administrator privileges to install."
+    echo "You may be prompted for your password."
+    echo ""
+
+    # Try to get sudo credentials - this will prompt for password if needed
+    if sudo -v 2>/dev/null; then
+      verbose "User has sudo access on macOS"
+      # Keep sudo credentials fresh in background during installation
+      (while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done) &
+      return 0
+    fi
+
+    # sudo failed - user is not an Administrator
+    echo ""
+    echo "Error: Homebrew requires your user account to be an Administrator."
+    echo ""
+    echo "Your current user '$(whoami)' is not in the admin group."
+    echo ""
+    echo "To fix this:"
+    echo "  1. Open System Settings → Users & Groups"
+    echo "  2. Click the lock icon to make changes"
+    echo "  3. Select your user account"
+    echo "  4. Enable 'Allow user to administer this computer'"
+    echo "  5. Log out and log back in"
+    echo "  6. Run this script again"
+    echo ""
+    exit 3
+  fi
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Linux: Check if sudo is needed and available
+  # ─────────────────────────────────────────────────────────────────────────
   local needs_sudo=false
   case "$OS_PACKAGE_MANAGER" in
     apt|dnf|yum)
       needs_sudo=true
-      ;;
-    brew)
-      # Homebrew shouldn't be run with sudo
-      needs_sudo=false
       ;;
   esac
 
@@ -730,7 +772,8 @@ install_xcode_cli_tools() {
   print_info "Downloading and installing: $package_name"
 
   # Install the package (this may take several minutes)
-  softwareupdate -i "$package_name" --verbose
+  # Pipe through sed to indent output so it appears as a subprocess
+  softwareupdate -i "$package_name" --verbose 2>&1 | sed 's/^/      /'
 
   # ─────────────────────────────────────────────────────────────────────────
   # PHASE 3: CLEANUP — Remove the marker file
