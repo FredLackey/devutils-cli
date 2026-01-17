@@ -3204,6 +3204,64 @@
     "test_results": []
   },
   {
+    "filename": "tfenv.js",
+    "name": "tfenv",
+    "status": "ready",
+    "environments": [
+      "macos",
+      "ubuntu",
+      "debian",
+      "wsl",
+      "raspbian",
+      "amazon_linux",
+      "rhel",
+      "fedora"
+    ],
+    "depends_on": [
+      {
+        "name": "homebrew.js",
+        "priority": 0,
+        "platforms": [
+          "macos"
+        ]
+      },
+      {
+        "name": "git.js",
+        "priority": 0
+      },
+      {
+        "name": "curl.js",
+        "priority": 0
+      },
+      {
+        "name": "unzip.js",
+        "priority": 0
+      }
+    ],
+    "test_results": [
+      {
+        "environment": "ubuntu",
+        "result": "pass"
+      },
+      {
+        "environment": "ubuntu-desktop",
+        "result": "pass"
+      },
+      {
+        "environment": "debian",
+        "result": "pass"
+      },
+      {
+        "environment": "amazonlinux",
+        "result": "pass"
+      },
+      {
+        "environment": "fedora",
+        "result": "pass"
+      }
+    ]
+  },
+  {
     "filename": "tidal.js",
     "name": "Tidal",
     "status": "ready",
