@@ -27,11 +27,38 @@ That's it. DevUtils CLI detects your operating system and installs everything yo
 
 ## Installation
 
+### If You Have Node.js Installed
+
+If you already have Node.js 18+ on your machine, install DevUtils CLI as a global npm package:
+
 ```bash
 npm install -g @fredlackey/devutils
 ```
 
-**Requirements:** Node.js 18+
+### Fresh Machine (No Node.js)
+
+For a fresh machine without Node.js, run the bootstrap script. It installs everything you need: build tools, nvm, Node.js LTS, and DevUtils CLI.
+
+**macOS:**
+```bash
+bash -c "$(curl -LsS https://raw.github.com/fredlackey/devutils-cli/main/setup.sh)"
+```
+
+**Ubuntu / Debian / Raspberry Pi OS:**
+```bash
+bash -c "$(wget -qO - https://raw.github.com/fredlackey/devutils-cli/main/setup.sh)"
+```
+
+**Amazon Linux / RHEL / Fedora:**
+```bash
+bash -c "$(curl -LsS https://raw.github.com/fredlackey/devutils-cli/main/setup.sh)"
+```
+
+The script is interactive by default. For automated/CI environments, add `--no-prompt`:
+
+```bash
+bash -c "$(curl -LsS https://raw.github.com/fredlackey/devutils-cli/main/setup.sh)" -- --no-prompt
+```
 
 ## Quick Start
 

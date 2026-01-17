@@ -2431,7 +2431,7 @@
   {
     "filename": "parallels-desktop.js",
     "name": "Parallels Desktop",
-    "status": "ready",
+    "status": "test-pending",
     "environments": [
       "macos"
     ],
@@ -2445,28 +2445,7 @@
         ]
       }
     ],
-    "test_results": [
-      {
-        "environment": "ubuntu",
-        "result": "not_eligible"
-      },
-      {
-        "environment": "ubuntu-desktop",
-        "result": "not_eligible"
-      },
-      {
-        "environment": "debian",
-        "result": "not_eligible"
-      },
-      {
-        "environment": "amazonlinux",
-        "result": "not_eligible"
-      },
-      {
-        "environment": "fedora",
-        "result": "not_eligible"
-      }
-    ],
+    "test_results": [],
     "notes": "macOS only - cannot be tested in Docker. Requires manual testing."
   },
   {

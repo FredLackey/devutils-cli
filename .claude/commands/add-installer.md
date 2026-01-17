@@ -157,6 +157,28 @@ Create the JSON entry with this structure:
 - For desktop apps, also add `"ubuntu-desktop"` to environments (for GUI testing)
 - Desktop apps typically depend on display server (handled automatically in testing)
 
+**CRITICAL: Desktop-Only Environment Restrictions:**
+Desktop applications that require a graphical user interface (GUI) must NOT be made available for non-desktop environments. If the technology being installed is desktop-only, EXCLUDE the following environments from the `environments` array:
+- `"wsl"` - WSL does not have native GUI support
+- `"gitbash"` - Git Bash is a terminal emulator only
+- `"raspbian"` - Raspberry Pi OS is typically headless/server
+- `"amazon_linux"` - Amazon Linux is server-only, no desktop
+- `"ubuntu"` - Ubuntu Server has no GUI (use `"ubuntu-desktop"` instead)
+- `"debian"` - Debian Server has no GUI
+- `"rhel"` - RHEL is typically server-only
+- `"fedora"` - Fedora Server has no GUI (though Fedora Workstation does)
+
+**Valid environments for desktop-only apps:**
+- `"macos"` - Always has GUI
+- `"windows"` - Always has GUI
+- `"ubuntu-desktop"` - Ubuntu with desktop environment
+
+Example: A desktop app like "Figma" should only have:
+```json
+"environments": ["macos", "windows", "ubuntu-desktop"],
+"desktop": true
+```
+
 **Common Dependencies:**
 - macOS apps usually depend on `homebrew.js`
 - Windows apps usually depend on `chocolatey.js`
@@ -231,6 +253,7 @@ See `ai-docs/COMMAND_AGENT_USAGE.md` for detailed documentation on each command.
 5. **Proper JSON**: Ensure the JSON is valid and properly formatted
 6. **Known dependencies**: Add obvious dependencies (homebrew for macOS, chocolatey for Windows)
 7. **Desktop flag**: Set `"desktop": true` for any GUI application
+8. **Desktop-only restrictions**: Desktop/GUI applications must ONLY include environments that have graphical display support (`macos`, `windows`, `ubuntu-desktop`). NEVER include `wsl`, `gitbash`, `raspbian`, `amazon_linux`, `ubuntu`, `debian`, `rhel`, or `fedora` for desktop-only apps.
 
 ## Error Handling
 

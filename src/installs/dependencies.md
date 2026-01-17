@@ -1,10 +1,10 @@
 # Dependency Analysis Summary
 
 **Last Updated:** 2026-01-17
-**Total Test-Pending Technologies:** 1
-**Already Documented (Skipped):** 1
+**Total Test-Pending Technologies:** 8
+**Already Documented (Skipped):** 8
 **Analyzed This Run:** 0
-**Successful:** 1
+**Successful:** 0
 **Failed:** 0
 
 ## Results
@@ -12,6 +12,14 @@
 | Technology | Installer | Documentation | Status |
 |------------|-----------|---------------|--------|
 | Adobe Creative Cloud | src/installs/adobe-creative-cloud.js | src/installs/adobe-creative-cloud.md | Complete - has dependencies |
+| Cloudflare WARP | src/installs/cloudflare-warp.js | src/installs/cloudflare-warp.md | Skipped - already documented |
+| Comet Browser | src/installs/comet-browser.js | src/installs/comet-browser.md | Skipped - already documented |
+| DBeaver | src/installs/dbeaver.js | src/installs/dbeaver.md | Skipped - already documented |
+| Google Antigravity | src/installs/google-antigravity.js | src/installs/google-antigravity.md | Skipped - already documented |
+| Kiro | src/installs/kiro.js | src/installs/kiro.md | Skipped - already documented |
+| Moom | src/installs/moom.js | src/installs/moom.md | Skipped - already documented |
+| NordVPN | src/installs/nordvpn.js | src/installs/nordvpn.md | Skipped - already documented |
+| Parallels Desktop | src/installs/parallels-desktop.js | src/installs/parallels-desktop.md | Skipped - already documented |
 | AppCleaner | src/installs/appcleaner.js | src/installs/appcleaner.md | Complete - has dependencies |
 | apt-transport-https | src/installs/apt-transport-https.js | src/installs/apt-transport-https.md | Skipped - already documented |
 | AtomicParsley | src/installs/atomicparsley.js | src/installs/atomicparsley.md | Complete - has dependencies |
