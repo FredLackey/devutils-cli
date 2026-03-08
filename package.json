@@ -4,10 +4,9 @@
   "description": "A config-driven CLI toolkit for bootstrapping and managing development environments across any machine.",
   "main": "src/index.js",
   "bin": {
-    "dev": "./bin/dev.js"
+    "dev": "./src/cli.js"
   },
   "files": [
-    "bin/",
     "src/"
   ],
   "scripts": {

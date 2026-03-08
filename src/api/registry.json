@@ -1,0 +1,62 @@
+[
+  {
+    "name": "gmail",
+    "package": "@fredlackey/devutils-api-gmail",
+    "description": "Google Gmail (messages, labels, drafts, threads)",
+    "auth": "google"
+  },
+  {
+    "name": "drive",
+    "package": "@fredlackey/devutils-api-drive",
+    "description": "Google Drive (files, folders, permissions)",
+    "auth": "google"
+  },
+  {
+    "name": "sheets",
+    "package": "@fredlackey/devutils-api-sheets",
+    "description": "Google Sheets (spreadsheets, values, sheets)",
+    "auth": "google"
+  },
+  {
+    "name": "docs",
+    "package": "@fredlackey/devutils-api-docs",
+    "description": "Google Docs (documents)",
+    "auth": "google"
+  },
+  {
+    "name": "aws",
+    "package": "@fredlackey/devutils-api-aws",
+    "description": "Amazon Web Services (compute, storage, functions, groups)",
+    "auth": "aws"
+  },
+  {
+    "name": "cloudflare",
+    "package": "@fredlackey/devutils-api-cloudflare",
+    "description": "Cloudflare (zones, DNS records, API tokens)",
+    "auth": "cloudflare"
+  },
+  {
+    "name": "dokploy",
+    "package": "@fredlackey/devutils-api-dokploy",
+    "description": "Dokploy (applications, projects, domains, servers)",
+    "auth": "dokploy"
+  },
+  {
+    "name": "namecheap",
+    "package": "@fredlackey/devutils-api-namecheap",
+    "description": "Namecheap (domains, DNS, SSL certificates)",
+    "auth": "namecheap"
+  },
+  {
+    "name": "flowroute",
+    "package": "@fredlackey/devutils-api-flowroute",
+    "description": "Flowroute (SMS, MMS, phone numbers)",
+    "auth": "flowroute"
+  },
+  {
+    "name": "mailu",
+    "package": "@fredlackey/devutils-api-mailu",
+    "description": "Mailu (email users, aliases, domains)",
+    "auth": "mailu"
+  }
+]

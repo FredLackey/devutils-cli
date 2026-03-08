@@ -19,7 +19,7 @@ The previous version (v0.0.18, preserved in `_rebuild/`) shipped hardcoded behav
 - **Config-based**: Behavior is defined by user configuration, not baked-in opinions
 - **User onboarding**: First run walks the user through setup, learning their preferences
 - **Machine-aware**: Each machine gets its own profile, so a laptop and a server don't conflict
-- **Rule-driven**: Users define rules for folders, tools, and workflows; DevUtils enforces them
+- **Plugin-extensible**: API wrappers ship as separate installable plugins, not bundled code
 - **Managed workspace**: Temporary and config files live in `~/.devutils/`, not scattered across the system
 
 ### Legacy Code
@@ -35,22 +35,69 @@ npm test                               # No tests configured yet
 
 ## Architecture
 
+### Terminology
+
+| Term | Description | Location | Invocation |
+|------|-------------|----------|------------|
+| **Command** | CLI operations organized by service | `src/commands/` | `dev <service> <method>` |
+| **Installer** | Platform-specific tool installation | `src/installers/` | `dev tools install <name>` |
+| **Utility** | Complex multi-step functions | `src/utils/` | `dev util run <name>` |
+| **Lib** | Internal shared modules (not user-facing) | `src/lib/` | Imported by other modules |
+| **Plugin** | API wrapper packages (separate repos) | `~/.devutils/plugins/` | `dev api <service> ...` |
+
 ### Project Structure
 
 ```
-_rebuild/           # Legacy v0.0.18 code (reference only)
-bin/                # CLI entry point (to be created)
-src/                # New source code (to be created)
+src/
+├── cli.js                  # CLI entry point and command router (package.json bin)
+├── commands/               # One folder per service, one file per method
+│   ├── config/             #   init, show, get, set, reset, export, import
+│   ├── machine/            #   detect, show, set, list
+│   ├── identity/           #   add, remove, list, show, link, unlink, sync
+│   ├── tools/              #   install, check, list, search
+│   ├── ignore/             #   add, remove, list, show
+│   ├── util/               #   run, list, show, add, remove
+│   ├── alias/              #   add, remove, list, sync
+│   ├── auth/               #   login, logout, list, status, refresh
+│   ├── api/                #   list, enable, disable, update
+│   ├── ai/                 #   launch, resume, list, sessions, show, set
+│   ├── search/             #   query, keyword, semantic, get, collections, index, status
+│   └── *.js                #   Top-level: status, update, version, schema, help
+├── api/                    # Plugin loader and registry (no API code itself)
+├── installers/             # One file per tool, per-platform install functions
+├── utils/                  # Built-in utility functions (git-status, clone, etc.)
+├── lib/                    # Shared internal modules
+│   ├── platform.js         #   OS/arch detection
+│   ├── shell.js            #   Command execution wrappers
+│   ├── detect.js           #   Output mode detection (AI/CI/TTY)
+│   ├── output.js           #   Output formatting (json, table, yaml, csv)
+│   ├── errors.js           #   Structured error handling
+│   ├── config.js           #   ~/.devutils/ file management
+│   ├── prompt.js           #   Interactive prompts
+│   ├── github.js           #   gh CLI wrapper
+│   ├── schema.js           #   Command introspection
+│   └── platforms/          #   Per-platform helpers
+└── patterns/               # Static pattern files (gitignore/, etc.)
+
+research/                   # Design docs (not published to npm)
+stories/                    # User stories for implementation (not published)
+_rebuild/                   # Legacy v0.0.18 code (reference only)
 ```
 
 ### Configuration
 
-User configuration will live in `~/.devutils/` as a directory (replacing the old single `~/.devutils` JSON file):
+User data lives in `~/.devutils/` (created during `dev config init`):
 
-- `~/.devutils/config.json` — User preferences, identity, defaults
-- `~/.devutils/machines/` — Per-machine profiles
-- `~/.devutils/rules/` — User-defined rules for folders, tools, workflows
-- `~/.devutils/cache/` — Temporary/staging data
+- `config.json` — User preferences, profile name, backup location
+- `aliases.json` — Registered alias mappings
+- `ai.json` — AI tool configurations
+- `plugins.json` — Installed API plugin registry
+- `machines/` — Machine profiles
+- `auth/` — OAuth tokens and API credentials
+- `plugins/` — Installed API plugin packages
+- `utils/` — User-added custom utilities
+- `bin/` — Generated alias wrapper scripts (added to PATH)
+- `cache/` — Temporary data
 
 ## Code Style
 
