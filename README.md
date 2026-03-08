@@ -1,182 +1,64 @@
 # DevUtils CLI
 
-> **Early Development (v0.0.1)** — This project is currently a proof of concept. Core functionality is being built and tested. You're welcome to:
-> - Use it as-is and provide feedback
-> - Participate in development
-> - Watch for future releases (v0.1.0 for beta, v1.0.0 for stable)
-> - [Reach out](#contact) with questions or suggestions
+> **Rebuild in Progress (v0.0.19)** — This project is being restructured from the ground up. The previous version (v0.0.18) tried to do too much too fast. The new approach is config-driven, user-driven, and machine-aware. If you're looking for the old code, it's been preserved in the `_rebuild/` directory.
 
-Stop wasting hours setting up new machines. One command, any platform, ready to code.
+## What Happened
 
-## The Problem
+The original DevUtils CLI was built as a rigid, opinionated toolkit. It assumed a specific workflow, shipped dozens of global scripts, and tried to be everything to everyone out of the gate. After real-world usage and feedback, it became clear that this approach wouldn't hold up. It was too prescriptive, too fragile across environments, and too hard for users to adapt to their own needs.
 
-Every developer knows the pain:
-- New laptop? Spend a day installing tools and configuring dotfiles
-- Switch between work and personal projects? Juggle SSH keys and git configs
-- Help a teammate set up their environment? Walk them through 50 different steps
-- Work on macOS at home, Linux in prod? Remember two sets of commands
+## What's Changing
 
-## The Solution
+The new version takes a fundamentally different approach:
 
-```bash
-npm install -g @fredlackey/devutils
-dev setup
-```
+### Config-Based, Not Opinion-Based
 
-That's it. DevUtils CLI detects your operating system and installs everything you need. Your configuration travels with you.
+Instead of shipping a fixed set of behaviors, DevUtils will be driven by user configuration. You tell it what matters to you, and it adapts.
+
+### User Onboarding
+
+The first run walks you through a lightweight onboarding process. It learns who you are, what tools you care about, and how your machine is set up. No assumptions.
+
+### Machine-Aware Profiles
+
+Configuration is scoped to the machine you're on. A laptop, a server, and a VM can each have their own rules without conflicting.
+
+### Rule-Based Behavior
+
+Users define rules for folders, tools, and workflows. DevUtils enforces those rules rather than imposing its own. For example:
+- "This folder always uses this git identity"
+- "This machine should have these tools installed"
+- "Run these checks when I open a new terminal"
+
+### Temporary Workspace
+
+DevUtils sets up a managed workspace inside the user's home directory for staging, caching, and intermediate state. Nothing touches system-level paths unless you ask for it.
 
 ## Installation
 
-### If You Have Node.js Installed
-
-If you already have Node.js 18+ on your machine, install DevUtils CLI as a global npm package:
-
 ```bash
 npm install -g @fredlackey/devutils
 ```
 
-### Fresh Machine (No Node.js)
+> The CLI is published but actively being rebuilt. Expect breaking changes until v0.1.0.
 
-For a fresh machine without Node.js, run the bootstrap script. It installs everything you need: build tools, nvm, Node.js LTS, and DevUtils CLI.
+## Previous Version
 
-**macOS:**
-```bash
-bash -c "$(curl -LsS https://raw.github.com/fredlackey/devutils-cli/main/setup.sh)"
-```
+The v0.0.18 codebase (commands, scripts, installers, utilities) has been moved to `_rebuild/` and is preserved for reference. Useful patterns and utilities will be pulled forward into the new architecture as needed.
 
-**Ubuntu / Debian / Raspberry Pi OS:**
-```bash
-bash -c "$(wget -qO - https://raw.github.com/fredlackey/devutils-cli/main/setup.sh)"
-```
+## Roadmap
 
-**Amazon Linux / RHEL / Fedora:**
-```bash
-bash -c "$(curl -LsS https://raw.github.com/fredlackey/devutils-cli/main/setup.sh)"
-```
-
-The script is interactive by default. For automated/CI environments, add `--no-prompt`:
-
-```bash
-bash -c "$(curl -LsS https://raw.github.com/fredlackey/devutils-cli/main/setup.sh)" -- --no-prompt
-```
-
-## Quick Start
-
-```bash
-# Install essential tools (git, ssh, gpg, etc.)
-dev setup
-
-# Set up your developer profile
-dev configure
-
-# Install your favorite tools
-dev install vscode
-dev install docker
-dev install node
-```
-
-## Key Features
-
-### Cross-Platform Package Installation
-
-Forget whether it's `brew install`, `apt-get install`, or `choco install`. Just run:
-
-```bash
-dev install docker
-dev install node
-dev install vscode
-```
-
-DevUtils CLI figures out the right command for macOS, Ubuntu, Raspberry Pi OS, Amazon Linux, Windows, or Git Bash.
-
-### Git Identity Management
-
-Manage multiple git identities for work, personal, and client projects:
-
-```bash
-# Create identities with SSH and GPG keys
-dev identity add work --email you@company.com
-dev identity add personal --email you@gmail.com
-
-# Link identities to folders - commits automatically use the right credentials
-dev identity link work ~/work
-dev identity link personal ~/personal https://github.com/yourusername
-```
-
-Clone with any URL format. DevUtils CLI routes it through the correct SSH key automatically.
-
-### Smart .gitignore Management
-
-```bash
-dev ignore node      # Add Node.js patterns
-dev ignore macos     # Add .DS_Store and friends
-dev ignore vscode    # Add .vscode/ patterns
-```
-
-Patterns are managed in sections—run it twice and it won't duplicate.
-
-### Portable Configuration
-
-Your `~/.devutils` file stores your preferences:
-
-```json
-{
-  "user": {
-    "name": "Jane Developer",
-    "email": "jane@example.com"
-  },
-  "identities": {
-    "work": { "email": "jane@company.com", "sshKey": "~/.ssh/id_ed25519_work" },
-    "personal": { "email": "jane@gmail.com", "sshKey": "~/.ssh/id_ed25519_personal" }
-  }
-}
-```
-
-Copy this file to a new machine and run `dev identity sync` to regenerate all your SSH configs.
-
-## Supported Platforms
-
-| Platform | Package Manager |
-|----------|-----------------|
-| macOS | Homebrew |
-| Ubuntu | APT / Snap |
-| Raspberry Pi OS | APT / Snap |
-| Amazon Linux | DNF / YUM |
-| Windows | Chocolatey / winget |
-| Git Bash | Manual / Portable |
-
-## Available Commands
-
-| Command | Description |
-|---------|-------------|
-| `dev setup` | Install essential development tools |
-| `dev configure` | Set up your developer profile |
-| `dev install <tool>` | Install a tool (cross-platform) |
-| `dev identity add` | Create a new git identity with keys |
-| `dev identity link` | Link an identity to a folder or remote |
-| `dev identity unlink` | Remove a folder link |
-| `dev ignore <tech>` | Add .gitignore patterns |
-| `dev status` | Show current configuration |
-
-## Why DevUtils CLI?
-
-- **Zero memorization** — Same commands on every platform
-- **Identity isolation** — Never accidentally commit with the wrong email again
-- **Reproducible setups** — New machine? `dev setup && dev identity sync`
-- **No lock-in** — Standard tools, standard configs. Uninstall anytime
-
-## Contributing
-
-Contributions welcome! Feel free to open issues or submit pull requests.
+- [ ] User onboarding flow
+- [ ] Config file schema (`~/.devutils/config.json`)
+- [ ] Machine profile detection and storage
+- [ ] Rule engine for folder and tool behaviors
+- [ ] Migrate useful scripts and installers from `_rebuild/`
 
 ## Contact
 
-Questions, suggestions, or just want to chat about the project?
-
 **Fred Lackey**
-- Email: [fred.lackey@gmail.com](mailto:fred.lackey@gmail.com)
-- Website: [fredlackey.com](https://fredlackey.com)
-- GitHub: [@FredLackey](https://github.com/FredLackey)
+- Email: [fred.lackey@gmail.com](mailto:fred.lackey@gmail.com)  
+- Website: [fredlackey.com](https://fredlackey.com)  
+- GitHub: [@FredLackey](https://github.com/FredLackey)  
 
 ## License
 
