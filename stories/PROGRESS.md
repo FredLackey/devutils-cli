@@ -15,9 +15,9 @@ Track completion of each story by checking the box when done. Work through these
 
 ## 002-config — Config Service (3 stories)
 
-- [ ] [001 Config Init](002-config/001-config-init.md) — `src/commands/config/init.js`
-- [ ] [002 Config Show/Get](002-config/002-config-show-get.md) — `src/commands/config/show.js`, `get.js`
-- [ ] [003 Config Set/Reset](002-config/003-config-set-reset.md) — `src/commands/config/set.js`, `reset.js`
+- [x] [001 Config Init](002-config/001-config-init.md) — `src/commands/config/init.js`
+- [x] [002 Config Show/Get](002-config/002-config-show-get.md) — `src/commands/config/show.js`, `get.js`
+- [x] [003 Config Set/Reset](002-config/003-config-set-reset.md) — `src/commands/config/set.js`, `reset.js`
 
 ## 003-machine — Machine Profiles (2 stories)
 
