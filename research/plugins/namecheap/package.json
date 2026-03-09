@@ -1,0 +1,31 @@
+{
+  "name": "@fredlackey/devutils-api-namecheap",
+  "version": "1.0.0",
+  "description": "Namecheap plugin for DevUtils CLI",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "commands/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/FredLackey/devutils-api-namecheap.git"
+  },
+  "author": {
+    "name": "Fred Lackey",
+    "email": "fred.lackey@gmail.com",
+    "url": "https://fredlackey.com"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "devutils",
+    "devutils-plugin",
+    "namecheap"
+  ],
+  "peerDependencies": {
+    "@fredlackey/devutils": ">=0.1.0"
+  }
+}
