@@ -59,62 +59,62 @@ Track completion of each story by checking the box when done. Work through these
 
 ## 009-alias — Shorthand Commands (2 stories)
 
-- [ ] [001 Alias Add/Remove](009-alias/001-alias-add-remove.md) — `src/commands/alias/add.js`, `remove.js`
-- [ ] [002 Alias List/Sync](009-alias/002-alias-list-sync.md) — `src/commands/alias/list.js`, `sync.js`
+- [x] [001 Alias Add/Remove](009-alias/001-alias-add-remove.md) — `src/commands/alias/add.js`, `remove.js`
+- [x] [002 Alias List/Sync](009-alias/002-alias-list-sync.md) — `src/commands/alias/list.js`, `sync.js`
 
 ## 010-config-backup — Backup and Sync (2 stories)
 
-- [ ] [001 GitHub Helpers](010-config-backup/001-github-helpers.md) — `src/lib/github.js`
-- [ ] [002 Config Export/Import](010-config-backup/002-config-export-import.md) — `src/commands/config/export.js`, `import.js`
+- [x] [001 GitHub Helpers](010-config-backup/001-github-helpers.md) — `src/lib/github.js`
+- [x] [002 Config Export/Import](010-config-backup/002-config-export-import.md) — `src/commands/config/export.js`, `import.js`
 
 ## 011-auth — Authentication (2 stories)
 
-- [ ] [001 Auth Login/Logout](011-auth/001-auth-login-logout.md) — `src/commands/auth/login.js`, `logout.js`
-- [ ] [002 Auth List/Status/Refresh](011-auth/002-auth-list-status-refresh.md) — `src/commands/auth/list.js`, `status.js`, `refresh.js`
+- [x] [001 Auth Login/Logout](011-auth/001-auth-login-logout.md) — `src/commands/auth/login.js`, `logout.js`
+- [x] [002 Auth List/Status/Refresh](011-auth/002-auth-list-status-refresh.md) — `src/commands/auth/list.js`, `status.js`, `refresh.js`
 
 ## 012-api-system — Plugin Framework (2 stories)
 
-- [ ] [001 Plugin Loader](012-api-system/001-plugin-loader.md) — `src/api/loader.js`, `registry.js`
-- [ ] [002 API Management Commands](012-api-system/002-api-commands.md) — `src/commands/api/list.js`, `enable.js`, `disable.js`, `update.js`
+- [x] [001 Plugin Loader](012-api-system/001-plugin-loader.md) — `src/api/loader.js`, `registry.js`
+- [x] [002 API Management Commands](012-api-system/002-api-commands.md) — `src/commands/api/list.js`, `enable.js`, `disable.js`, `update.js`
 
 ## 013-ai — AI Launcher (2 stories)
 
-- [ ] [001 AI Launch/Resume](013-ai/001-ai-launch-resume.md) — `src/commands/ai/launch.js`, `resume.js`
-- [ ] [002 AI Config Commands](013-ai/002-ai-config.md) — `src/commands/ai/list.js`, `sessions.js`, `show.js`, `set.js`
+- [x] [001 AI Launch/Resume](013-ai/001-ai-launch-resume.md) — `src/commands/ai/launch.js`, `resume.js`
+- [x] [002 AI Config Commands](013-ai/002-ai-config.md) — `src/commands/ai/list.js`, `sessions.js`, `show.js`, `set.js`
 
 ## 014-search — QMD Search (2 stories)
 
-- [ ] [001 QMD Check/Status/Collections](014-search/001-search-qmd-check.md) — `src/commands/search/status.js`, `collections.js`
-- [ ] [002 Search Commands](014-search/002-search-commands.md) — `src/commands/search/query.js`, `keyword.js`, `semantic.js`, `get.js`, `index.js`
+- [x] [001 QMD Check/Status/Collections](014-search/001-search-qmd-check.md) — `src/commands/search/status.js`, `collections.js`
+- [x] [002 Search Commands](014-search/002-search-commands.md) — `src/commands/search/query.js`, `keyword.js`, `semantic.js`, `get.js`, `index.js`
 
 ## 015-schema — Introspection (1 story)
 
-- [ ] [001 Schema Introspection](015-schema/001-schema-introspection.md) — `src/commands/schema.js`, `src/lib/schema.js`
+- [x] [001 Schema Introspection](015-schema/001-schema-introspection.md) — `src/commands/schema.js`, `src/lib/schema.js`
 
 ## 016-self-update — CLI Updates (1 story)
 
-- [ ] [001 Self-Update Command](016-self-update/001-self-update.md) — `src/commands/update.js`
+- [x] [001 Self-Update Command](016-self-update/001-self-update.md) — `src/commands/update.js`
 
 ## 017-api-plugins — API Plugins (11 stories)
 
-- [ ] [001 Plugin Template](017-api-plugins/001-plugin-template.md) — Template repo for all plugins
-- [ ] [002 Gmail Plugin](017-api-plugins/002-api-gmail.md) — `devutils-api-gmail` repo
-- [ ] [003 Google Drive Plugin](017-api-plugins/003-api-drive.md) — `devutils-api-drive` repo
-- [ ] [004 Google Sheets Plugin](017-api-plugins/004-api-sheets.md) — `devutils-api-sheets` repo
-- [ ] [005 Google Docs Plugin](017-api-plugins/005-api-docs.md) — `devutils-api-docs` repo
-- [ ] [006 AWS Plugin](017-api-plugins/006-api-aws.md) — `devutils-api-aws` repo
-- [ ] [007 Cloudflare Plugin](017-api-plugins/007-api-cloudflare.md) — `devutils-api-cloudflare` repo
-- [ ] [008 Dokploy Plugin](017-api-plugins/008-api-dokploy.md) — `devutils-api-dokploy` repo
-- [ ] [009 Namecheap Plugin](017-api-plugins/009-api-namecheap.md) — `devutils-api-namecheap` repo
-- [ ] [010 Flowroute Plugin](017-api-plugins/010-api-flowroute.md) — `devutils-api-flowroute` repo
-- [ ] [011 Mailu Plugin](017-api-plugins/011-api-mailu.md) — `devutils-api-mailu` repo
+- [x] [001 Plugin Template](017-api-plugins/001-plugin-template.md) — Template repo for all plugins
+- [x] [002 Gmail Plugin](017-api-plugins/002-api-gmail.md) — `devutils-api-gmail` repo
+- [x] [003 Google Drive Plugin](017-api-plugins/003-api-drive.md) — `devutils-api-drive` repo
+- [x] [004 Google Sheets Plugin](017-api-plugins/004-api-sheets.md) — `devutils-api-sheets` repo
+- [x] [005 Google Docs Plugin](017-api-plugins/005-api-docs.md) — `devutils-api-docs` repo
+- [x] [006 AWS Plugin](017-api-plugins/006-api-aws.md) — `devutils-api-aws` repo
+- [x] [007 Cloudflare Plugin](017-api-plugins/007-api-cloudflare.md) — `devutils-api-cloudflare` repo
+- [x] [008 Dokploy Plugin](017-api-plugins/008-api-dokploy.md) — `devutils-api-dokploy` repo
+- [x] [009 Namecheap Plugin](017-api-plugins/009-api-namecheap.md) — `devutils-api-namecheap` repo
+- [x] [010 Flowroute Plugin](017-api-plugins/010-api-flowroute.md) — `devutils-api-flowroute` repo
+- [x] [011 Mailu Plugin](017-api-plugins/011-api-mailu.md) — `devutils-api-mailu` repo
 
 ## 018-release — Release (3 stories)
 
-- [ ] [001 End-to-End Tests](018-release/001-end-to-end-testing.md) — `test/` directory
-- [ ] [002 README and Docs](018-release/002-readme-docs.md) — `README.md`
-- [ ] [003 Publish to npm](018-release/003-npm-publish.md) — npm publish + `RELEASING.md`
+- [x] [001 End-to-End Tests](018-release/001-end-to-end-testing.md) — `test/` directory
+- [x] [002 README and Docs](018-release/002-readme-docs.md) — `README.md`
+- [x] [003 Publish to npm](018-release/003-npm-publish.md) — npm publish + `RELEASING.md`
 
 ---
 
-**Total: 59 stories** | **Completed: 31/59**
+**Total: 59 stories** | **Completed: 59/59**
