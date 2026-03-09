@@ -1,4 +1,41 @@
 {
   "_comment": "Built-in utility metadata. Name, description, supported platforms, and arguments for each utility.",
-  "utilities": []
+  "utilities": [
+    {
+      "name": "git-status",
+      "description": "Scan directories for git repos and show a color-coded status summary",
+      "type": "built-in",
+      "platforms": ["macos", "ubuntu", "raspbian", "amazon-linux", "windows", "gitbash"],
+      "arguments": [
+        { "name": "path", "required": false, "description": "Directory to scan (defaults to current directory)" }
+      ],
+      "flags": [
+        { "name": "depth", "type": "number", "description": "How many levels deep to scan for repos (default: 1)" }
+      ]
+    },
+    {
+      "name": "clone",
+      "description": "Clone a git repo and auto-install dependencies using the detected package manager",
+      "type": "built-in",
+      "platforms": ["macos", "ubuntu", "raspbian", "amazon-linux", "windows", "gitbash"],
+      "arguments": [
+        { "name": "url", "required": true, "description": "Git repository URL (SSH or HTTPS)" },
+        { "name": "directory", "required": false, "description": "Target directory name (defaults to repo name)" }
+      ],
+      "flags": []
+    },
+    {
+      "name": "git-push",
+      "description": "Safer git push: shows what will be pushed, confirms before pushing, and protects main/master",
+      "type": "built-in",
+      "platforms": ["macos", "ubuntu", "raspbian", "amazon-linux", "windows", "gitbash"],
+      "arguments": [
+        { "name": "message", "required": true, "description": "Commit message" }
+      ],
+      "flags": [
+        { "name": "force", "type": "boolean", "description": "Allow pushing to protected branches" },
+        { "name": "yes", "type": "boolean", "description": "Skip confirmation prompt" }
+      ]
+    }
+  ]
 }

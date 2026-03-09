@@ -51,11 +51,11 @@ Track completion of each story by checking the box when done. Work through these
 
 ## 008-util — Utility Functions (5 stories)
 
-- [ ] [001 Utility Framework](008-util/001-util-framework.md) — `src/utils/` structure
-- [ ] [002 Utility Add/Remove](008-util/002-util-add-remove.md) — `src/commands/util/add.js`, `remove.js`
-- [ ] [003 Git Status Utility](008-util/003-util-git-status.md) — `src/utils/git-status.js`
-- [ ] [004 Clone Utility](008-util/004-util-clone.md) — `src/utils/clone.js`
-- [ ] [005 Git Push Utility](008-util/005-util-git-push.md) — `src/utils/git-push.js`
+- [x] [001 Utility Framework](008-util/001-util-framework.md) — `src/utils/` structure
+- [x] [002 Utility Add/Remove](008-util/002-util-add-remove.md) — `src/commands/util/add.js`, `remove.js`
+- [x] [003 Git Status Utility](008-util/003-util-git-status.md) — `src/utils/git-status.js`
+- [x] [004 Clone Utility](008-util/004-util-clone.md) — `src/utils/clone.js`
+- [x] [005 Git Push Utility](008-util/005-util-git-push.md) — `src/utils/git-push.js`
 
 ## 009-alias — Shorthand Commands (2 stories)
 
@@ -117,4 +117,4 @@ Track completion of each story by checking the box when done. Work through these
 
 ---
 
-**Total: 59 stories** | **Completed: 26/59**
+**Total: 59 stories** | **Completed: 31/59**
