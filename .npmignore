@@ -1,0 +1,11 @@
+research/
+stories/
+test/
+.vscode/
+.claude/
+.sidecar/
+.todos/
+ai-docs/
+_rebuild/
+CLAUDE.md
+RELEASING.md
