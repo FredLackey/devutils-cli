@@ -1,0 +1,24 @@
+# Go
+# Patterns for Go projects.
+
+# Compiled binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary (created by go test -c)
+*.test
+
+# Output of go coverage tool
+*.out
+
+# Go workspace file
+go.work
+
+# Vendor directory (if not committing dependencies)
+# vendor/
+
+# Build output directory
+bin/

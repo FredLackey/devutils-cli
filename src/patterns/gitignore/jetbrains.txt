@@ -1,0 +1,26 @@
+# JetBrains
+# Patterns for JetBrains IDEs (IntelliJ, WebStorm, PyCharm, etc.).
+
+# IDE project settings
+.idea/
+
+# File-based project format
+*.iws
+*.iml
+*.ipr
+
+# CMake build output
+cmake-build-*/
+
+# Crashlytics plugin (for Android projects)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Editor-based HTTP client requests
+httpRequests/
+
+# DataSources local storage
+dataSources/
+dataSources.local.xml

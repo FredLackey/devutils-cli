@@ -1,0 +1,18 @@
+# Linux
+# Patterns for Linux system files and editor artifacts.
+
+# Backup files
+*~
+
+# NFS temp files
+.nfs*
+
+# KDE directory preferences
+.directory
+
+# Swap files
+*.swp
+*.swo
+
+# Trash directories
+.Trash-*

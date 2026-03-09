@@ -1,0 +1,30 @@
+# Terraform
+# Patterns for Terraform and OpenTofu infrastructure-as-code projects.
+
+# Provider plugins and modules
+.terraform/
+
+# State files (contain secrets -- never commit these)
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Variable files that may contain secrets
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Override files (local developer overrides)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Plan files (binary, can contain secrets)
+*.tfplan
+
+# Lock file (commit this for consistent provider versions)
+# .terraform.lock.hcl

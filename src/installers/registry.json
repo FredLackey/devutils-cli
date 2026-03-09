@@ -1,4 +1,29 @@
 {
   "_comment": "Tool installer metadata. Dependencies, platforms, desktop flag, and status for each tool.",
-  "tools": []
+  "tools": [
+    {
+      "name": "git",
+      "description": "Distributed version control system",
+      "platforms": ["macos", "ubuntu", "raspbian", "amazon-linux", "windows", "gitbash"],
+      "dependencies": [],
+      "desktop": false,
+      "installer": "git.js"
+    },
+    {
+      "name": "node",
+      "description": "JavaScript runtime (installed via nvm on Unix)",
+      "platforms": ["macos", "ubuntu", "raspbian", "amazon-linux", "windows", "gitbash"],
+      "dependencies": ["git"],
+      "desktop": false,
+      "installer": "node.js"
+    },
+    {
+      "name": "homebrew",
+      "description": "Package manager for macOS",
+      "platforms": ["macos"],
+      "dependencies": [],
+      "desktop": false,
+      "installer": "homebrew.js"
+    }
+  ]
 }

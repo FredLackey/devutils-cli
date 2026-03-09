@@ -21,33 +21,33 @@ Track completion of each story by checking the box when done. Work through these
 
 ## 003-machine — Machine Profiles (2 stories)
 
-- [ ] [001 Machine Detect/Show](003-machine/001-machine-detect-show.md) — `src/commands/machine/detect.js`, `show.js`
-- [ ] [002 Machine Set/List](003-machine/002-machine-set-list.md) — `src/commands/machine/set.js`, `list.js`
+- [x] [001 Machine Detect/Show](003-machine/001-machine-detect-show.md) — `src/commands/machine/detect.js`, `show.js`
+- [x] [002 Machine Set/List](003-machine/002-machine-set-list.md) — `src/commands/machine/set.js`, `list.js`
 
 ## 004-core-commands — Top-Level Commands (2 stories)
 
-- [ ] [001 Version/Help](004-core-commands/001-version-help.md) — `src/commands/version.js`, `help.js`
-- [ ] [002 Status](004-core-commands/002-status.md) — `src/commands/status.js`
+- [x] [001 Version/Help](004-core-commands/001-version-help.md) — `src/commands/version.js`, `help.js`
+- [x] [002 Status](004-core-commands/002-status.md) — `src/commands/status.js`
 
 ## 005-ignore — Gitignore Patterns (3 stories)
 
-- [ ] [001 Pattern Files](005-ignore/001-pattern-files.md) — `src/patterns/gitignore/*.txt`
-- [ ] [002 Ignore Add/Remove](005-ignore/002-ignore-add-remove.md) — `src/commands/ignore/add.js`, `remove.js`
-- [ ] [003 Ignore List/Show](005-ignore/003-ignore-list-show.md) — `src/commands/ignore/list.js`, `show.js`
+- [x] [001 Pattern Files](005-ignore/001-pattern-files.md) — `src/patterns/gitignore/*.txt`
+- [x] [002 Ignore Add/Remove](005-ignore/002-ignore-add-remove.md) — `src/commands/ignore/add.js`, `remove.js`
+- [x] [003 Ignore List/Show](005-ignore/003-ignore-list-show.md) — `src/commands/ignore/list.js`, `show.js`
 
 ## 006-tools — Tool Installation (5 stories)
 
-- [ ] [001 Installer Framework](006-tools/001-installer-framework.md) — `src/installers/` structure
-- [ ] [002 Tools Commands](006-tools/002-tools-commands.md) — `src/commands/tools/install.js`, `check.js`, `list.js`, `search.js`
-- [ ] [003 Git Installer](006-tools/003-installer-git.md) — `src/installers/git.js`
-- [ ] [004 Node.js Installer](006-tools/004-installer-node.md) — `src/installers/node.js`
-- [ ] [005 Homebrew Installer](006-tools/005-installer-homebrew.md) — `src/installers/homebrew.js`
+- [x] [001 Installer Framework](006-tools/001-installer-framework.md) — `src/installers/` structure
+- [x] [002 Tools Commands](006-tools/002-tools-commands.md) — `src/commands/tools/install.js`, `check.js`, `list.js`, `search.js`
+- [x] [003 Git Installer](006-tools/003-installer-git.md) — `src/installers/git.js`
+- [x] [004 Node.js Installer](006-tools/004-installer-node.md) — `src/installers/node.js`
+- [x] [005 Homebrew Installer](006-tools/005-installer-homebrew.md) — `src/installers/homebrew.js`
 
 ## 007-identity — Git Identities (3 stories)
 
-- [ ] [001 Identity Add/Remove](007-identity/001-identity-add-remove.md) — `src/commands/identity/add.js`, `remove.js`
-- [ ] [002 Identity List/Show](007-identity/002-identity-list-show.md) — `src/commands/identity/list.js`, `show.js`
-- [ ] [003 Identity Link/Unlink/Sync](007-identity/003-identity-link-unlink-sync.md) — `src/commands/identity/link.js`, `unlink.js`, `sync.js`
+- [x] [001 Identity Add/Remove](007-identity/001-identity-add-remove.md) — `src/commands/identity/add.js`, `remove.js`
+- [x] [002 Identity List/Show](007-identity/002-identity-list-show.md) — `src/commands/identity/list.js`, `show.js`
+- [x] [003 Identity Link/Unlink/Sync](007-identity/003-identity-link-unlink-sync.md) — `src/commands/identity/link.js`, `unlink.js`, `sync.js`
 
 ## 008-util — Utility Functions (5 stories)
 
@@ -117,4 +117,4 @@ Track completion of each story by checking the box when done. Work through these
 
 ---
 
-**Total: 59 stories** | **Completed: 0/59**
+**Total: 59 stories** | **Completed: 26/59**

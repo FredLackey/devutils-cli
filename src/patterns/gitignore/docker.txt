@@ -1,0 +1,15 @@
+# Docker
+# Patterns for Docker projects. These are files that should not be
+# included in a Docker build context or committed to version control.
+
+# Docker Compose override (local dev customization)
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# Docker environment files
+.docker/
+.dockerenv
+
+# Local data volumes (often mounted for development)
+data/
+volumes/

@@ -1,0 +1,25 @@
+# Claude Code
+# Patterns for Claude Code, Sidecar, and other AI coding tool artifacts.
+
+# Claude Code local state
+.claude/
+
+# Sidecar local state (TUI task runner)
+.sidecar/
+
+# Sidecar todo tracking
+.todos/
+
+# AI session artifacts
+.ai-sessions/
+
+# Cursor AI
+.cursorignore
+.cursorindexingignore
+.cursor/
+
+# Aider
+.aider*
+
+# Codeium
+.codeium/

@@ -1,0 +1,25 @@
+# Windows
+# Patterns for Windows system and Explorer metadata files.
+
+# Thumbnail cache
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Folder config
+desktop.ini
+Desktop.ini
+
+# Recycle Bin
+$RECYCLE.BIN/
+
+# Shortcut files
+*.lnk
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp

@@ -1,0 +1,15 @@
+# Visual Studio Code
+# Patterns for VS Code workspace and user-level files.
+
+# Workspace settings (user-specific)
+.vscode/
+
+# Workspace file
+*.code-workspace
+
+# VS Code local history
+.history/
+
+# VS Code extensions recommendation (optional -- remove this line
+# if your team uses shared extension recommendations)
+# .vscode/extensions.json

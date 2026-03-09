@@ -1,0 +1,27 @@
+# macOS
+# Patterns for macOS system and Finder metadata files.
+
+# Finder metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnail cache
+._*
+
+# Spotlight indexing
+.Spotlight-V100
+
+# Trash folder state
+.Trashes
+
+# Volume metadata
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Finder directory metadata
+.fseventsd
+.apdisk
+
+# macOS resource forks
+Icon?
