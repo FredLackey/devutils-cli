@@ -99,6 +99,27 @@ User data lives in `~/.devutils/` (created during `dev config init`):
 - `bin/` — Generated alias wrapper scripts (added to PATH)
 - `cache/` — Temporary data
 
+## Story Workflow
+
+Implementation is driven by user stories in `stories/`. Progress is tracked in `stories/PROGRESS.md`.
+
+**At the start of each session:**
+
+1. Read `stories/PROGRESS.md` to see what has been completed
+2. Identify the next unchecked story
+3. Read that story file and implement it
+4. After the story passes its acceptance criteria, check the box in PROGRESS.md
+5. Commit the work
+
+**Rules:**
+
+- Work one story at a time, in order. Do not skip ahead.
+- Each story must pass its own acceptance criteria and testing section before marking complete.
+- Stories build on each other. If a prerequisite is not checked off, do not start the story.
+- Use the main conversation for implementation, not agents. Agents are fine for research or parallel file reads.
+- After completing a story, run `git add -A` and commit all changes before moving on.
+- After completing a story, ask the user before moving to the next one.
+
 ## Code Style
 
 - CommonJS modules (`require`/`module.exports`)
