@@ -19,8 +19,7 @@ async function run(args, context) {
   const util = findUtility(name);
 
   if (!util) {
-    context.output.error(`Utility "${name}" not found.`);
-    context.output.info('Run "dev util list" to see available utilities.');
+    context.errors.throwError(404, `Utility "${name}" not found. Run "dev util list" to see available utilities.`, 'util');
     return;
   }
 

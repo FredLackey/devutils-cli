@@ -1,6 +1,6 @@
 {
   "name": "@fredlackey/devutils",
-  "version": "0.0.19",
+  "version": "0.1.0",
   "description": "A config-driven CLI toolkit for bootstrapping and managing development environments across any machine.",
   "main": "src/index.js",
   "bin": {

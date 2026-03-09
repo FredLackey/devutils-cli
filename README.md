@@ -1,5 +1,7 @@
 # DevUtils CLI
 
+> **Work in Progress** -- This project is under active development and has not been fully tested in real-world environments. Commands may change, break, or behave unexpectedly. Use at your own risk. The stable, production-ready release will ship as **v1.0**. Until then, versions in the `0.x` range should be considered pre-release.
+
 A config-driven CLI toolkit for bootstrapping and managing development environments across any machine.
 
 DevUtils replaces scattered dotfiles, setup scripts, and manual configuration with a single `dev` command. You tell it what you need, and it handles the rest -- whether you're setting up a new laptop, syncing git identities across machines, or managing tool installations.
@@ -213,6 +215,34 @@ All user data lives in `~/.devutils/`, created during `dev config init`:
 | Amazon Linux      | DNF, YUM            |
 | Windows           | Chocolatey, winget  |
 | Git Bash          | Manual / Portable   |
+
+## Current Status
+
+DevUtils is in **pre-release** (`0.1.x`). The core framework, command routing, and service structure are in place. Basic smoke tests pass on Ubuntu 24.04 in Docker, but deeper integration testing -- real Git operations, SSH key workflows, GitHub auth, tool installation, and interactive prompts -- has not been completed yet.
+
+What's working:
+- Command routing and service discovery across all 11 services
+- Config init, show, get, set, reset, file-based export/import
+- Machine detection and profile management
+- Gitignore pattern management (add, remove, list, show)
+- Tool check, list, search, and dry-run install
+- Identity CRUD (add, list, show, remove)
+- Alias management and wrapper generation
+- AI tool configuration
+- Schema introspection
+- Platform detection (macOS, Ubuntu, Raspberry Pi OS, Amazon Linux, Windows, Git Bash)
+
+What still needs real-world testing:
+- SSH key generation and GitHub integration
+- Git identity sync to actual repositories
+- Config backup/restore via remote Git repo
+- OAuth login flows
+- Tool installation on each supported platform
+- API plugin installation and lifecycle
+- AI session launch and resume
+- QMD search indexing and queries
+
+Patch versions (`0.1.1`, `0.1.2`, etc.) will ship as issues are found and fixed during hands-on use. Minor version bumps (`0.2.0`) are reserved for breaking changes. The first stable release will be **v1.0.0**.
 
 ## Contact
 
