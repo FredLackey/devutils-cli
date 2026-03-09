@@ -5,13 +5,13 @@ Track completion of each story by checking the box when done. Work through these
 ## 001-foundation — Core Framework (8 stories)
 
 - [x] [001 Platform Detection](001-foundation/001-platform-detection.md) — `src/lib/platform.js`
-- [ ] [002 Shell Utilities](001-foundation/002-shell-utilities.md) — `src/lib/shell.js`
-- [ ] [003 Output Mode Detection](001-foundation/003-output-detection.md) — `src/lib/detect.js`
-- [ ] [004 Output Formatting](001-foundation/004-output-formatting.md) — `src/lib/output.js`
-- [ ] [005 Error Handling](001-foundation/005-error-handling.md) — `src/lib/errors.js`
-- [ ] [006 Config Manager](001-foundation/006-config-manager.md) — `src/lib/config.js`
-- [ ] [007 Interactive Prompts](001-foundation/007-interactive-prompts.md) — `src/lib/prompt.js`
-- [ ] [008 CLI Router](001-foundation/008-cli-router.md) — `src/cli.js`
+- [x] [002 Shell Utilities](001-foundation/002-shell-utilities.md) — `src/lib/shell.js`
+- [x] [003 Output Mode Detection](001-foundation/003-output-detection.md) — `src/lib/detect.js`
+- [x] [004 Output Formatting](001-foundation/004-output-formatting.md) — `src/lib/output.js`
+- [x] [005 Error Handling](001-foundation/005-error-handling.md) — `src/lib/errors.js`
+- [x] [006 Config Manager](001-foundation/006-config-manager.md) — `src/lib/config.js`
+- [x] [007 Interactive Prompts](001-foundation/007-interactive-prompts.md) — `src/lib/prompt.js`
+- [x] [008 CLI Router](001-foundation/008-cli-router.md) — `src/cli.js`
 
 ## 002-config — Config Service (3 stories)
 
